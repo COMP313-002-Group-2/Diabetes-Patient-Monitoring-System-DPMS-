@@ -1,0 +1,17 @@
+import { gql } from "@apollo/client";
+
+const GET_STAFFS = gql`
+    {
+        staffs{
+            _id
+            name
+            userName
+            email
+            password
+        }
+
+    }
+    
+`;
+
+export { GET_STAFFS };

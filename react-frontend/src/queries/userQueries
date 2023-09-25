@@ -1,0 +1,25 @@
+import { gql } from "@apollo/client";
+
+ const GET_USER_BY_EMAIL = gql`
+  query GetUserByEmail($email: String!) {
+    userByEmail(email: $email) {
+      _id
+      password
+      userType
+    }
+  }
+`;
+ const GET_PATIENTS = gql`
+{
+  getPatients{
+    email
+    userType
+    
+  }
+}
+`;
+
+
+
+export { GET_PATIENTS, GET_USER_BY_EMAIL };
+
