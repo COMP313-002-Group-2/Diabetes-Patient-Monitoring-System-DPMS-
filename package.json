@@ -1,0 +1,37 @@
+{
+  "name": "dpms",
+  "version": "1.0.0",
+  "description": "Diabetes Patient Management System (DPMS) website, a cutting-edge digital platform tailored to bridge the gaps in diabetes care and management",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "start": "node backend/server.js",
+    "server": "nodemon backend/server.js",
+    "client": "npm start --prefix frontend",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/roelma2000/DiabetesTracker.git"
+  },
+  "keywords": [
+    "dpms"
+  ],
+  "author": "DiabeTeam",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/roelma2000/DiabetesTracker/issues"
+  },
+  "homepage": "https://github.com/roelma2000/DiabetesTracker#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "express-graphql": "^0.12.0",
+    "mongoose": "^7.6.2"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.1",
+    "dotenv": "^16.3.1",
+    "nodemon": "^3.0.1"
+  }
+}
