@@ -1,10 +1,8 @@
-import { GraphQLObjectType, GraphQLList, GraphQLString } from 'graphql';
+import { GraphQLList, GraphQLString } from 'graphql';
 import ArticleType from '../types/articleType.js';
 import Article from '../../models/article.js';
 
-const ArticleQueries = new GraphQLObjectType({
-  name: 'RootQueryType',
-  fields: {
+const ArticleQueries = {
     articles: {
       type: new GraphQLList(ArticleType),
       resolve(parent, args) {
@@ -17,10 +15,7 @@ const ArticleQueries = new GraphQLObjectType({
       resolve(parent, args) {
         return Article.findById(args.id);
       },
-    },
-  },
-});
+    }
+};
 
-export { ArticleQueries };
-
-
+export default ArticleQueries;

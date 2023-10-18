@@ -1,10 +1,22 @@
-body {
+html, body, #root {
+  height: 100%;
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+/* This is the wrapping div that contains everything except the footer */
+.app-wrapper {
+  display: flex; /* Enable flex layout */
+  flex-direction: column; /* Stack children vertically */
+  min-height: 100%; /* Minimum height is the full height of the viewport */
+}
+
+/* This will push the footer to the bottom */
+main.py-3 {
+  flex: 1;
 }
 
 code {
