@@ -1,8 +1,18 @@
 import React from 'react';
 import { Navbar, Nav, Button } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
 import logo from '../assets/diabetes_tracker.jpg';
 
 const CustomNavbar = () => {
+  const navigate = useNavigate();
+  const isLoggedIn = !!localStorage.getItem('token'); // Check if token exists in localStorage
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');  // Remove the token
+    localStorage.removeItem('userType');  // Remove the userType if you wish
+    navigate('/');  // Redirect to home or login page
+  };
+
   return (
     <Navbar expand='lg' variant='dark' sticky='top'>
       <Navbar.Brand href='/'>
@@ -23,16 +33,29 @@ const CustomNavbar = () => {
         </Nav>
 
         <Nav>
-          <Nav.Link href='login.html'>
-            <Button variant='outline-light' size='sm' className='mr-2'>
-              Login
+          {!isLoggedIn ? (
+            <>
+              <Nav.Link href='/login'>
+                <Button variant='outline-light' size='sm' className='mr-2'>
+                  Login
+                </Button>
+              </Nav.Link>
+              <Nav.Link href='signup.html'>
+                <Button variant='outline-light' size='sm'>
+                  Signup
+                </Button>
+              </Nav.Link>
+            </>
+          ) : (
+            <Button
+              variant='outline-light'
+              size='sm'
+              className='mr-2'
+              onClick={handleLogout}
+            >
+              Logout
             </Button>
-          </Nav.Link>
-          <Nav.Link href='signup.html'>
-            <Button variant='outline-light' size='sm'>
-              Signup
-            </Button>
-          </Nav.Link>
+          )}
         </Nav>
       </Navbar.Collapse>
     </Navbar>
