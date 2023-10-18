@@ -9,6 +9,7 @@ import AdminScreen from './screens/AdminScreen';
 import PhysicianScreen from './screens/PhysicianScreen';
 import StaffScreen from './screens/StaffScreen';
 import ProtectedRoute from './components/ProtectedRoute';
+import NotFound from './components/NotFound';
 
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { ApolloProvider, ApolloClient, InMemoryCache } from '@apollo/client';
@@ -75,6 +76,8 @@ function App() {
                 <Route path='/physician' element={<ProtectedRoute element={<PhysicianScreen />} allowed='Physician' />} />
                 <Route path='/staff' element={<ProtectedRoute element={<StaffScreen />} allowed='Staff' />} />
                 {/*... other routes ... */}
+
+                <Route path='*' element={<NotFound />} />
               </Routes>
             </Container>
           </main>

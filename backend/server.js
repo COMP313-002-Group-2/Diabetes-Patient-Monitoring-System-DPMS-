@@ -4,6 +4,7 @@ import { graphqlHTTP } from 'express-graphql';
 import { GraphQLSchema } from 'graphql';
 import ArticleQueries  from './graphql/queries/articleQueries.js';
 import schema from './graphql/index.js';
+import colors from 'colors';
 import cors from 'cors';
 import connectDB from './config/db.js'; // Importing the connectDB utility
 
