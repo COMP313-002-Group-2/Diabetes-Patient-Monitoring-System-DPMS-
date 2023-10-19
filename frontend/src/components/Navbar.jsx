@@ -40,7 +40,7 @@ const CustomNavbar = () => {
                   Login
                 </Button>
               </Nav.Link>
-              <Nav.Link href='signup.html'>
+              <Nav.Link href='/register'>
                 <Button variant='outline-light' size='sm'>
                   Signup
                 </Button>

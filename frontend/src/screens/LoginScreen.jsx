@@ -13,7 +13,7 @@ const LoginScreen = () => {
               <Login />
               <div className='mt-3 text-center'>
                 <a href='/register'>Register</a> |{' '}
-                <a href='/forgot-password'>Forgot Password?</a>
+                <a href='/acctrecovery'>Forgot Password?</a>
               </div>
             </Card.Body>
           </Card>

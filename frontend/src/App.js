@@ -10,9 +10,18 @@ import PhysicianScreen from './screens/PhysicianScreen';
 import StaffScreen from './screens/StaffScreen';
 import ProtectedRoute from './components/ProtectedRoute';
 import NotFound from './components/NotFound';
+import Register from './screens/Register';
+import ForgotPass from './screens/ForgotPass';
 
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { ApolloProvider, ApolloClient, InMemoryCache } from '@apollo/client';
+import {
+  ApolloProvider,
+  ApolloClient,
+  InMemoryCache,
+  HttpLink,
+  from,
+} from '@apollo/client';
+import { onError } from 'apollo-link-error';
 
 const port = process.env.REACT_APP_PORT || 5000;
 
@@ -30,27 +39,38 @@ const cache = new InMemoryCache({
   },
 });
 
+const errorLink = onError(({ graphQLErrors, networkError }) => {
+  if (graphQLErrors) {
+    graphQLErrors.map(({ message, locations, path }) =>
+      console.log(
+        `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
+      )
+    );
+  }
+  if (networkError) {
+    console.log(`[Network error]: ${networkError}`);
+  }
+});
+
 const client = new ApolloClient({
-  uri: `http://localhost:${port}/graphql`,
-  cache,
+  link: from([
+    errorLink,
+    new HttpLink({ uri: `http://localhost:${port}/graphql` }),
+  ]),
+  cache, // Use the cache variable here
   defaultOptions: {
     watchQuery: {
       errorPolicy: 'all',
-      // Enable logging for watchQuery
-      log: true,
     },
     query: {
       errorPolicy: 'all',
-      // Enable logging for query
-      log: true,
     },
     mutate: {
       errorPolicy: 'all',
-      // Enable logging for mutate
-      log: true,
     },
   },
 });
+
 
 function App() {
   return (
@@ -63,6 +83,8 @@ function App() {
               <Routes>
                 <Route path='/' element={<HomeScreen />} />
                 <Route path='/login' element={<LoginScreen />} />
+                <Route path='/register' element={<Register />} />
+                <Route path='/acctrecovery' element={<ForgotPass />} />
                 <Route
                   path='/patient'
                   element={
@@ -72,9 +94,27 @@ function App() {
                     />
                   }
                 />
-                <Route path='/admin' element={<ProtectedRoute element={<AdminScreen />} allowed='Admin' />} />
-                <Route path='/physician' element={<ProtectedRoute element={<PhysicianScreen />} allowed='Physician' />} />
-                <Route path='/staff' element={<ProtectedRoute element={<StaffScreen />} allowed='Staff' />} />
+                <Route
+                  path='/admin'
+                  element={
+                    <ProtectedRoute element={<AdminScreen />} allowed='Admin' />
+                  }
+                />
+                <Route
+                  path='/physician'
+                  element={
+                    <ProtectedRoute
+                      element={<PhysicianScreen />}
+                      allowed='Physician'
+                    />
+                  }
+                />
+                <Route
+                  path='/staff'
+                  element={
+                    <ProtectedRoute element={<StaffScreen />} allowed='Staff' />
+                  }
+                />
                 {/*... other routes ... */}
 
                 <Route path='*' element={<NotFound />} />

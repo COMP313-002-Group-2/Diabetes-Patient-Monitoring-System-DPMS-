@@ -4,6 +4,7 @@ import {
   GraphQLEnumType,
   GraphQLID,
   GraphQLInputObjectType,
+  GraphQLBoolean, 
 } from 'graphql';
 
 const UserTypeEnum = new GraphQLEnumType({
@@ -24,6 +25,7 @@ const UserType = new GraphQLObjectType({
     email: { type: GraphQLString },
     password: { type: GraphQLString },
     userType: { type: UserTypeEnum },
+    isActive: { type: GraphQLBoolean },
   }),
 });
 
