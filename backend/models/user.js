@@ -20,6 +20,10 @@ const userSchema = new mongoose.Schema(
       enum: ['Patient', 'Admin', 'Physician', 'Staff'],
       required: true,
     },
+    isActive: {
+      type: Boolean,
+      default: false,
+    },
   }
   // Add other fields here as needed
 );
