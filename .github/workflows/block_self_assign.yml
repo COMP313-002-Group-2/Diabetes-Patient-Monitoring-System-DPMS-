@@ -1,0 +1,40 @@
+name: Block Self Assign
+
+on:
+  pull_request:
+    types:
+      - assigned
+
+jobs:
+  block_self_assign:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Block self assign
+      uses: actions/github-script@v5
+      with:
+        script: |
+          const { GITHUB_TOKEN, GITHUB_REPOSITORY, GITHUB_EVENT_PATH } = process.env;
+          const { context } = require("@actions/github");
+          const github = require("@actions/github").getOctokit(GITHUB_TOKEN);
+
+          const payload = require(GITHUB_EVENT_PATH);
+          const assigner = payload.sender.login;
+          const assignees = payload.pull_request.assignees.map(assignee => assignee.login);
+          const prNumber = payload.pull_request.number;
+
+          if (assignees.includes(assigner)) {
+            const message = `@${assigner} You can't assign yourself to your own pull request.`;
+            github.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: prNumber,
+              body: message
+            });
+
+            github.issues.removeAssignees({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: prNumber,
+              assignees: [assigner]
+            });
+          }
