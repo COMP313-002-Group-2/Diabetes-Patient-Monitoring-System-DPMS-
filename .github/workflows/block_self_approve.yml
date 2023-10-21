@@ -1,0 +1,40 @@
+name: Block Self Approval
+
+on:
+  pull_request_review:
+    types:
+      - submitted
+
+jobs:
+  block_self_approval:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Block self approval
+      uses: actions/github-script@v5
+      with:
+        script: |
+          const { GITHUB_TOKEN, GITHUB_REPOSITORY, GITHUB_EVENT_PATH } = process.env;
+          const { context } = require("@actions/github");
+          const github = require("@actions/github").getOctokit(GITHUB_TOKEN);
+
+          const payload = require(GITHUB_EVENT_PATH);
+          const reviewer = payload.review.user.login;
+          const prNumber = payload.pull_request.number;
+          const assignees = payload.pull_request.assignees.map(assignee => assignee.login);
+
+          if (assignees.includes(reviewer)) {
+            const message = `@${reviewer} You can't approve your own pull request.`;
+            github.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: prNumber,
+              body: message
+            });
+            github.pulls.dismissReview({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: prNumber,
+              review_id: payload.review.id,
+              message: "Self-approval not allowed"
+            });
+          }
