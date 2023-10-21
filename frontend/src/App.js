@@ -7,10 +7,12 @@ import LoginScreen from './screens/LoginScreen';
 import PatientScreen from './screens/PatientScreen';
 import AdminScreen from './screens/AdminScreen';
 import PhysicianScreen from './screens/PhysicianScreen';
+import RegisterScreen from './screens/RegisterScreen';
 import StaffScreen from './screens/StaffScreen';
 import ProtectedRoute from './components/ProtectedRoute';
 import NotFound from './components/NotFound';
-import Register from './screens/Register';
+import ConfirmScreen from './screens/ConfirmScreen';
+import PublicRoute from './components/PublicRoute';
 import ForgotPass from './screens/ForgotPass';
 
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
@@ -71,7 +73,6 @@ const client = new ApolloClient({
   },
 });
 
-
 function App() {
   return (
     <ApolloProvider client={client}>
@@ -82,8 +83,12 @@ function App() {
             <Container>
               <Routes>
                 <Route path='/' element={<HomeScreen />} />
-                <Route path='/login' element={<LoginScreen />} />
-                <Route path='/register' element={<Register />} />
+                <Route
+                  path='/login'
+                  element={<PublicRoute element={<LoginScreen />} />}
+                />
+                <Route path='/register' element={<RegisterScreen />} />
+                <Route path='/confirmation' element={<ConfirmScreen />} />
                 <Route path='/acctrecovery' element={<ForgotPass />} />
                 <Route
                   path='/patient'
