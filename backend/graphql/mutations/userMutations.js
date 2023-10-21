@@ -3,6 +3,7 @@ import {
   GraphQLNonNull,
   GraphQLBoolean,
   GraphQLString,
+  GraphQLObjectType,
 } from 'graphql';
 import User from '../../models/user.js';
 import { UserType, UserTypeInput, AuthPayload } from '../types/UserType.js';
@@ -15,11 +16,18 @@ const SECRET_KEY = process.env.JWTSECRET;
 
 const userMutations = {
   createUser: {
-    type: UserType,
+    type: new GraphQLObjectType({
+      name: 'CreateUserPayload',
+      fields: {
+        user: { type: UserType },
+        token: { type: GraphQLString },
+        userType: { type: GraphQLString },
+        message: { type: GraphQLString },
+      },
+    }),
     args: { input: { type: new GraphQLNonNull(UserTypeInput) } },
     async resolve(parent, { input }) {
-      // destructured input from args
-      const { name, email, password, userType } = input;
+      const { firstName, lastName, email, password, userType } = input;
       // check if the user already exists
       const existingUser = await User.findOne({ email });
       if (existingUser) {
@@ -33,7 +41,8 @@ const userMutations = {
       const hashedPassword = password;
       // create user
       const user = new User({
-        name,
+        firstName,
+        lastName,
         email,
         password: hashedPassword,
         userType,
@@ -43,7 +52,26 @@ const userMutations = {
       // save user
       await user.save();
 
-      return user;
+      if (userType === 'Patient') {
+        // If user is a Patient, generate token and return user, token, and userType
+        const token = jwt.sign(
+          { userId: user.id, userType: user.userType },
+          SECRET_KEY,
+          { expiresIn: '1h' }
+        );
+
+        return {
+          user,
+          token,
+          userType: user.userType,
+        };
+      } else {
+        // If user is not a Patient, return user and a message
+        return {
+          user,
+          message: 'Account created successfully. Please wait for admin approval.',
+        };
+      }
     },
   },
   updateUser: {
@@ -75,16 +103,16 @@ const userMutations = {
       if (!user) {
         throw new Error('Invalid email or password.');
       }
-  
+
       if (!user.isActive) {
         throw new Error('Your account is not active. Please contact admin.');
       }
-      
+
       // use bcrypt if possible, change this to bcrypt.compare if hashing password
       if (user.password !== args.password) {
         throw new Error('Invalid email or password.');
       }
-      
+
       // If user is found and password is correct
       const token = jwt.sign(
         { userId: user.id, userType: user.userType },

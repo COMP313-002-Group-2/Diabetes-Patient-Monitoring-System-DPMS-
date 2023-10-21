@@ -1,12 +1,11 @@
-import { useNavigate } from 'react-router-dom';
+import React from 'react';
+import { Navigate } from 'react-router-dom';
 
 function ProtectedRoute({ element, allowed }) {
-  const navigate = useNavigate();
   const currentUserType = localStorage.getItem('userType');
 
   if (currentUserType !== allowed) {
-    navigate('/login');
-    return null; // render nothing, user will be redirected***
+    return <Navigate to='/login' replace />;
   }
 
   return element; // render the protected component

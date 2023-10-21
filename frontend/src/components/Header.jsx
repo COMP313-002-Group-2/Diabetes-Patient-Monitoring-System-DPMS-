@@ -47,7 +47,7 @@ function Header() {
                 <Button
                   variant='outline-dark'
                   className='rounded-pill'
-                  href='record_result.html'
+                  href='/login'
                 >
                   Start Now
                 </Button>
@@ -80,7 +80,7 @@ function Header() {
                 <Button
                   variant='outline-dark'
                   className='rounded-pill'
-                  href='book_physician.html'
+                  href='/login'
                 >
                   Book Now
                 </Button>
@@ -113,7 +113,7 @@ function Header() {
                 <Button
                   variant='outline-dark'
                   className='rounded-pill'
-                  href='schedule_ambulance.html'
+                  href='/login'
                 >
                   Schedule Now
                 </Button>

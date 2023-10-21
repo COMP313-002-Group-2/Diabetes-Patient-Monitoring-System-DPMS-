@@ -28,6 +28,17 @@
   overflow: hidden;
 }
 
+.stretch-card {
+  min-height: 650px;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.stretch-card .card-body {
+  flex-grow: 1;
+}
+
 .card-body {
   overflow-y: auto; /* Add scroll if content overflows */
 }

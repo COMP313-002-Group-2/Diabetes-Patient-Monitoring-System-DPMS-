@@ -4,7 +4,7 @@ import {
   GraphQLEnumType,
   GraphQLID,
   GraphQLInputObjectType,
-  GraphQLBoolean, 
+  GraphQLBoolean,
 } from 'graphql';
 
 const UserTypeEnum = new GraphQLEnumType({
@@ -21,7 +21,8 @@ const UserType = new GraphQLObjectType({
   name: 'User',
   fields: () => ({
     _id: { type: GraphQLID },
-    name: { type: GraphQLString },
+    firstName: { type: GraphQLString },
+    lastName: { type: GraphQLString },
     email: { type: GraphQLString },
     password: { type: GraphQLString },
     userType: { type: UserTypeEnum },
@@ -41,7 +42,8 @@ const UserTypeInput = new GraphQLInputObjectType({
   name: 'UserInputType',
   fields: () => ({
     _id: { type: GraphQLID },
-    name: { type: GraphQLString },
+    firstName: { type: GraphQLString },
+    lastName: { type: GraphQLString },
     email: { type: GraphQLString },
     password: { type: GraphQLString },
     userType: { type: UserTypeEnum },
