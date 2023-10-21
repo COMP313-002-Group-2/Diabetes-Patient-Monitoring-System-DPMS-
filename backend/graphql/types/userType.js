@@ -50,4 +50,14 @@ const UserTypeInput = new GraphQLInputObjectType({
   }),
 });
 
-export { UserType, UserTypeInput, UserTypeEnum, AuthPayload };
+const ResetPasswordPayload = new GraphQLObjectType({
+  name: 'ResetPasswordPayload',
+  fields: () => ({
+    user: { type: UserType },
+    token: { type: GraphQLString },
+    message: { type: GraphQLString },
+  }),
+});
+
+
+export { UserType, UserTypeInput, UserTypeEnum, AuthPayload, ResetPasswordPayload };

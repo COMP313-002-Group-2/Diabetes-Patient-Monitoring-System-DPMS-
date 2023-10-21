@@ -13,7 +13,8 @@ import ProtectedRoute from './components/ProtectedRoute';
 import NotFound from './components/NotFound';
 import ConfirmScreen from './screens/ConfirmScreen';
 import PublicRoute from './components/PublicRoute';
-import ForgotPass from './screens/ForgotPass';
+import ForgotPasswordScreen from './screens/ForgotPasswordScreen';
+import ResetPasswordScreen from './screens/ResetPasswordScreen';
 
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import {
@@ -87,9 +88,13 @@ function App() {
                   path='/login'
                   element={<PublicRoute element={<LoginScreen />} />}
                 />
+                <Route
+                  path='/reset-password/:token'
+                  element={<PublicRoute element={<ResetPasswordScreen />} />}
+                />
                 <Route path='/register' element={<RegisterScreen />} />
                 <Route path='/confirmation' element={<ConfirmScreen />} />
-                <Route path='/acctrecovery' element={<ForgotPass />} />
+                <Route path='/acctrecovery' element={<ForgotPasswordScreen />} />
                 <Route
                   path='/patient'
                   element={

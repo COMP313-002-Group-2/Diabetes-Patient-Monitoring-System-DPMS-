@@ -8,9 +8,9 @@ const CustomNavbar = () => {
   const isLoggedIn = !!localStorage.getItem('token'); // Check if token exists in localStorage
 
   const handleLogout = () => {
-    localStorage.removeItem('token');  // Remove the token
-    localStorage.removeItem('userType');  // Remove the userType if you wish
-    navigate('/');  // Redirect to home or login page
+    localStorage.removeItem('token'); // Remove the token
+    localStorage.removeItem('userType'); // Remove the userType if you wish
+    navigate('/'); // Redirect to home or login page
   };
 
   return (
@@ -26,10 +26,10 @@ const CustomNavbar = () => {
       >
         <Nav>
           <Nav.Link href='/'>Home</Nav.Link>
-          <Nav.Link href='/'>Library</Nav.Link>
-          <Nav.Link href='/'>Services</Nav.Link>
-          <Nav.Link href='/'>About</Nav.Link>
-          <Nav.Link href='/'>Contact</Nav.Link>
+          <Nav.Link href='/resources'>Resources</Nav.Link>
+          <Nav.Link href='/about-diabetes'>About diabetes</Nav.Link>
+          <Nav.Link href='/about-us'>About Us</Nav.Link>
+          <Nav.Link href='/contactus'>Contact Us</Nav.Link>
         </Nav>
 
         <Nav>
