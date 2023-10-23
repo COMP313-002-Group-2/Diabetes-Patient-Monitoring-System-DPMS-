@@ -126,7 +126,7 @@ function App() {
                   }
                 />
                 {/*... other routes ... */}
-
+                <Route path = "addambulance" element={<AddAmbulance />} />
                 <Route path='*' element={<NotFound />} />
               </Routes>
             </Container>
