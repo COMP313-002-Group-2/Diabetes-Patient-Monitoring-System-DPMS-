@@ -1,0 +1,12 @@
+import React from 'react';
+import About from '../components/About';
+
+const AboutUsScreen = () => {
+  return (
+    <div>
+      <About Us/>
+    </div>
+  );
+};
+
+export default AboutUsScreen;

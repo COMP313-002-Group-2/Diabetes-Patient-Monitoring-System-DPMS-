@@ -11,6 +11,8 @@ import RegisterScreen from './screens/RegisterScreen';
 import StaffScreen from './screens/StaffScreen';
 import ProtectedRoute from './components/ProtectedRoute';
 import NotFound from './components/NotFound';
+import AboutUs from './screens/AboutUsScreen';
+import ContactUs from './screens/ContactUsScreen';
 import ConfirmScreen from './screens/ConfirmScreen';
 import PublicRoute from './components/PublicRoute';
 import ForgotPasswordScreen from './screens/ForgotPasswordScreen';
@@ -125,10 +127,19 @@ function App() {
                     <ProtectedRoute element={<StaffScreen />} allowed='Staff' />
                   }
                 />
+              <Route path='/about-us' element={<AboutUs />} />
+
+
+               <Route path='/contactus' element={<ContactUs />} />
+
+
+
                 {/*... other routes ... */}
 
                 <Route path='*' element={<NotFound />} />
               </Routes>
+
+             
             </Container>
           </main>
           <Footer />
