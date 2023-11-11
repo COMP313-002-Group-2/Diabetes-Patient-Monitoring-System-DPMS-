@@ -17,15 +17,15 @@ const reminderMutations = {
             status: { type: new GraphQLNonNull(GraphQLString) },
         },
         resolve(parent, args) {
-            let newReminder = new Reminder({
-                patientId: args.patientId,
-                reminderName: args.reminderName,
-                reminderDescription: args.reminderDescription,
-                status: args.status,
-            });
-            return newReminder.save();
-        }
-    },
+                            let newReminder = new Reminder({
+                    patientId: args.patientId,
+                    reminderName: args.reminderName,
+                    reminderDescription: args.reminderDescription,
+                    status: args.status,
+                });
+                                    return newReminder.save();
+                }
+                },
     updateReminder: {
         type: ReminderType,
         args: {
@@ -49,7 +49,7 @@ const reminderMutations = {
                 { new: true }
             );
         },
-    }, 
+    },
     deleteReminder: {
         type: ReminderType,
         args: {

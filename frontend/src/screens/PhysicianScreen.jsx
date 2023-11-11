@@ -1,32 +1,18 @@
 import {React, useEffect, useState} from 'react';
-import { useQuery, gql } from '@apollo/client';
-// import { PATIENTS_QUERY } from '../graphql/queries';
+import { useQuery } from '@apollo/client';
 import Container from 'react-bootstrap/Container';
 import Table from 'react-bootstrap/Table';
-import { useNavigate } from 'react-router-dom';
-
-
-const GET_PATIENTS_QUERY = gql`
-  {
-    getPatients {
-      _id
-      firstName
-      lastName
-      email
-      userType
-      isActive
-    }
-  }
-`;
+import AddReminderModal from '../components/AddReminderModal';
+import { PATIENTS_QUERY } from '../graphql/queries';
 
 function PhysicianScreen() {
 
   //Hooks
-  const { loading, error, data} = useQuery(GET_PATIENTS_QUERY);  
+  const { loading, error, data} = useQuery(PATIENTS_QUERY);  
   const [reminderModalShow, setReminderModalShow] = useState(false);
-  const [selectedPatient] = useState({});
-  const navigate = useNavigate();
-
+  const [selectedPatient, setSelectedPatient] = useState(null);
+  const [selectedPatientFirstName, setSelectedPatientFirstName] = useState(null);
+  const [selectedPatientLastName, setSelectedPatientLastName] = useState(null);
 
   //Use Effects
   useEffect(()=>{
@@ -34,16 +20,24 @@ function PhysicianScreen() {
   })
 
   //Callback
-  const onPatientClick = () => {
-    navigate(`/graphql/${reminderModalProps.patientId}`);
+  const onPatientClick = (patientId, firstName, lastName) => {
+    setSelectedPatient(patientId);
+    setSelectedPatientFirstName(firstName);
+    setSelectedPatientLastName(lastName);
+    setReminderModalShow(true);
+    console.log(`Patient clicked: ${patientId} ${firstName} ${lastName}`);
   }
 
   // Setting props for ReminderModal
   const reminderModalProps = {
     show: reminderModalShow,
     onHide: () => setReminderModalShow(false),
-    patientId: selectedPatient
-  };
+    patientId: selectedPatient,
+    firstName: selectedPatientFirstName,
+    lastName: selectedPatientLastName
+};
+
+
     
   //Rendering
   if (loading) {
@@ -56,7 +50,8 @@ function PhysicianScreen() {
   return (
     
     <Container>
-      <div>Physician Screen</div>
+      <div><h2>Physician Screen</h2></div>
+      <AddReminderModal {...reminderModalProps} />
       <hr />
     <Table striped bordered hover variant="dark" className='text-center'>
         <thead>
@@ -68,7 +63,7 @@ function PhysicianScreen() {
         <tbody>
           {data.getPatients.map((patient,index) => { 
             return(
-            <tr key={index} onClick={() => onPatientClick(patient._id)}>
+            <tr key={index} onClick={() => onPatientClick(patient._id, patient.firstName, patient.lastName)}>
               <td>{patient.firstName} {patient.lastName}</td>
               <td>{patient.email}</td>
             </tr>

@@ -1,4 +1,6 @@
-export const ARTICLES_QUERY = `
+import { gql } from '@apollo/client';
+
+export const ARTICLES_QUERY = gql `
   {
     articles {
       _id
@@ -10,7 +12,7 @@ export const ARTICLES_QUERY = `
   }
 `;
 
-export const PATIENTS_QUERY = `
+export const PATIENTS_QUERY = gql `
   {
     getPatients {
       _id

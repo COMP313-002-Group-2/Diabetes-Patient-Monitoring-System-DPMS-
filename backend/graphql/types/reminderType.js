@@ -9,7 +9,7 @@ const ReminderType = new GraphQLObjectType({
     name: 'Reminder',
     fields: () => ({
         _id: { type: GraphQLID },
-        patientId: { type: GraphQLString },
+        patientId: { type: GraphQLID },
         reminderName: { type: GraphQLString },
         reminderDescription: { type: GraphQLString },
         status: { type: GraphQLString },
@@ -22,7 +22,7 @@ const ReminderTypeInput = new GraphQLInputObjectType({
         _id: { type: GraphQLID },
         reminderName: { type: GraphQLString },
         reminderDescription: { type: GraphQLString },
-        patientId: { type: GraphQLString },
+        patientId: { type: GraphQLID },
         status: { type: GraphQLString },
     }),
 });

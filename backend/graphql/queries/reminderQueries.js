@@ -1,6 +1,7 @@
 import { ReminderType } from "../types/reminderType.js";
 import Reminder from "../../models/reminder.js";
 import { GraphQLID, GraphQLList, GraphQLString } from "graphql";
+import User from "../../models/user.js";
 
 const reminderQueries = {
     getReminderById: {
@@ -23,22 +24,48 @@ const reminderQueries = {
     },
     getRemindersByPatient: {
         type: new GraphQLList(ReminderType),
-        args: { patient: { type: GraphQLID } },
+        args: { patientId: { type: GraphQLID } },
         resolve(parent, args) {
-        let reminders = Reminder.find({patient: args.patient});
-        return reminders;
-        // Logic to retrieve reminders by patient from your data source goes here.
+            
+            const patient = User.findById(args.patientId);
+            console.log("Patient", patient);
+            try {
+                let reminders = Reminder.find({patientId: args.patientId});
+                return reminders;
+            }
+            catch {
+                throw new Error("Invalid patient ID");      
+            }
         },
     },
     getRemindersByStatus: {
         type: new GraphQLList(ReminderType),
         args: { status: { type: GraphQLString } },
         resolve(parent, args) {
-        let reminders = Reminder.find({status: args.status});
-        return reminders;
-        // Logic to retrieve reminders by status from your data source goes here.
+
+            try {
+                let reminders = Reminder.find({status: args.status});
+                return reminders;
+            }
+            catch {
+                throw new Error("Invalid status");      
+            }
         },
     },
-    };
+    getRemindersByPatientAndStatus: {
+        type: new GraphQLList(ReminderType),
+        args: { patientId: { type: GraphQLID }, status: { type: GraphQLString } },
+        resolve(parent, args) {
 
-    export default reminderQueries;
+            try {
+                let reminders = Reminder.find({patientId: args.patientId, status: args.status});
+                return reminders;
+            }
+            catch {
+                throw new Error("Invalid patient ID or status");      
+            }
+        },
+    },
+};
+
+export default reminderQueries;

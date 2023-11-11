@@ -11,14 +11,14 @@ const reminderSchema = new mongoose.Schema(
         required: true,
         },
         patientId: {
-        type: String,
-        required: true,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
         },
         status: {
         type: String,
         },
-    }
-    );
+    }    
+);
 
 const Reminder = mongoose.model('Reminder', reminderSchema);
 

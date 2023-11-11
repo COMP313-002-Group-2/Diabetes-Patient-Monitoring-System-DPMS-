@@ -25,6 +25,7 @@ import {
   from,
 } from '@apollo/client';
 import { onError } from 'apollo-link-error';
+import AddReminderModal from './components/AddReminderModal';
 
 const port = process.env.REACT_APP_PORT || 5000;
 
@@ -124,6 +125,10 @@ function App() {
                   element={
                     <ProtectedRoute element={<StaffScreen />} allowed='Staff' />
                   }
+                />
+
+                <Route
+                  path="/graphql/:id" element={<AddReminderModal /> } 
                 />
                 {/*... other routes ... */}
 
