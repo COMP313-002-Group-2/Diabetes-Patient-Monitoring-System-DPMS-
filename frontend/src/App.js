@@ -25,6 +25,8 @@ import {
   from,
 } from '@apollo/client';
 import { onError } from 'apollo-link-error';
+import AddReminderModal from './components/AddReminderModal';
+import EditReminderModal from './components/EditReminderModal';
 import BookingAppoinment from './components/BookingAppointment';
 
 const port = process.env.REACT_APP_PORT || 5000;
@@ -125,6 +127,14 @@ function App() {
                   element={
                     <ProtectedRoute element={<StaffScreen />} allowed='Staff' />
                   }
+                />
+
+                <Route
+                  path="/addreminder/:id" element={<AddReminderModal /> } 
+                />
+
+                <Route
+                  path='/editreminder/:id' element={<EditReminderModal /> }
                 />
                 
                 <Route path='/booking' element={<BookingAppoinment />} />
