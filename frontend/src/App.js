@@ -25,6 +25,7 @@ import {
   from,
 } from '@apollo/client';
 import { onError } from 'apollo-link-error';
+import BookingAppoinment from './components/BookingAppointment';
 
 const port = process.env.REACT_APP_PORT || 5000;
 
@@ -125,6 +126,10 @@ function App() {
                     <ProtectedRoute element={<StaffScreen />} allowed='Staff' />
                   }
                 />
+                
+                <Route path='/booking' element={<BookingAppoinment />} />
+                
+                
                 {/*... other routes ... */}
 
                 <Route path='*' element={<NotFound />} />

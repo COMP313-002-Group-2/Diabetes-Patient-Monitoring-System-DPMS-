@@ -55,7 +55,8 @@ const userMutations = {
 
       // save user
       await user.save();
-
+      
+      
       if (userType === 'Patient') {
         // If user is a Patient, generate token and return user, token, and userType
         const token = jwt.sign(
@@ -77,6 +78,10 @@ const userMutations = {
             'Account created successfully. Please wait for admin approval.',
         };
       }
+      
+
+      
+      
     },
   },
   updateUser: {
@@ -109,9 +114,11 @@ const userMutations = {
         throw new Error('Invalid email or password.');
       }
 
+      /*
       if (!user.isActive) {
         throw new Error('Your account is not active. Please contact admin.');
       }
+      */
 
       // use bcrypt if possible, change this to bcrypt.compare if hashing password
       if (user.password !== args.password) {

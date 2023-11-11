@@ -12,9 +12,12 @@ const userQueries = {
   getUsers: {
     type: new GraphQLList(UserType),
     resolve() {
+      return User.find({ userType: 'Physician' });
       // Logic to retrieve all users from your data source goes here.
     },
   },
 };
+
+
 
 export default userQueries;
