@@ -30,6 +30,18 @@ const UserType = new GraphQLObjectType({
   }),
 });
 
+const UserTypeAdmin = new GraphQLObjectType({
+  name: 'User',
+  fields: () => ({
+    _id: { type: GraphQLID },
+    firstName: { type: GraphQLString },
+    lastName: { type: GraphQLString },
+    email: { type: GraphQLString },
+    userType: { type: UserTypeEnum },
+    isActive: { type: GraphQLBoolean },
+  }),
+});
+
 const AuthPayload = new GraphQLObjectType({
   name: 'AuthPayload',
   fields: () => ({
@@ -59,5 +71,15 @@ const ResetPasswordPayload = new GraphQLObjectType({
   }),
 });
 
+const UserTypeInputByAdmin = new GraphQLInputObjectType({
+  name: 'UserTypeInputByAdmin',
+  fields: () => ({
+    firstName: { type: GraphQLString },
+    lastName: { type: GraphQLString },
+    email: { type: GraphQLString },
+    password: { type: GraphQLString,defaultValue: undefined },
+    userType: { type: UserTypeEnum },
+  }),
+});
 
-export { UserType, UserTypeInput, UserTypeEnum, AuthPayload, ResetPasswordPayload };
+export { UserType, UserTypeInput, UserTypeEnum, AuthPayload, ResetPasswordPayload,UserTypeInputByAdmin,UserTypeAdmin };
