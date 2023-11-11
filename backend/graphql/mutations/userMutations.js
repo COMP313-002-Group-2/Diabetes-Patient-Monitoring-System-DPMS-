@@ -6,7 +6,7 @@ import {
   GraphQLObjectType,
 } from 'graphql';
 import User from '../../models/user.js';
-import { UserType, UserTypeInput, AuthPayload, ResetPasswordPayload } from '../types/UserType.js';
+import { UserType, UserTypeInput, AuthPayload, ResetPasswordPayload,UserTypeInputByAdmin, UserTypeEnum } from '../types/UserType.js';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 //import bcrypt from 'bcryptjs'; //dont forget to npm install bcryptjs
@@ -50,13 +50,13 @@ const userMutations = {
         email,
         password: hashedPassword,
         userType,
-        isActive: userType === 'Patient', // set isActive based on userType
+        isActive: userType === 'Admin', // set isActive based on userType
       });
 
       // save user
       await user.save();
 
-      if (userType === 'Patient') {
+      if (userType === 'Admin') {
         // If user is a Patient, generate token and return user, token, and userType
         const token = jwt.sign(
           { userId: user.id, userType: user.userType },
@@ -79,23 +79,101 @@ const userMutations = {
       }
     },
   },
+
+  addUserByAdmin: {
+    type: new GraphQLObjectType({
+      name: 'AddUserPayload',
+      fields: {
+        user: { type: UserType },
+        message: { type: GraphQLString },
+      },
+    }),
+    args: { 
+      input: { type: new GraphQLNonNull(UserTypeInput) }
+    },
+    async resolve(parent, { input }, context) {
+  
+      const { firstName, lastName, email,  userType,password } = input;
+      const existingUser = await User.findOne({ email });
+  
+      if (existingUser) {
+        throw new Error('Email already exists.');
+      }
+  
+     
+  
+      const user = new User({
+        firstName,
+        lastName,
+        email,
+        userType,
+        isActive: userType === 'Admin', // set isActive based on userType
+      });
+
+      if (password) {
+        user.password = 'password'; // Set the password if provided
+      }
+  
+      await user.save();
+  
+      return {
+        user,
+        message: 'User created successfully by admin.',
+      };
+    },
+  },
+  
+
+  
   updateUser: {
     type: UserType,
     args: {
       id: { type: GraphQLID },
       input: { type: new GraphQLNonNull(UserTypeInput) },
     },
-    resolve(parent, args) {
-      // Logic to update a user in your data source goes here.
+    resolve: async (parent, args) => {
+      // Check if the user with the provided ID exists
+      const existingUser = await User.findById(args.id);
+  
+      if (!existingUser) {
+        throw new Error('User not found');
+      }
+  
+      // Validate and update the user's data based on the input
+      existingUser.firstName = args.input.firstName;
+      existingUser.lastName = args.input.lastName;
+      existingUser.email = args.input.email;
+
+  
+      // Save the updated user to your data source
+      await existingUser.save();
+  
+      return existingUser;
     },
   },
   deleteUser: {
     type: GraphQLBoolean,
     args: { id: { type: GraphQLID } },
-    resolve(parent, args) {
-      // Logic to delete a user from your data source goes here.
+    resolve: async (parent, args, context) => {
+      try {
+        // Check if the user with the provided ID exists and is eligible for deletion
+        const userToDelete = await User.findById(args.id);
+  
+        if (!userToDelete) {
+          throw new Error('User not found.');
+        }
+  
+        await User.findByIdAndDelete(args.id); // Use 'args.id' instead of 'args._id'
+  
+        // Return true to indicate a successful deletion
+        return true;
+      } catch (error) {
+        console.error('Error deleting user:', error);
+        throw new Error('Failed to delete user.');
+      }
     },
   },
+  
   login: {
     type: AuthPayload,
     args: {

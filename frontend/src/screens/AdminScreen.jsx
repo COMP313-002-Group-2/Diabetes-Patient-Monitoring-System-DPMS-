@@ -3,7 +3,9 @@ import React from 'react'
 function AdminScreen() {
   return (
     <div>
-      This is an admin screen
+     <a href='/admin/users'><button className='btn btn-primary'>User List</button></a>
+      {" "}
+     <a href='/admin/add'><button className='btn btn-primary'>Add a User</button></a>
     </div>
   )
 }
