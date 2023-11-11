@@ -1,5 +1,7 @@
 import React from 'react';
 import myImage from '../assets/aboutus.jpeg';
+import myImage2 from '../assets/aboutus2.png';
+import myImage3 from '../assets/aboutus3.jpeg';
 
 const AboutUs = () => {
   return (
@@ -14,8 +16,22 @@ const AboutUs = () => {
       </div>
 
 
-      <div style={{ textAlign: 'center', padding: '20px' }}>
-        <img src={myImage} alt="About Us Page" style={{ display: 'block', marginLeft: 'auto', marginRight: 'auto', width: '300px', height: '200px' }} />
+      <div style={{ padding: '15px' ,  display: 'flex'}}>
+        <img
+          src={myImage}
+          alt="About Us Page Img1"
+          style={{ display: 'block', marginLeft: 'auto', marginRight: 'auto', width: '300px', height: '200px' }} />
+        <img
+          src={myImage2}
+          alt="About Us Page Img2"
+          style={{ display: 'block', marginLeft: 'auto', marginRight: 'auto', width: '300px', height: '200px' }}
+        />
+        <img
+          src={myImage3}
+          alt="About Us Page Img3"
+          style={{ display: 'block', marginLeft: 'auto', marginRight: 'auto', width: '300px', height: '200px' }}
+        />
+
       </div>
 
 
@@ -27,8 +43,8 @@ const AboutUs = () => {
           This system offers secure storage of lab results, medication management, educational resources, insulin dosage guidance, critical results monitoring, and virtual health consultations.
         </p>
       </div>
-      <h3 style={{ textAlign: 'center' }}>If you have any questions, feedback, or inquiries, please don't hesitate to contact us. We're here to serve you and look forward to hearing from you.
-      </h3>
+      <h4 style={{ textAlign: 'center' }}>If you have any questions, feedback, or inquiries, please don't hesitate to contact us. We're here to serve you and look forward to hearing from you.
+      </h4>
     </div>
   );
 };
