@@ -29,6 +29,8 @@ import { onError } from 'apollo-link-error';
 import EditUser from './components/EditUser';
 import AddUser from './components/AddUser';
 
+import AddReminderModal from './components/AddReminderModal';
+import EditReminderModal from './components/EditReminderModal';
 
 const port = process.env.REACT_APP_PORT || 5000;
 
@@ -148,6 +150,14 @@ function App() {
                   element={
                     <ProtectedRoute element={<EditUser />} allowed='Admin' />
                   }
+                />
+
+                <Route
+                  path="/addreminder/:id" element={<AddReminderModal /> } 
+                />
+
+                <Route
+                  path='/editreminder/:id' element={<EditReminderModal /> }
                 />
                 {/*... other routes ... */}
 

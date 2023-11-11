@@ -74,3 +74,69 @@ export const RESET_PASSWORD_MUTATION = gql`
   }
 `;
 
+export const GET_REMINDERS = gql`
+  query GetReminders {
+    getReminders{
+      _id
+      patientId
+      reminderName
+      reminderDescription
+      status
+    }
+  }
+`;
+
+export const ADD_REMINDER = gql`
+  mutation AddReminder(
+    $patientId: String!
+    $reminderName: String!
+    $reminderDescription: String!
+    $status: String!
+  ) {
+    addReminder(
+      patientId: $patientId
+      reminderName: $reminderName
+      reminderDescription: $reminderDescription
+      status: $status
+    ) {
+      _id
+      patientId
+      reminderName
+      reminderDescription
+      status
+    }
+  }
+`;
+
+export const DELETE_REMINDER = gql`
+  mutation DeleteReminder($_id: ID!) {
+    deleteReminder(_id: $_id) {
+      _id
+    }
+  }
+`;
+
+export const UPDATE_REMINDER = gql`
+  mutation UpdateReminder(
+    $_id: ID!
+    $patientId: String!
+    $reminderName: String!
+    $reminderDescription: String!
+    $status: String!
+  ) {
+    updateReminder(
+      _id: $_id
+      patientId: $patientId
+      reminderName: $reminderName
+      reminderDescription: $reminderDescription
+      status: $status
+    ) {
+      _id
+      patientId
+      reminderName
+      reminderDescription
+      status
+    }
+  }
+`;
+
