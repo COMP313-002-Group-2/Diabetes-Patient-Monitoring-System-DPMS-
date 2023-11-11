@@ -15,6 +15,7 @@ import ConfirmScreen from './screens/ConfirmScreen';
 import PublicRoute from './components/PublicRoute';
 import ForgotPasswordScreen from './screens/ForgotPasswordScreen';
 import ResetPasswordScreen from './screens/ResetPasswordScreen';
+import AmbulanceList from './screens/AmbulanceList';
 
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import {
@@ -136,7 +137,8 @@ function App() {
                   path='/editreminder/:id' element={<EditReminderModal /> }
                 />
                 {/*... other routes ... */}
-                <Route path = "addambulance" element={<AddAmbulance />} />
+                <Route path="/ambulancelist" 
+                element ={<AmbulanceList/>}/>
                 <Route path='*' element={<NotFound />} />
               </Routes>
             </Container>
