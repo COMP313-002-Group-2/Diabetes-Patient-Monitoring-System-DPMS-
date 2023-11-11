@@ -26,6 +26,7 @@ import {
 } from '@apollo/client';
 import { onError } from 'apollo-link-error';
 import AddReminderModal from './components/AddReminderModal';
+import EditReminderModal from './components/EditReminderModal';
 
 const port = process.env.REACT_APP_PORT || 5000;
 
@@ -128,7 +129,11 @@ function App() {
                 />
 
                 <Route
-                  path="/graphql/:id" element={<AddReminderModal /> } 
+                  path="/addreminder/:id" element={<AddReminderModal /> } 
+                />
+
+                <Route
+                  path='/editreminder/:id' element={<EditReminderModal /> }
                 />
                 {/*... other routes ... */}
 

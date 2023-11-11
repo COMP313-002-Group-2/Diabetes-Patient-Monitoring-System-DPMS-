@@ -24,3 +24,64 @@ export const PATIENTS_QUERY = gql `
     }
   }
 `;
+
+export const GET_ONE_PATIENT = gql `
+  query GetOnePatient($id: ID!) {
+    getOnePatient(id: $id){
+      _id
+      firstName
+      lastName
+      email
+      userType
+      isActive
+    }
+  }
+`;
+
+export const GET_ONE_REMINDER = gql`
+  query GetOneReminder($id: ID!) {
+    getOneReminder(id: $id){
+      _id
+      patientId
+      reminderName
+      reminderDescription
+      status
+    }
+  }
+`;
+
+export const getRemindersByPatient = gql `
+  query GetRemindersByPatient($patientId: ID!) {
+    getRemindersByPatient(patientId: $patientId) {
+      _id
+      patientId
+      reminderName
+      reminderDescription
+      status
+    }
+  }
+`;
+
+export const getRemindersByPatientIdAndStatus = gql `
+  query GetRemindersByPatientIdAndStatus($patientId: String!, $status: String!) {
+    getRemindersByPatientIdAndStatus(patientId: $patientId, status: $status) {
+      _id
+      patientId
+      reminderName
+      reminderDescription
+      status
+    }
+  }
+`;
+
+export const getRemindersByStatus = gql `
+  query GetRemindersByStatus($status: String!) {
+    getRemindersByStatus(status: $status) {
+      _id
+      patientId
+      reminderName
+      reminderDescription
+      status
+    }
+  }
+`;

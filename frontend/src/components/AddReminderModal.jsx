@@ -45,7 +45,6 @@ export default function AddReminderModal({ patientId, firstName, lastName, onHid
     const submitHandler = (e) => {
         e.preventDefault();
 
-        try{
         addReminder();
         console.log(patientId, reminderName, reminderDescription, status);
 
@@ -59,10 +58,6 @@ export default function AddReminderModal({ patientId, firstName, lastName, onHid
 
         // Optionally reset the success message after a delay
         setTimeout(() => setIsSubmittedSuccessfully(false), 3000);
-    } catch (error) {
-        console.error("Failed to add reminder:", error);
-        // Handle error scenario, optionally set an error state
-    }
     }
     
     const { loading, error, data } = useQuery(GET_REMINDERS);
