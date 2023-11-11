@@ -1,5 +1,6 @@
 import { GraphQLID, GraphQLList } from 'graphql';
 import { UserType } from '../types/UserType.js';
+import User from '../../models/user.js';
 
 const userQueries = {
   getUserById: {
@@ -7,12 +8,14 @@ const userQueries = {
     args: { id: { type: GraphQLID } },
     resolve(parent, args) {
       // Logic to retrieve user by ID from your data source goes here.
+      return User.findById(args.id);
     },
   },
   getUsers: {
     type: new GraphQLList(UserType),
-    resolve() {
+    resolve(parent, args) {
       // Logic to retrieve all users from your data source goes here.
+      return User.find({});
     },
   },
 };

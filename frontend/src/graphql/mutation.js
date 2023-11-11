@@ -23,6 +23,39 @@ export const CREATE_USER_MUTATION = gql`
   }
 `;
 
+export const CREATE_USER_BY_ADMIN = gql`
+  mutation AddUserByAdmin($input: UserInputType!) {
+    addUserByAdmin(input: $input) {
+      user {
+        _id
+        email
+      }
+      message
+    }
+  }
+`;
+
+
+
+export const UPDATE_USER_MUTATION = gql`
+  mutation UpdateUser($id: ID!, $input: UserInputType!) {
+    updateUser(id: $id, input: $input) {
+      firstName
+      lastName
+      email
+    }
+  }
+`;
+
+
+export const DELETE_USER_MUTATION = gql`
+  mutation DeleteUser($id: ID!) {
+    deleteUser(id: $id)
+  }
+`;
+
+
+
 export const REQUEST_PASSWORD_RESET_MUTATION = gql`
   mutation RequestPasswordReset($email: String!) {
     requestPasswordReset(email: $email)
@@ -40,3 +73,4 @@ export const RESET_PASSWORD_MUTATION = gql`
     }
   }
 `;
+

@@ -9,6 +9,7 @@ import AdminScreen from './screens/AdminScreen';
 import PhysicianScreen from './screens/PhysicianScreen';
 import RegisterScreen from './screens/RegisterScreen';
 import StaffScreen from './screens/StaffScreen';
+import UserList from '../src/components/UserList';
 import ProtectedRoute from './components/ProtectedRoute';
 import NotFound from './components/NotFound';
 import ConfirmScreen from './screens/ConfirmScreen';
@@ -25,6 +26,9 @@ import {
   from,
 } from '@apollo/client';
 import { onError } from 'apollo-link-error';
+import EditUser from './components/EditUser';
+import AddUser from './components/AddUser';
+
 
 const port = process.env.REACT_APP_PORT || 5000;
 
@@ -123,6 +127,26 @@ function App() {
                   path='/staff'
                   element={
                     <ProtectedRoute element={<StaffScreen />} allowed='Staff' />
+                  }
+                />
+
+                <Route
+                  path='/admin/add'
+                  element={
+                    <ProtectedRoute element={<AddUser />} allowed='Admin' />
+                  }
+                />
+                <Route
+                  path='/admin/users'
+                  element={
+                    <ProtectedRoute element={<UserList />} allowed='Admin' />
+                  }
+                />
+
+                <Route
+                  path='/admin/users/:_id'
+                  element={
+                    <ProtectedRoute element={<EditUser />} allowed='Admin' />
                   }
                 />
                 {/*... other routes ... */}
