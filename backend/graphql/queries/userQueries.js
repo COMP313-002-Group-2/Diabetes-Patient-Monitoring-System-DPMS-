@@ -10,15 +10,14 @@ const userQueries = {
       let users = User.findById(args.id);
       return users;
       // Logic to retrieve user by ID from your data source goes here.
+      return User.findById(args.id);
     },
   },
   getUsers: {
     type: new GraphQLList(UserType),
-    resolve() {
-      let users = User.find();
-      console.log("GetUsers", users);
-      return users;
+    resolve(parent, args) {
       // Logic to retrieve all users from your data source goes here.
+      return User.find({});
     },
   },
   getPatients: {
