@@ -94,7 +94,6 @@ export const USER_QUERY = `
       firstName
       lastName
       email
-      password
       userType
       isActive
     }
