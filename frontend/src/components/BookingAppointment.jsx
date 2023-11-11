@@ -30,10 +30,13 @@ const BookingAppoinment = () => {
         <select style={{marginLeft: '40px'}} value={selectedPhysician} onChange={(e) => setSelectedPhysician(e.target.value)}>
         <option value="">Select Physician</option>
           
-          <option value="">Select Physician</option>
-          <option value="Dr. Smith">Dr. Smith</option>
-          <option value="Dr. Johnson">Dr. Johnson</option>
+          <option value="Ha Phuong Nguyen">Ha Phuong Nguyen</option>
+          <option value="teddyphysician">teddyphysician</option>
+          <option value="jennifer nguyen">Jennifer Nguyen</option>
+          <option value="phuong nguyen">Phuong Nguyen</option>
+          <option value="alex wong">Alex Wong</option>
         
+
         </select>
       </label>
       <br/>
