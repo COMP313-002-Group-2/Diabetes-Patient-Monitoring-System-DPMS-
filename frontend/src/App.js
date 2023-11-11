@@ -31,6 +31,7 @@ import AddUser from './components/AddUser';
 
 import AddReminderModal from './components/AddReminderModal';
 import EditReminderModal from './components/EditReminderModal';
+import BookingAppoinment from './components/BookingAppointment';
 
 const port = process.env.REACT_APP_PORT || 5000;
 
@@ -159,6 +160,10 @@ function App() {
                 <Route
                   path='/editreminder/:id' element={<EditReminderModal /> }
                 />
+                
+                <Route path='/booking' element={<BookingAppoinment />} />
+                
+                
                 {/*... other routes ... */}
 
                 <Route path='*' element={<NotFound />} />

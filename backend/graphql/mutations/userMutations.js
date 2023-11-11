@@ -77,6 +77,10 @@ const userMutations = {
             'Account created successfully. Please wait for admin approval.',
         };
       }
+      
+
+      
+      
     },
   },
 
@@ -187,9 +191,11 @@ const userMutations = {
         throw new Error('Invalid email or password.');
       }
 
+      /*
       if (!user.isActive) {
         throw new Error('Your account is not active. Please contact admin.');
       }
+      */
 
       // use bcrypt if possible, change this to bcrypt.compare if hashing password
       if (user.password !== args.password) {
