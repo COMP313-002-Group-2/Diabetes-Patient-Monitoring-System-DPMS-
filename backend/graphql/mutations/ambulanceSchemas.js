@@ -76,7 +76,7 @@ const queryType = new GraphQLObjectType({
 });
 
 // Create a GraphQL mutation type for CRUD operations
-const mutation = new GraphQLObjectType({
+const ambulancemutation = new GraphQLObjectType({
   name: 'Mutation',
   fields: function () {
     return {
@@ -157,8 +157,4 @@ const mutation = new GraphQLObjectType({
   }
 });
 
-// Export the GraphQL schema
-module.exports = new GraphQLSchema({
-  query: queryType,
-  mutation: mutation
-});
+export default ambulancemutation;
