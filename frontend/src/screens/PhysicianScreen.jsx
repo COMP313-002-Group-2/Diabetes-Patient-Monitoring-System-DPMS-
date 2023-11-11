@@ -1,49 +1,37 @@
 import {React, useEffect, useState} from 'react';
-import { useQuery, gql } from '@apollo/client';
-// import { PATIENTS_QUERY } from '../graphql/queries';
+import { useQuery } from '@apollo/client';
 import Container from 'react-bootstrap/Container';
 import Table from 'react-bootstrap/Table';
-import { useNavigate } from 'react-router-dom';
-
-
-const GET_PATIENTS_QUERY = gql`
-  {
-    getPatients {
-      _id
-      firstName
-      lastName
-      email
-      userType
-      isActive
-    }
-  }
-`;
+// import AddReminderModal from '../components/AddReminderModal';
+import { PATIENTS_QUERY } from '../graphql/queries';
+import ReminderModal from '../components/ReminderModal';
 
 function PhysicianScreen() {
 
   //Hooks
-  const { loading, error, data} = useQuery(GET_PATIENTS_QUERY);  
-  const [reminderModalShow, setReminderModalShow] = useState(false);
-  const [selectedPatient] = useState({});
-  const navigate = useNavigate();
+  const { loading, error, data} = useQuery(PATIENTS_QUERY);  
 
+  const [reminderModalShow, setReminderModalShow] = useState(false);
+
+  const [selectedPatient, setSelectedPatient] = useState('');
+
+  const [selectedPatientFirstName, setSelectedPatientFirstName] = useState('');
+  const [selectedPatientLastName, setSelectedPatientLastName] = useState('');
 
   //Use Effects
   useEffect(()=>{
     console.log(data);
   })
 
-  //Callback
-  const onPatientClick = () => {
-    navigate(`/graphql/${reminderModalProps.patientId}`);
-  }
+  const onPatientClick = (patientId) => {
+    const selectedPatient = data.getPatients.find(patient => patient._id === patientId);
+    setSelectedPatient(patientId);
+    setSelectedPatientFirstName(selectedPatient.firstName);
+    setSelectedPatientLastName(selectedPatient.lastName);
+    setReminderModalShow(true);
+    console.log(`Patient clicked. Patiend Id:${patientId} for ${selectedPatient.firstName} ${selectedPatient.lastName}`);
 
-  // Setting props for ReminderModal
-  const reminderModalProps = {
-    show: reminderModalShow,
-    onHide: () => setReminderModalShow(false),
-    patientId: selectedPatient
-  };
+  }
     
   //Rendering
   if (loading) {
@@ -52,33 +40,46 @@ function PhysicianScreen() {
   if (error) {
     return `Error! ${error.message}`;
   }
-
+  
   return (
-    
     <Container>
-      <div>Physician Screen</div>
+      <div><h2>Physician Screen</h2></div>
+      {/* <AddReminderModal {...reminderModalProps} /> */}
       <hr />
+
     <Table striped bordered hover variant="dark" className='text-center'>
         <thead>
           <tr>
             <th>Name</th>
             <th>Email</th>
+            <th>Manage Reminders</th>
           </tr>
         </thead>
         <tbody>
           {data.getPatients.map((patient,index) => { 
             return(
-            <tr key={index} onClick={() => onPatientClick(patient._id)}>
+            // <tr key={index} onClick={() => onPatientClick(patient._id, patient.firstName, patient.lastName)}>
+            <tr key={index}>
               <td>{patient.firstName} {patient.lastName}</td>
               <td>{patient.email}</td>
+              <td>
+                <button onClick={() => onPatientClick(patient._id)}>Manage Reminders</button>
+            </td>
             </tr>
+            
           )}
           )}
         </tbody>
       </Table>
-
+      {reminderModalShow && (
+                <ReminderModal
+                patientId={selectedPatient}
+                firstName={selectedPatientFirstName}
+                lastName={selectedPatientLastName}
+                onHide={() => setReminderModalShow(false)}
+            />
+            )}
     </Container>
-
   )
 }
 
