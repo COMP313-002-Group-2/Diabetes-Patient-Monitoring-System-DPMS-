@@ -32,6 +32,7 @@ import AddUser from './components/AddUser';
 import AddReminderModal from './components/AddReminderModal';
 import EditReminderModal from './components/EditReminderModal';
 import BookingAppoinment from './components/BookingAppointment';
+import EditPatientInfo from './screens/EditPatientInfo';
 
 const port = process.env.REACT_APP_PORT || 5000;
 
@@ -111,6 +112,17 @@ function App() {
                     />
                   }
                 />
+
+                <Route
+                  path='/patient/editinfo'
+                  element={
+                    <ProtectedRoute
+                      element={<EditPatientInfo />}
+                      allowed='Patient'
+                    />
+                  }
+                />
+
                 <Route
                   path='/admin'
                   element={
@@ -154,16 +166,16 @@ function App() {
                 />
 
                 <Route
-                  path="/addreminder/:id" element={<AddReminderModal /> } 
+                  path="/addreminder/:id" element={<AddReminderModal />}
                 />
 
                 <Route
-                  path='/editreminder/:id' element={<EditReminderModal /> }
+                  path='/editreminder/:id' element={<EditReminderModal />}
                 />
-                
+
                 <Route path='/booking' element={<BookingAppoinment />} />
-                
-                
+
+
                 {/*... other routes ... */}
 
                 <Route path='*' element={<NotFound />} />

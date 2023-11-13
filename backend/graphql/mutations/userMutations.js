@@ -69,6 +69,7 @@ const userMutations = {
           token,
           userType: user.userType,
         };
+        
       } else {
         // If user is not a Patient, return user and a message
         return {
@@ -155,6 +156,7 @@ const userMutations = {
       return existingUser;
     },
   },
+
   deleteUser: {
     type: GraphQLBoolean,
     args: { id: { type: GraphQLID } },
@@ -212,9 +214,11 @@ const userMutations = {
       return {
         token: token,
         userType: user.userType,
+        userid: user.id,
       };
     },
   },
+  
   requestPasswordReset: {
     type: GraphQLString,
     args: {

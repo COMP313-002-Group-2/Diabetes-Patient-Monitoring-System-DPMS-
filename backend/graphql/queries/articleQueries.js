@@ -5,10 +5,12 @@ import Article from '../../models/article.js';
 const ArticleQueries = {
     articles: {
       type: new GraphQLList(ArticleType),
+      
       resolve(parent, args) {
         return Article.find({});
       },
     },
+
     article: {
       type: ArticleType,
       args: { id: { type: GraphQLString } },

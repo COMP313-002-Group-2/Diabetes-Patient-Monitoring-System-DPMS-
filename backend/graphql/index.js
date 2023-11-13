@@ -4,13 +4,17 @@ import userQueries from './queries/userQueries.js';
 import userMutations from './mutations/userMutations.js';
 import reminderQueries from './queries/reminderQueries.js';
 import reminderMutations from './mutations/reminderMutations.js';
+import patientMutation from './mutations/patientMutation.js';
+import PatientQueries from './queries/patientQueries.js';
+
 
 const RootQuery = new GraphQLObjectType({
   name: 'RootQueryType',
   fields: {
     ...ArticleQueries,
     ...userQueries,
-    ...reminderQueries,
+    ...reminderQueries, 
+    ...PatientQueries
   },
 });
 
@@ -19,6 +23,8 @@ const Mutation = new GraphQLObjectType({
   fields: {
     ...userMutations,
     ...reminderMutations,
+    ...patientMutation
+   
     // ...put otherMutations here
   },
 });

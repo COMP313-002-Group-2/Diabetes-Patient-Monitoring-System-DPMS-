@@ -100,9 +100,9 @@ export const USER_QUERY = `
   }
 `;
 
-export const USER_BY_ID_QUERY =`
-query GetUserById($id: ID!) {
-  getUserById(id: $id) {
+export const USER_BY_ID_QUERY =gql`
+  query GetUserById($id: ID!) {
+    getUserById(id: $id) {
     _id
     firstName
     lastName
@@ -112,5 +112,18 @@ query GetUserById($id: ID!) {
     isActive
   }
 }
+`; 
 
+export const PATIENT_DETAILS_BY_ID_QUERY =gql`
+  query GetPatientDetailsById($id: String!) {
+    GetPatientDetailsById(id: $id) {
+      userId,
+      address1,
+      address2,
+      city,
+      phoneNumber,
+      postalCode,
+      
+  }
+}
 `; 

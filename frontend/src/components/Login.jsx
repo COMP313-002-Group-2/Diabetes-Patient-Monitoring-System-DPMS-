@@ -16,15 +16,16 @@ const Login = () => {
   const handleLogin = async () => {
     try {
       const response = await login({ variables: { email, password } });
-
+      
       if (response && response.errors) {
         // Handle errors from the response
         const errorMessage = response.errors[0].message;
         throw new Error(errorMessage);
       } else if (response && response.data && response.data.login) {
-        const { token, userType } = response.data.login;
+        const { token, userType,userid } = response.data.login;
         localStorage.setItem('token', token);
         localStorage.setItem('userType', userType); // Store userType
+        localStorage.setItem('userId',userid)
 
         switch (userType) {
           case 'Patient':

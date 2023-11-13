@@ -5,6 +5,7 @@ export const LOGIN_MUTATION = gql`
     login(email: $email, password: $password) {
       token
       userType
+      userid
     }
   }
 `;
@@ -136,6 +137,18 @@ export const UPDATE_REMINDER = gql`
       reminderName
       reminderDescription
       status
+    }
+  }
+`;
+
+export const ADD_PATIENT_INFO = gql`
+  mutation Add_Patient_Info($_id:String!,$address1: String!, $address2: String!, $city: String!, $postalCode: String!, $phoneNumber:String!) {
+    AddPatientInfo(userId:$_id, address1: $address1, address2: $address2, city:$city, postalCode:$postalCode, phoneNumber:$phoneNumber) {
+      address1,
+      address2,
+      city,
+      postalCode,
+      phoneNumber
     }
   }
 `;

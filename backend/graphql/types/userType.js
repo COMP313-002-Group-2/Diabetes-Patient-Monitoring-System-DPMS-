@@ -47,6 +47,7 @@ const AuthPayload = new GraphQLObjectType({
   fields: () => ({
     token: { type: GraphQLString },
     userType: { type: UserTypeEnum },
+    userid: {type: GraphQLID},
   }),
 });
 
