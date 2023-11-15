@@ -1,6 +1,7 @@
 import React from 'react';
 import { Container, Row, Col, Card } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useNavigate } from 'react-router-dom';
 import {
   faAmbulance,
   faVial,
@@ -10,44 +11,57 @@ import {
   faUserCog,
 } from '@fortawesome/free-solid-svg-icons';
 
+
 const PatientScreen = () => {
+  const navigate = useNavigate();
+
   const cardInfo = [
     {
       icon: faAmbulance,
       title: 'Ambulance Services',
       description: 'Schedule Ambulance Service',
+      link: '/ambulance',
     },
     {
       icon: faVial,
       title: 'Lab Results',
       description: 'View and Manage your lab results',
+      link: '/labresults',
     },
     {
       icon: faStethoscope,
       title: 'Consultation Services',
       description: 'Consult a Physician',
+      link: '/consultation',
     },
     {
       icon: faBell,
       title: 'Alerts and Reminders',
       description: 'Detailed Alerts and Messages',
+      link: '/alertsreminders',
     },
     {
       icon: faPills,
       title: 'Medications',
       description: 'Manage your medications',
+      link: '/medications',
     },
     {
       icon: faUserCog,
       title: 'Manage My Account',
       description: 'Modify your account details',
+      link: '/accounts',
     },
   ];
 
   const renderCard = (card, index) => {
     return (
       <Col md={4} key={index} className='mb-4'>
-        <Card className='h-100 text-center shadow'>
+        <Card
+          className='h-100 text-center shadow'
+          onClick={() => navigate(card.link)}
+          style={{ cursor: 'pointer' }} // Change cursor to indicate card is clickable
+        >
           <Card.Body>
             <FontAwesomeIcon icon={card.icon} size='3x' />
             <Card.Title className='mt-3'>{card.title}</Card.Title>
@@ -59,9 +73,11 @@ const PatientScreen = () => {
   };
 
   return (
-    <Container>
-      <Row className='mt-5'>{cardInfo.map(renderCard)}</Row>
-    </Container>
+    <>
+         <Container>
+        <Row className='mt-5'>{cardInfo.map(renderCard)}</Row>
+      </Container>
+    </>
   );
 };
 

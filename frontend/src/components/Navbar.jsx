@@ -1,12 +1,16 @@
 import React from 'react';
-import { Navbar, Nav, Button } from 'react-bootstrap';
+import { Navbar, Nav, Button, NavDropdown } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUser } from '@fortawesome/free-solid-svg-icons';
 import logo from '../assets/diabetes_tracker.jpg';
 
 const CustomNavbar = () => {
   const navigate = useNavigate();
   const isLoggedIn = !!localStorage.getItem('token'); // Check if token exists in localStorage
   const isUserType = localStorage.getItem('userType'); // Check if userType exists in localStorage
+  const firstName = localStorage.getItem('firstName');
+  const lastName = localStorage.getItem('lastName');
 
   const handleLogout = () => {
     localStorage.removeItem('token'); // Remove the token
@@ -58,6 +62,21 @@ const CustomNavbar = () => {
         <Nav>
           {isLoggedIn ? (
             <>
+              <NavDropdown
+                title={<FontAwesomeIcon icon={faUser} size='2x' />}
+                id='navbarScrollingDropdown'
+                className='me-3'
+                align='end'
+              >
+                <NavDropdown.ItemText>{`${firstName} ${lastName}`}</NavDropdown.ItemText>
+                <NavDropdown.Divider />
+                <NavDropdown.Item onClick={() => navigate('/profile')}>
+                  Profile
+                </NavDropdown.Item>
+                <NavDropdown.Item onClick={() => navigate('/credentials')}>
+                  Credentials
+                </NavDropdown.Item>
+              </NavDropdown>
               {['Patient', 'Physician', 'Admin', 'Staff'].includes(
                 isUserType
               ) && (

@@ -75,6 +75,8 @@ const userMutations = {
           user,
           token,
           userType: user.userType,
+          firstName: user.firstName,
+          lastName: user.lastName,
         };
       } else {
         // If user is not a Patient, return user and a message
@@ -209,6 +211,8 @@ const userMutations = {
       return {
         token: token,
         userType: user.userType,
+        firstName: user.firstName,
+        lastName: user.lastName,
       };
     },
   },
