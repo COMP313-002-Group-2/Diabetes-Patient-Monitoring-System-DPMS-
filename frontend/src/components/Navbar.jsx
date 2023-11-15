@@ -6,6 +6,7 @@ import logo from '../assets/diabetes_tracker.jpg';
 const CustomNavbar = () => {
   const navigate = useNavigate();
   const isLoggedIn = !!localStorage.getItem('token'); // Check if token exists in localStorage
+  const isUserType = localStorage.getItem('userType'); // Check if userType exists in localStorage
 
   const handleLogout = () => {
     localStorage.removeItem('token'); // Remove the token
@@ -25,36 +26,77 @@ const CustomNavbar = () => {
         className='justify-content-between'
       >
         <Nav>
-          <Nav.Link href='/'>Home</Nav.Link>
-          <Nav.Link href='/resources'>Resources</Nav.Link>
-          <Nav.Link href='/about-diabetes'>About diabetes</Nav.Link>
-          <Nav.Link href='/about-us'>About Us</Nav.Link>
-          <Nav.Link href='/contactus'>Contact Us</Nav.Link>
+          <Nav.Link href='/' className='btn btn-outline-light btn-sm mr-2'>
+            Home
+          </Nav.Link>
+          <Nav.Link
+            href='/resources'
+            className='btn btn-outline-light btn-sm mr-2'
+          >
+            Resources
+          </Nav.Link>
+          <Nav.Link
+            href='/about-diabetes'
+            className='btn btn-outline-light btn-sm mr-2'
+          >
+            About diabetes
+          </Nav.Link>
+          <Nav.Link
+            href='/about-us'
+            className='btn btn-outline-light btn-sm mr-2'
+          >
+            About Us
+          </Nav.Link>
+          <Nav.Link
+            href='/contactus'
+            className='btn btn-outline-light btn-sm mr-2'
+          >
+            Contact Us
+          </Nav.Link>
         </Nav>
 
         <Nav>
-          {!isLoggedIn ? (
+          {isLoggedIn ? (
             <>
-              <Nav.Link href='/login'>
-                <Button variant='outline-light' size='sm' className='mr-2'>
-                  Login
+              {['Patient', 'Physician', 'Admin', 'Staff'].includes(
+                isUserType
+              ) && (
+                <Button
+                  variant='outline-light'
+                  size='sm'
+                  className='me-3'
+                  onClick={() => navigate(`/${isUserType.toLowerCase()}`)}
+                >
+                  {`${isUserType} Page`}
                 </Button>
-              </Nav.Link>
-              <Nav.Link href='/register'>
-                <Button variant='outline-light' size='sm'>
-                  Signup
-                </Button>
-              </Nav.Link>
+              )}
+              <Button
+                variant='outline-light'
+                size='sm'
+                className='me-3'
+                onClick={handleLogout}
+              >
+                Logout
+              </Button>
             </>
           ) : (
-            <Button
-              variant='outline-light'
-              size='sm'
-              className='mr-2'
-              onClick={handleLogout}
-            >
-              Logout
-            </Button>
+            <>
+              <Button
+                variant='outline-light'
+                size='sm'
+                className='me-2'
+                onClick={() => navigate('/login')}
+              >
+                Login
+              </Button>
+              <Button
+                variant='outline-light'
+                size='sm'
+                onClick={() => navigate('/register')}
+              >
+                Signup
+              </Button>
+            </>
           )}
         </Nav>
       </Navbar.Collapse>
