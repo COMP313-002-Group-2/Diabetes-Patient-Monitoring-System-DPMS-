@@ -23,7 +23,7 @@ const Login = () => {
         throw new Error(errorMessage);
       } else if (response && response.data && response.data.login) {
         const { token, userType, firstName, lastName } = response.data.login;
-        console.log('from login: ',firstName, lastName);
+
         localStorage.setItem('token', token);
         localStorage.setItem('userType', userType); // Store userType
         localStorage.setItem('firstName', firstName);
