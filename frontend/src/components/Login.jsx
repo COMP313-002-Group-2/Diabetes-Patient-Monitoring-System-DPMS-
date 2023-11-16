@@ -22,9 +22,12 @@ const Login = () => {
         const errorMessage = response.errors[0].message;
         throw new Error(errorMessage);
       } else if (response && response.data && response.data.login) {
-        const { token, userType } = response.data.login;
+        const { token, userType, firstName, lastName } = response.data.login;
+
         localStorage.setItem('token', token);
         localStorage.setItem('userType', userType); // Store userType
+        localStorage.setItem('firstName', firstName);
+        localStorage.setItem('lastName', lastName);
 
         switch (userType) {
           case 'Patient':
@@ -62,8 +65,6 @@ const Login = () => {
         draggable: true,
         progress: undefined,
       });
-
-      
     }
   };
 
