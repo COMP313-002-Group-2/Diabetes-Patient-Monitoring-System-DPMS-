@@ -11,7 +11,6 @@ import {
   faUserCog,
 } from '@fortawesome/free-solid-svg-icons';
 
-
 const PatientScreen = () => {
   const navigate = useNavigate();
 
@@ -26,7 +25,7 @@ const PatientScreen = () => {
       icon: faVial,
       title: 'Lab Results',
       description: 'View and Manage your lab results',
-      link: '/labresults',
+      link: '/patient/lablandingpage',
     },
     {
       icon: faStethoscope,
@@ -60,10 +59,14 @@ const PatientScreen = () => {
         <Card
           className='h-100 text-center shadow'
           onClick={() => navigate(card.link)}
-          style={{ cursor: 'pointer' }} // Change cursor to indicate card is clickable
+          style={{ cursor: 'pointer' }}
         >
           <Card.Body>
-            <FontAwesomeIcon icon={card.icon} size='3x' />
+            <FontAwesomeIcon
+              icon={card.icon}
+              size='3x'
+              style={{ color: '#570909' }}
+            />
             <Card.Title className='mt-3'>{card.title}</Card.Title>
             <Card.Text>{card.description}</Card.Text>
           </Card.Body>
@@ -74,7 +77,7 @@ const PatientScreen = () => {
 
   return (
     <>
-         <Container>
+      <Container>
         <Row className='mt-5'>{cardInfo.map(renderCard)}</Row>
       </Container>
     </>
