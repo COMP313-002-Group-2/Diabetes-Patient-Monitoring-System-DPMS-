@@ -213,6 +213,7 @@ const userMutations = {
         userType: user.userType,
         firstName: user.firstName,
         lastName: user.lastName,
+        email: user.email,
       };
     },
   },

@@ -15,6 +15,9 @@ const CustomNavbar = () => {
   const handleLogout = () => {
     localStorage.removeItem('token'); // Remove the token
     localStorage.removeItem('userType'); // Remove the userType if you wish
+    localStorage.removeItem('firstName');
+    localStorage.removeItem('lastName');
+    localStorage.removeItem('email');
     navigate('/'); // Redirect to home or login page
   };
 

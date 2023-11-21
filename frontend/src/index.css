@@ -25,3 +25,45 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.d-flex > button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.action-button {
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
+.table > tbody > tr > td {
+  vertical-align: middle;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.wide-column {
+  min-width: 120px; /* Adjust the width as needed */
+  text-align: center;
+}
+
+.medium-column {
+  min-width: 50px; /* Adjust the width as needed */
+  text-align: center;
+}
+.small-form .small-input {
+  width: auto; /* Adjust this to  preference */
+  max-width: 100%; /* Ensure it doesn't overflow its container */
+}
+
+/* Optional */
+.small-form .form-label {
+  font-size: smaller; /* Adjust label font size */
+}
+
+.half-width-input {
+  max-width: 70%;
+}
