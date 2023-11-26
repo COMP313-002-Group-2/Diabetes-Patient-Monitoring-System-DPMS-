@@ -3,6 +3,7 @@ import ArticleQueries from './queries/articleQueries.js';
 import userQueries from './queries/userQueries.js';
 import userMutations from './mutations/userMutations.js';
 
+
 const RootQuery = new GraphQLObjectType({
   name: 'RootQueryType',
   fields: {
@@ -15,6 +16,7 @@ const Mutation = new GraphQLObjectType({
   name: 'Mutation',
   fields: {
     ...userMutations,
+  
     // ...put otherMutations here
   },
 });
