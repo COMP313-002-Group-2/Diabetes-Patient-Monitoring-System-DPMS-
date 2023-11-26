@@ -9,14 +9,18 @@ import AdminScreen from './screens/AdminScreen';
 import PhysicianScreen from './screens/PhysicianScreen';
 import RegisterScreen from './screens/RegisterScreen';
 import StaffScreen from './screens/StaffScreen';
-import ProtectedRoute from './components/ProtectedRoute';
-import NotFound from './components/NotFound';
+import UserList from '../src/components/UserList';
 import AboutUs from './screens/AboutUsScreen';
 import ContactUs from './screens/ContactUsScreen';
+import ProtectedRoute from './components/ProtectedRoute';
+import NotFound from './components/NotFound';
 import ConfirmScreen from './screens/ConfirmScreen';
 import PublicRoute from './components/PublicRoute';
 import ForgotPasswordScreen from './screens/ForgotPasswordScreen';
 import ResetPasswordScreen from './screens/ResetPasswordScreen';
+import LabDataLandingScreen from './screens/LabDataLandingScreen';
+import BloodChemScreen from './screens/BloodChemScreen';
+import EditBloodChem from './components/EditBloodChem';
 
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import {
@@ -27,6 +31,16 @@ import {
   from,
 } from '@apollo/client';
 import { onError } from 'apollo-link-error';
+import EditUser from './components/EditUser';
+import AddUser from './components/AddUser';
+
+import AddReminderModal from './components/AddReminderModal';
+import EditReminderModal from './components/EditReminderModal';
+import BookingAppoinment from './components/BookingAppointment';
+import UrinalysisScreen from './screens/UrinalysisScreen';
+import HbA1cScreen from './screens/HbA1cScreen';
+import HematologyScreen from './screens/HematologyScreen';
+import AddBloodChem from './components/AddBloodChem';
 
 const port = process.env.REACT_APP_PORT || 5000;
 
@@ -96,7 +110,10 @@ function App() {
                 />
                 <Route path='/register' element={<RegisterScreen />} />
                 <Route path='/confirmation' element={<ConfirmScreen />} />
-                <Route path='/acctrecovery' element={<ForgotPasswordScreen />} />
+                <Route
+                  path='/acctrecovery'
+                  element={<ForgotPasswordScreen />}
+                />
                 <Route
                   path='/patient'
                   element={
@@ -127,19 +144,109 @@ function App() {
                     <ProtectedRoute element={<StaffScreen />} allowed='Staff' />
                   }
                 />
-              <Route path='/about-us' element={<AboutUs />} />
 
+ <Route path='/about-us' element={<AboutUs />} />
 
                <Route path='/contactus' element={<ContactUs />} />
 
 
 
+                <Route
+                  path='/admin/add'
+                  element={
+                    <ProtectedRoute element={<AddUser />} allowed='Admin' />
+                  }
+                />
+                <Route
+                  path='/admin/users'
+                  element={
+                    <ProtectedRoute element={<UserList />} allowed='Admin' />
+                  }
+                />
+
+                <Route
+                  path='/admin/users/:_id'
+                  element={
+                    <ProtectedRoute element={<EditUser />} allowed='Admin' />
+                  }
+                />
+
+                <Route path='/addreminder/:id' element={<AddReminderModal />} />
+
+                <Route
+                  path='/editreminder/:id'
+                  element={<EditReminderModal />}
+                />
+
+                <Route path='/booking' element={<BookingAppoinment />} />
+
+                <Route
+                  path='/patient/lablandingpage'
+                  element={
+                    <ProtectedRoute
+                      element={<LabDataLandingScreen />}
+                      allowed='Patient'
+                    />
+                  }
+                />
+                <Route
+                  path='/bloodchemistry'
+                  element={
+                    <ProtectedRoute
+                      element={<BloodChemScreen />}
+                      allowed='Patient'
+                    />
+                  }
+                />
+                <Route
+                  path='/urinalysis'
+                  element={
+                    <ProtectedRoute
+                      element={<UrinalysisScreen />}
+                      allowed='Patient'
+                    />
+                  }
+                />
+                <Route
+                  path='/hba1c'
+                  element={
+                    <ProtectedRoute
+                      element={<HbA1cScreen />}
+                      allowed='Patient'
+                    />
+                  }
+                />
+                <Route
+                  path='/hematology'
+                  element={
+                    <ProtectedRoute
+                      element={<HematologyScreen />}
+                      allowed='Patient'
+                    />
+                  }
+                />
+                <Route
+                  path='/addbloodchem'
+                  element={
+                    <ProtectedRoute
+                      element={<AddBloodChem />}
+                      allowed='Patient'
+                    />
+                  }
+                />
+                <Route
+                  path='/editbloodchem/:id'
+                  element={
+                    <ProtectedRoute
+                      element={<EditBloodChem />}
+                      allowed='Patient'
+                    />
+                  }
+                />
                 {/*... other routes ... */}
 
                 <Route path='*' element={<NotFound />} />
               </Routes>
-
-             
             </Container>
           </main>
           <Footer />
