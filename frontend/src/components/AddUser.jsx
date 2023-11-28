@@ -28,12 +28,12 @@ const AddUser = () => {
     resolver: yupResolver(schema),
   });
 
-  const UserTypeEnum = {
-    Admin: 'Admin',
-    Patient: 'Patient',
-    Physician: 'Physician',
-    Staff: 'Staff',
-  };
+  // const UserTypeEnum = {
+  //   Admin: 'Admin',
+  //   Patient: 'Patient',
+  //   Physician: 'Physician',
+  //   Staff: 'Staff',
+  // };
 
   const [createUser] = useMutation(CREATE_USER_BY_ADMIN);
 const navigate = useNavigate();
