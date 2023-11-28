@@ -16,6 +16,7 @@ import ConfirmScreen from './screens/ConfirmScreen';
 import PublicRoute from './components/PublicRoute';
 import ForgotPasswordScreen from './screens/ForgotPasswordScreen';
 import ResetPasswordScreen from './screens/ResetPasswordScreen';
+import AppointmentScreen from './screens/AppointmentScreen';
 
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import {
@@ -31,7 +32,7 @@ import AddUser from './components/AddUser';
 
 import AddReminderModal from './components/AddReminderModal';
 import EditReminderModal from './components/EditReminderModal';
-import BookingAppoinment from './components/BookingAppointment';
+//import BookingAppoinment from './components/AppointmentModal';
 
 const port = process.env.REACT_APP_PORT || 5000;
 
@@ -161,7 +162,15 @@ function App() {
                   path='/editreminder/:id' element={<EditReminderModal /> }
                 />
                 
-                <Route path='/booking' element={<BookingAppoinment />} />
+                <Route
+                  path='/booking'
+                  element={
+                    <ProtectedRoute
+                      element={<AppointmentScreen />}
+                      allowed='Patient'
+                    />
+                  }
+                />
                 
                 
                 {/*... other routes ... */}

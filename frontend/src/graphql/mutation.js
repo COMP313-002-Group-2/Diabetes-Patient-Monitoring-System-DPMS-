@@ -140,3 +140,84 @@ export const UPDATE_REMINDER = gql`
   }
 `;
 
+/////////////////////////////////////
+
+
+export const GET_APPOINTMENTS = gql`
+  query GetAppointments {
+    getAppointments{
+      _id
+      physicianId
+      patientName
+      appointmentName
+      request
+      date
+      time
+    }
+  }
+`;
+
+export const ADD_APPOINTMENT = gql`
+  mutation AddAppointment(
+    $physicianId: String!
+    $appointmentName: String!
+    $request: String!
+    $patientName: String!
+    $date: String!
+    $time: String!
+  ) {
+    addAppointment(
+      physicianId: $physicianId
+      appointmentName: $appointmentName
+      patientName: $patientName
+      request: $request
+      date: $date
+      time: $time
+    ) {
+      _id
+      physicianId
+      appointmentName
+      patientName
+      request
+      date
+      time
+    }
+  }
+`;
+
+export const DELETE_APPOINTMENT = gql`
+  mutation DeleteAppointment($_id: ID!) {
+    deleteAppointment(_id: $_id) {
+      _id
+    }
+  }
+`;
+
+export const UPDATE_APPOINTMENT = gql`
+  mutation UpdateAppointment(
+    $_id: ID!
+    $physicianId: String!
+    $appointmentName: String!
+    $patientName: String!
+    $request: String!
+    $date: String!
+    $time: String!
+  ) {
+    updateAppointment(
+      _id: $_id
+      physicianId: $physicianId
+      appointmentName: $appointmentName
+      patientName: $patientName
+      request: $request
+      date: $date
+      time: $time
+    ) {
+      _id
+      physicianId
+      appointmentName
+      request
+      date
+      time
+    }
+  }
+`;

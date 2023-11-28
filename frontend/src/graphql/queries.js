@@ -25,9 +25,37 @@ export const PATIENTS_QUERY = gql `
   }
 `;
 
+
 export const GET_ONE_PATIENT = gql `
   query GetOnePatient($id: ID!) {
     getOnePatient(id: $id){
+      _id
+      firstName
+      lastName
+      email
+      userType
+      isActive
+    }
+  }
+`;
+
+export const PHYSICIANS_QUERY = gql `
+  {
+    getPhysicians {
+      _id
+      firstName
+      lastName
+      email
+      userType
+      isActive
+    }
+  }
+`;
+
+
+export const GET_ONE_PHYSICIAN = gql `
+  query GetOnePhysician($id: ID!) {
+    getOnePhysician(id: $id){
       _id
       firstName
       lastName
@@ -82,6 +110,34 @@ export const getRemindersByStatus = gql `
       reminderName
       reminderDescription
       status
+    }
+  }
+`;
+
+export const GET_ONE_APPOINTMENT = gql`
+  query GetOneAppointment($id: ID!) {
+    getOneAppointment(id: $id){
+      _id
+      physicianId
+      appointmentName
+      request
+      patientName
+      date
+      time
+    }
+  }
+`;
+
+export const getAppointmentsByPhysician = gql `
+  query GetAppointmentsByPhysician($physicianId: ID!) {
+    getAppointmentsByPhysician(physicianId: $physicianId) {
+      _id
+      physicianId
+      appointmentName
+      request
+      patientName
+      date
+      time
     }
   }
 `;
