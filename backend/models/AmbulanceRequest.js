@@ -1,9 +1,8 @@
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+import mongoose from 'mongoose';
 
 //Model schema for Ambulance Request
 
-const AmbulanceRequestSchema = new Schema({
+const ambulanceRequestSchema =  new mongoose.Schema({
      
   ambulanceRequestId: {
     type: String,
@@ -32,4 +31,6 @@ const AmbulanceRequestSchema = new Schema({
       },
 });
 
-module.exports = mongoose.model('AmbulanceRequest', AmbulanceRequestSchema);
+const AmbulanceRequestSchema = mongoose.model('AmbulanceRequestSchema', ambulanceRequestSchema);
+
+export default AmbulanceRequestSchema;

@@ -6,21 +6,35 @@ const hardcodedAmbulances = [
   {
     _id: "1",
     crewMembers: "Driver 1, EMT 1, Medic 1",
-    location: "Lawrence and Markham, Scarborough",
+    location: "38 Lyon Heights Rd, Toronto, CA",
     status: "Available",
     eta: 20,
   },
   {
     _id: "2",
     crewMembers: "Driver 2, EMT 2, Medic 2",
-    location: "Finch East, Markham",
+    location: "25 Alice Crescent, Toronto, CA",
     status: "On-Route",
     eta: 45,
   },
   {
     _id: "3",
     crewMembers: "Driver 3, EMT 3, Medic 3",
-    location: "Progress Avenue, Scarborough",
+    location: "332 Conlins Road, Toronto, CA",
+    status: "Available",
+    eta: 1,
+  },
+  {
+    _id: "3",
+    crewMembers: "Driver 3, EMT 3, Medic 3",
+    location: "8500 Sheppard Ave E, Toronto, CA",
+    status: "Available",
+    eta: 1,
+  },
+  {
+    _id: "3",
+    crewMembers: "Driver 3, EMT 3, Medic 3",
+    location: "4331 Lawrence Ave E, Toronto, CA",
     status: "Available",
     eta: 1,
   },
@@ -28,7 +42,7 @@ const hardcodedAmbulances = [
 ];
 
 const AmbulanceList = () => {
-  const apiKey = 'YOUR_GOOGLE_MAPS_API_KEY'; // Replace with your actual Google Geocoding API Key
+  const apiKey = 'AIzaSyCHW3uS5RuUar_K6FZLWMZTPGDETQ_U39c'; // Replace with your actual Google Geocoding API Key
   const [ambulances, setAmbulances] = useState([]);
 
   useEffect(() => {
@@ -70,7 +84,7 @@ const AmbulanceList = () => {
   return (
     <div>
       {/* Your existing code here */}
-      <MapViewer ambulancesData={ambulances} />
+      <MapViewer ambulanceData={ambulances} />
     </div>
   );
 };

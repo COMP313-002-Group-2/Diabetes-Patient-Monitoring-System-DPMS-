@@ -6,7 +6,6 @@ import Button from 'react-bootstrap/Button';
 //
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
-import "./entryform.css"
 //
 //
 const ADD_AMBULANCE_REQUEST = gql`

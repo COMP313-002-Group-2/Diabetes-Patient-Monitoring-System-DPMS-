@@ -1,85 +1,21 @@
-var GraphQLSchema = require('graphql').GraphQLSchema;
-var GraphQLObjectType = require('graphql').GraphQLObjectType;
-var GraphQLList = require('graphql').GraphQLList;
-var GraphQLObjectType = require('graphql').GraphQLObjectType;
-var GraphQLNonNull = require('graphql').GraphQLNonNull;
-var GraphQLID = require('graphql').GraphQLID;
-var GraphQLString = require('graphql').GraphQLString;
-var GraphQLInt = require('graphql').GraphQLInt;
-var GraphQLDate = require('graphql-date');
-var AmbulanceModel = require('../../models/ambulance');
-const nodemailer = require('nodemailer')
+import { GraphQLObjectType, GraphQLString } from 'graphql';
+import {GraphQLList,GraphQLNonNull,GraphQLInt,GraphQLID}  from 'graphql';
+import AmbulanceSchema from '../../models/ambulance.js';
+import { ambulanceType } from '../types/ambulanceType.js';
+
+//const nodemailer = require('nodemailer')
 
 //creating transporter object for email transfer
-let transporter = nodemailer.createTransport({
+/*let transporter = nodemailer.createTransport({
   service: "hotmail",
   auth: {
     user: "crosscare2023@outlook.com", // generated ethereal user
     pass: "Vimal1996", // generated ethereal password
   },
-});
-
-// Create a GraphQL Object Type for Ambulance model
-const ambulanceType = new GraphQLObjectType({
-  name: 'ambulance',
-  fields: () => ({
-    _id: { type: GraphQLString },
-    crewMembers: { type: GraphQLString },
-    location: { type: GraphQLString },
-    status: { type: GraphQLString },
-    eta: { type: GraphQLInt }
-  })
-});
-
-//creating email model for dispatching email
-const emailModel = new GraphQLObjectType({
-  name: "email",
-  fields: () => ({
-    ambId: { type: GraphQLString },
-    rxEmail: { type: GraphQLString }
-  })
-})
-
-// Create a GraphQL query type that returns all ambulances or an ambulance by ID
-const queryType = new GraphQLObjectType({
-  name: 'Query',
-  fields: function () {
-    return {
-      ambulances: {
-        type: new GraphQLList(ambulanceType),
-        resolve: function () {
-          const ambulances = AmbulanceModel.find().exec();
-          if (!ambulances) {
-            throw new Error('Error');
-          }
-          return ambulances;
-        }
-      },
-      ambulance: {
-        type: ambulanceType,
-        args: {
-          id: {
-            name: '_id',
-            type: GraphQLString
-          }
-        },
-        resolve: function (root, params) {
-          const ambulanceInfo = AmbulanceModel.findById(params.id).exec();
-          if (!ambulanceInfo) {
-            throw new Error('Error');
-          }
-          return ambulanceInfo;
-        }
-      }
-    }
-  }
-});
+});*/
 
 // Create a GraphQL mutation type for CRUD operations
-const ambulancemutation = new GraphQLObjectType({
-  name: 'Mutation',
-  fields: function () {
-    return {
+const ambulancemutation = {
       addAmbulance: {
         type: ambulanceType,
         args: {
@@ -89,7 +25,7 @@ const ambulancemutation = new GraphQLObjectType({
           eta: { type: new GraphQLNonNull(GraphQLInt) }
         },
         resolve: function (root, params) {
-          const ambulanceModel = new AmbulanceModel(params);
+          const ambulanceModel = new AmbulanceSchema(params);
           const newAmbulance = ambulanceModel.save();
           if (!newAmbulance) {
             throw new Error('Error');
@@ -108,7 +44,7 @@ const ambulancemutation = new GraphQLObjectType({
           eta: { type: GraphQLInt }
         },
         resolve: function (root, params) {
-          return AmbulanceModel.findByIdAndUpdate(
+          return AmbulanceSchema.findByIdAndUpdate(
             params.id,
             { $set: params },
             { new: true }
@@ -123,7 +59,7 @@ const ambulancemutation = new GraphQLObjectType({
           id: { type: new GraphQLNonNull(GraphQLString) }
         },
         resolve: function (root, params) {
-          const removedAmbulance = AmbulanceModel.findByIdAndRemove(params.id).exec();
+          const removedAmbulance = AmbulanceSchema.findByIdAndRemove(params.id).exec();
           if (!removedAmbulance) {
             throw new Error('Error')
           }
@@ -131,7 +67,7 @@ const ambulancemutation = new GraphQLObjectType({
         }
       },
 
-      emailOnDispatch: {
+     /* emailOnDispatch: {
         type: emailModel,
         args: {
           ambId: { type: new GraphQLNonNull(GraphQLString) },
@@ -151,10 +87,10 @@ const ambulancemutation = new GraphQLObjectType({
             }
           });
         }
-      },
-    }
+      },*/
+    
 
-  }
-});
+  
+};
 
 export default ambulancemutation;

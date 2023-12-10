@@ -17,6 +17,8 @@ import PublicRoute from './components/PublicRoute';
 import ForgotPasswordScreen from './screens/ForgotPasswordScreen';
 import ResetPasswordScreen from './screens/ResetPasswordScreen';
 import AmbulanceList from './screens/AmbulanceList';
+import AddAmbulance from './screens/AddAmbulance';
+import CreateAmbulanceRequest from './screens/CreateAmbulanceRequest';
 
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import {
@@ -163,6 +165,10 @@ function App() {
                 {/*... other routes ... */}
                 <Route path="/ambulancelist" 
                 element ={<AmbulanceList/>}/>
+                 <Route path="/addambulance" 
+                element ={<AddAmbulance/>}/>
+                 <Route path="/addambulancerequest" 
+                element ={<CreateAmbulanceRequest/>}/>
                 <Route path='*' element={<NotFound />} />
               </Routes>
             </Container>
