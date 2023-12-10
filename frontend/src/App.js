@@ -19,6 +19,7 @@ import ResetPasswordScreen from './screens/ResetPasswordScreen';
 import LabDataLandingScreen from './screens/LabDataLandingScreen';
 import BloodChemScreen from './screens/BloodChemScreen';
 import EditBloodChem from './components/EditBloodChem';
+import AppointmentScreen from './screens/AppointmentScreen';
 
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import {
@@ -34,7 +35,7 @@ import AddUser from './components/AddUser';
 
 import AddReminderModal from './components/AddReminderModal';
 import EditReminderModal from './components/EditReminderModal';
-import BookingAppoinment from './components/BookingAppointment';
+//import BookingAppoinment from './components/BookingAppointment';
 import UrinalysisScreen from './screens/UrinalysisScreen';
 import HbA1cScreen from './screens/HbA1cScreen';
 import HematologyScreen from './screens/HematologyScreen';
@@ -184,8 +185,20 @@ function App() {
                   path='/editreminder/:id'
                   element={<EditReminderModal />}
                 />
+                
+                <Route
+                  path='/booking'
+                  element={
+                    <ProtectedRoute
+                      element={<AppointmentScreen />}
+                      allowed='Patient'
+                    />
+                  }
+                />
+                
+                
 
-                <Route path='/booking' element={<BookingAppoinment />} />
+                
 
                 <Route
                   path='/patient/lablandingpage'

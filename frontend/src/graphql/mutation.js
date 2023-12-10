@@ -5,9 +5,7 @@ export const LOGIN_MUTATION = gql`
     login(email: $email, password: $password) {
       token
       userType
-      firstName
-      lastName
-      email
+      userid
     }
   }
 `;
@@ -38,6 +36,8 @@ export const CREATE_USER_BY_ADMIN = gql`
   }
 `;
 
+
+
 export const UPDATE_USER_MUTATION = gql`
   mutation UpdateUser($id: ID!, $input: UserInputType!) {
     updateUser(id: $id, input: $input) {
@@ -48,11 +48,14 @@ export const UPDATE_USER_MUTATION = gql`
   }
 `;
 
+
 export const DELETE_USER_MUTATION = gql`
   mutation DeleteUser($id: ID!) {
     deleteUser(id: $id)
   }
 `;
+
+
 
 export const REQUEST_PASSWORD_RESET_MUTATION = gql`
   mutation RequestPasswordReset($email: String!) {
@@ -74,7 +77,7 @@ export const RESET_PASSWORD_MUTATION = gql`
 
 export const GET_REMINDERS = gql`
   query GetReminders {
-    getReminders {
+    getReminders{
       _id
       patientId
       reminderName
@@ -137,6 +140,7 @@ export const UPDATE_REMINDER = gql`
     }
   }
 `;
+
 export const ADD_BLOODCHEM = gql`
   mutation addBloodchem($input: BloodchemInput!) {
     addBloodchem(input: $input) {
@@ -182,6 +186,87 @@ export const UPDATE_BLOODCHEM = gql`
       vLDL
       creatinine
       eGFR
+    }
+  }
+`;
+/////////////////////////////////////
+
+
+export const GET_APPOINTMENTS = gql`
+  query GetAppointments {
+    getAppointments{
+      _id
+      physicianId
+      patientName
+      appointmentName
+      request
+      date
+      time
+    }
+  }
+`;
+
+export const ADD_APPOINTMENT = gql`
+  mutation AddAppointment(
+    $physicianId: String!
+    $appointmentName: String!
+    $request: String!
+    $patientName: String!
+    $date: String!
+    $time: String!
+  ) {
+    addAppointment(
+      physicianId: $physicianId
+      appointmentName: $appointmentName
+      patientName: $patientName
+      request: $request
+      date: $date
+      time: $time
+    ) {
+      _id
+      physicianId
+      appointmentName
+      patientName
+      request
+      date
+      time
+    }
+  }
+`;
+
+export const DELETE_APPOINTMENT = gql`
+  mutation DeleteAppointment($_id: ID!) {
+    deleteAppointment(_id: $_id) {
+      _id
+    }
+  }
+`;
+
+export const UPDATE_APPOINTMENT = gql`
+  mutation UpdateAppointment(
+    $_id: ID!
+    $physicianId: String!
+    $appointmentName: String!
+    $patientName: String!
+    $request: String!
+    $date: String!
+    $time: String!
+  ) {
+    updateAppointment(
+      _id: $_id
+      physicianId: $physicianId
+      appointmentName: $appointmentName
+      patientName: $patientName
+      request: $request
+      date: $date
+      time: $time
+    ) {
+      _id
+      physicianId
+      appointmentName
+      request
+      date
+      time
     }
   }
 `;
