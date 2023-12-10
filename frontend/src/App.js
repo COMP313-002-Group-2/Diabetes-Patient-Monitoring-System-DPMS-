@@ -40,6 +40,8 @@ import UrinalysisScreen from './screens/UrinalysisScreen';
 import HbA1cScreen from './screens/HbA1cScreen';
 import HematologyScreen from './screens/HematologyScreen';
 import AddBloodChem from './components/AddBloodChem';
+import AlertsRemindersScreen from './screens/AlertsRemindersScreen';
+import AddAmbulance from './screens/AddAmbulance';
 
 const port = process.env.REACT_APP_PORT || 5000;
 
@@ -248,8 +250,19 @@ function App() {
                     />
                   }
                 />
-                {/*... other routes ... */}
 
+                <Route
+                  path='/alertsreminders'
+                  element={
+                    <ProtectedRoute
+                      element={<AlertsRemindersScreen />}
+                      allowed='Patient'
+                    />
+                  }
+                />
+
+                {/*... other routes ... */}
+                <Route path = "addambulance" element={<AddAmbulance />} />
                 <Route path='*' element={<NotFound />} />
               </Routes>
             </Container>
