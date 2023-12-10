@@ -5,7 +5,9 @@ export const LOGIN_MUTATION = gql`
     login(email: $email, password: $password) {
       token
       userType
-      userid
+      firstName
+      lastName
+      email
     }
   }
 `;
@@ -36,8 +38,6 @@ export const CREATE_USER_BY_ADMIN = gql`
   }
 `;
 
-
-
 export const UPDATE_USER_MUTATION = gql`
   mutation UpdateUser($id: ID!, $input: UserInputType!) {
     updateUser(id: $id, input: $input) {
@@ -48,14 +48,11 @@ export const UPDATE_USER_MUTATION = gql`
   }
 `;
 
-
 export const DELETE_USER_MUTATION = gql`
   mutation DeleteUser($id: ID!) {
     deleteUser(id: $id)
   }
 `;
-
-
 
 export const REQUEST_PASSWORD_RESET_MUTATION = gql`
   mutation RequestPasswordReset($email: String!) {
@@ -77,7 +74,7 @@ export const RESET_PASSWORD_MUTATION = gql`
 
 export const GET_REMINDERS = gql`
   query GetReminders {
-    getReminders{
+    getReminders {
       _id
       patientId
       reminderName
@@ -140,7 +137,54 @@ export const UPDATE_REMINDER = gql`
     }
   }
 `;
+export const ADD_BLOODCHEM = gql`
+  mutation addBloodchem($input: BloodchemInput!) {
+    addBloodchem(input: $input) {
+      _id
+      patientId
+      documentId
+      labDate
+      glucose
+      altSGPT
+      astSGOT
+      uricAcid
+      bun
+      cholesterol
+      triglycerides
+      hdlCholesterol
+      aLDL
+      vLDL
+      creatinine
+      eGFR
+    }
+  }
+`;
 
+export const DELETE_BLOODCHEM = gql`
+  mutation deleteBloodchem($_id: ID!) {
+    deleteBloodchem(_id: $_id)
+  }
+`;
+
+export const UPDATE_BLOODCHEM = gql`
+  mutation updateBloodchem($_id: ID!, $input: BloodchemInput!) {
+    updateBloodchem(_id: $_id, input: $input) {
+      labDate
+      glucose
+      altSGPT
+      astSGOT
+      uricAcid
+      bun
+      cholesterol
+      triglycerides
+      hdlCholesterol
+      aLDL
+      vLDL
+      creatinine
+      eGFR
+    }
+  }
+`;
 export const ADD_PATIENT_INFO = gql`
   mutation Add_Patient_Info($_id:String!,$address1: String!, $address2: String!, $city: String!, $postalCode: String!, $phoneNumber:String!) {
     AddPatientInfo(userId:$_id, address1: $address1, address2: $address2, city:$city, postalCode:$postalCode, phoneNumber:$phoneNumber) {
@@ -152,4 +196,5 @@ export const ADD_PATIENT_INFO = gql`
     }
   }
 `;
+
 

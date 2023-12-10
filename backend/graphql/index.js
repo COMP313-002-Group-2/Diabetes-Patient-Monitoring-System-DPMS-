@@ -4,6 +4,8 @@ import userQueries from './queries/userQueries.js';
 import userMutations from './mutations/userMutations.js';
 import reminderQueries from './queries/reminderQueries.js';
 import reminderMutations from './mutations/reminderMutations.js';
+import bloodchemQueries from './queries/bloodchemQueries.js';
+import bloodchemMutations from './mutations/bloodchemMutations.js';
 import patientMutation from './mutations/patientMutation.js';
 import PatientQueries from './queries/patientQueries.js';
 
@@ -14,6 +16,7 @@ const RootQuery = new GraphQLObjectType({
     ...ArticleQueries,
     ...userQueries,
     ...reminderQueries, 
+    ...bloodchemQueries,
     ...PatientQueries
   },
 });
@@ -23,9 +26,9 @@ const Mutation = new GraphQLObjectType({
   fields: {
     ...userMutations,
     ...reminderMutations,
-    ...patientMutation
+    ...patientMutation,
    
-    // ...put otherMutations here
+    ...bloodchemMutations,
   },
 });
 

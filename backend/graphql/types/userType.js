@@ -47,7 +47,9 @@ const AuthPayload = new GraphQLObjectType({
   fields: () => ({
     token: { type: GraphQLString },
     userType: { type: UserTypeEnum },
-    userid: {type: GraphQLID},
+    firstName: { type: GraphQLString },
+    lastName: { type: GraphQLString },
+    email: { type: GraphQLString },
   }),
 });
 
@@ -78,9 +80,17 @@ const UserTypeInputByAdmin = new GraphQLInputObjectType({
     firstName: { type: GraphQLString },
     lastName: { type: GraphQLString },
     email: { type: GraphQLString },
-    password: { type: GraphQLString,defaultValue: undefined },
+    password: { type: GraphQLString, defaultValue: undefined },
     userType: { type: UserTypeEnum },
   }),
 });
 
-export { UserType, UserTypeInput, UserTypeEnum, AuthPayload, ResetPasswordPayload,UserTypeInputByAdmin,UserTypeAdmin };
+export {
+  UserType,
+  UserTypeInput,
+  UserTypeEnum,
+  AuthPayload,
+  ResetPasswordPayload,
+  UserTypeInputByAdmin,
+  UserTypeAdmin,
+};
