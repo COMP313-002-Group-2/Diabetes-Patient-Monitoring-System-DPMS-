@@ -22,6 +22,7 @@ import EditBloodChem from './components/EditBloodChem';
 import AmbulanceList from './screens/AmbulanceList';
 import AddAmbulance from './screens/AddAmbulance';
 import CreateAmbulanceRequest from './screens/CreateAmbulanceRequest';
+import EmergencyScreen from './screens/EmergencyScreen';
 
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import {
@@ -259,6 +260,8 @@ function App() {
                 element ={<AddAmbulance/>}/>
                  <Route path="/addambulancerequest" 
                 element ={<CreateAmbulanceRequest/>}/>
+                <Route path="/emergencypatient" 
+                element ={<EmergencyScreen/>}/>
                 <Route path='*' element={<NotFound />} />
               </Routes>
             </Container>
