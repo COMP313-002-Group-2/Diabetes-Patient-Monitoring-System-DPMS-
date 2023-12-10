@@ -1,6 +1,6 @@
 import { gql } from '@apollo/client';
 
-export const ARTICLES_QUERY = gql `
+export const ARTICLES_QUERY = gql`
   {
     articles {
       _id
@@ -12,7 +12,7 @@ export const ARTICLES_QUERY = gql `
   }
 `;
 
-export const PATIENTS_QUERY = gql `
+export const PATIENTS_QUERY = gql`
   {
     getPatients {
       _id
@@ -25,22 +25,61 @@ export const PATIENTS_QUERY = gql `
   }
 `;
 
-export const GET_ONE_PATIENT = gql `
-  query GetOnePatient($id: ID!) {
-    getOnePatient(id: $id){
+export const BLOODCHEM_QUERY = gql`
+  query GetBloodChemByPatientId($patientId: ID!) {
+    getBloodChemByPatientId(patientId: $patientId) {
       _id
-      firstName
-      lastName
-      email
-      userType
-      isActive
+      patientId
+      documentId
+      labDate
+      glucose
+      altSGPT
+      astSGOT
+      uricAcid
+      bun
+      cholesterol
+      triglycerides
+      hdlCholesterol
+      aLDL
+      vLDL
+      creatinine
+      eGFR
+    }
+  }
+`;
+
+export const BLOODCHEM_QUERY_BY_ID = gql`
+  query getBloodChemById($_id: ID!) {
+    getBloodChemById(_id: $_id) {
+      documentId
+      labDate
+      glucose
+      altSGPT
+      astSGOT
+      uricAcid
+      bun
+      cholesterol
+      triglycerides
+      hdlCholesterol
+      aLDL
+      vLDL
+      creatinine
+      eGFR
+    }
+  }
+`;
+
+export const GET_PATIENT_ID_BY_EMAIL = gql`
+  query getPatientId($email: String!) {
+    getPatientId(email: $email) {
+      _id
     }
   }
 `;
 
 export const GET_ONE_REMINDER = gql`
   query GetOneReminder($id: ID!) {
-    getOneReminder(id: $id){
+    getOneReminder(id: $id) {
       _id
       patientId
       reminderName
@@ -50,7 +89,7 @@ export const GET_ONE_REMINDER = gql`
   }
 `;
 
-export const getRemindersByPatient = gql `
+export const getRemindersByPatient = gql`
   query GetRemindersByPatient($patientId: ID!) {
     getRemindersByPatient(patientId: $patientId) {
       _id
@@ -62,8 +101,11 @@ export const getRemindersByPatient = gql `
   }
 `;
 
-export const getRemindersByPatientIdAndStatus = gql `
-  query GetRemindersByPatientIdAndStatus($patientId: String!, $status: String!) {
+export const getRemindersByPatientIdAndStatus = gql`
+  query GetRemindersByPatientIdAndStatus(
+    $patientId: String!
+    $status: String!
+  ) {
     getRemindersByPatientIdAndStatus(patientId: $patientId, status: $status) {
       _id
       patientId
@@ -74,7 +116,7 @@ export const getRemindersByPatientIdAndStatus = gql `
   }
 `;
 
-export const getRemindersByStatus = gql `
+export const getRemindersByStatus = gql`
   query GetRemindersByStatus($status: String!) {
     getRemindersByStatus(status: $status) {
       _id
@@ -85,7 +127,6 @@ export const getRemindersByStatus = gql `
     }
   }
 `;
-
 
 export const USER_QUERY = `
   {
@@ -100,7 +141,7 @@ export const USER_QUERY = `
   }
 `;
 
-export const USER_BY_ID_QUERY =`
+export const USER_BY_ID_QUERY = `
 query GetUserById($id: ID!) {
   getUserById(id: $id) {
     _id
@@ -113,4 +154,4 @@ query GetUserById($id: ID!) {
   }
 }
 
-`; 
+`;
