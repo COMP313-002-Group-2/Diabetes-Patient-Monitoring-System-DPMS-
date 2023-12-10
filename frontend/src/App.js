@@ -40,6 +40,7 @@ import HbA1cScreen from './screens/HbA1cScreen';
 import HematologyScreen from './screens/HematologyScreen';
 import AddBloodChem from './components/AddBloodChem';
 import AlertsRemindersScreen from './screens/AlertsRemindersScreen';
+import AddAmbulance from './screens/AddAmbulance';
 
 const port = process.env.REACT_APP_PORT || 5000;
 
