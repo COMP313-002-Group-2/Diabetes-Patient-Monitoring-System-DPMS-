@@ -1,35 +1,22 @@
-import { useEffect, useState } from 'react';
+import { useQuery } from '@apollo/client';
 import Header from '../components/Header';
 import { Row, Col, Card, Button } from 'react-bootstrap';
 import { ARTICLES_QUERY } from '../graphql/queries';
 
 const HomeScreen = () => {
-  const [articles, setArticles] = useState([]);
+  const { loading, error, data } = useQuery(ARTICLES_QUERY);
 
-  useEffect(() => {
-    const fetchArticles = async () => {
-      const response = await fetch('/graphql', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          query: ARTICLES_QUERY,
-        }),
-      });
+  // If there's an error, handle it appropriately
+  if (error) {
+    console.error('GraphQL Errors:', error);
+    return <div>Error loading articles.</div>;
+  }
 
-      const responseBody = await response.json();
+  // Show a loading message until the query is completed
+  if (loading) return <div>Loading...</div>;
 
-      if (responseBody.errors) {
-        console.error('GraphQL Errors:', responseBody.errors);
-        return;
-      }
-
-      setArticles(responseBody.data.articles);
-    };
-
-    fetchArticles(); // Call the function to fetch the articles
-  }, []); // Empty dependency array to run the effect only once
+  // Extract articles data from the query result
+  const articles = data?.articles || [];
 
   const truncateText = (text, limit = 21) => {
     const words = text.split(' ');
@@ -38,19 +25,12 @@ const HomeScreen = () => {
   };
 
   const getRandomArticles = (arr, n) => {
-    const result = [];
-    const usedIndices = new Set(); // to track used indices
-
-    while (result.length < n && result.length !== arr.length) {
+    const result = new Set();
+    while (result.size < n && result.size !== arr.length) {
       const randomIndex = Math.floor(Math.random() * arr.length);
-
-      if (!usedIndices.has(randomIndex)) {
-        usedIndices.add(randomIndex);
-        result.push(arr[randomIndex]);
-      }
+      result.add(arr[randomIndex]);
     }
-
-    return result;
+    return Array.from(result);
   };
 
   const truncatedArticles = getRandomArticles(articles, 3);
@@ -72,7 +52,7 @@ const HomeScreen = () => {
                 />
                 <Card.Body>
                   <Card.Text>{truncateText(article.content)}</Card.Text>
-                  <Button variant='primary' href={article._id}>
+                  <Button variant='primary' href={`/articles/${article._id}`}>
                     Read More
                   </Button>
                 </Card.Body>

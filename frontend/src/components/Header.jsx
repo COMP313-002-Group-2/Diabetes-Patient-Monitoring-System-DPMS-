@@ -80,7 +80,9 @@ function Header() {
                 <Button
                   variant='outline-dark'
                   className='rounded-pill'
-                  href='/login'
+                  href='/booking'
+
+                  //href='/login'
                 >
                   Book Now
                 </Button>
