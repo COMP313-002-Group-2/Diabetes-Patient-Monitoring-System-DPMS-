@@ -7,6 +7,8 @@ import EditAppointmentModal from './EditAppointmentModal';
 import { DELETE_APPOINTMENT } from '../graphql/mutation';
 
 export default function AppointmentModal({ physicianId, firstName, lastName, onHide }) {
+    const meetingId = '2714760892';
+    const zoomLink = `zoommtg://zoom.us/join?confno=${meetingId}`; 
     const { loading, error, data, refetch } = useQuery(getAppointmentsByPhysician, {
         variables: { physicianId },
         skip: !physicianId, // Skip the query if physicianId is not available
@@ -67,6 +69,7 @@ export default function AppointmentModal({ physicianId, firstName, lastName, onH
                                 <td>
                                 <button onClick={() => handleEditAppointment(appointment)}>Edit</button>
                                 <button onClick={() => handleDeleteAppointment(appointment._id)}>Cancel</button>
+                                <a href={zoomLink}>Join Zoom Meeting</a>
                                 </td>
                             </tr>
                         ))}

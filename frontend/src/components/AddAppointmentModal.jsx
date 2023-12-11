@@ -4,6 +4,7 @@ import { ADD_APPOINTMENT } from '../graphql/mutation';
 import { useQuery, useMutation } from '@apollo/client';
 import { FaPlus } from 'react-icons/fa';
 
+
 export default function AddAppointmentModal({ physicianId, firstName, lastName, onHide }) {
 
     const [currentPhysicianId, setCurrentPhysicianId] = useState('');
@@ -40,7 +41,8 @@ export default function AddAppointmentModal({ physicianId, firstName, lastName, 
             request: request,
             patientName: patientName,
             date: date,
-            time: time
+            time: time,
+            meetingId:'271 476 0892'
         },
         refetchQueries: [{ query: GET_APPOINTMENTS }]
     });
@@ -48,9 +50,10 @@ export default function AddAppointmentModal({ physicianId, firstName, lastName, 
 
     const submitHandler = (e) => {
         e.preventDefault();
-
+        
+        
         addAppointment();
-        console.log(physicianId, appointmentName, patientName, request, date, time);
+        console.log(physicianId, appointmentName, patientName, request, date, time, '271 476 0892');
 
         setAppointmentName('');
         setPatientName('');

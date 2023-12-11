@@ -215,7 +215,8 @@ export const ADD_APPOINTMENT = gql`
     $request: String!
     $patientName: String!
     $date: String!
-    $time: String!
+    $time: String!,
+    $meetingId:String!
   ) {
     addAppointment(
       physicianId: $physicianId
@@ -224,6 +225,7 @@ export const ADD_APPOINTMENT = gql`
       request: $request
       date: $date
       time: $time
+      meetingId:$meetingId
     ) {
       _id
       physicianId

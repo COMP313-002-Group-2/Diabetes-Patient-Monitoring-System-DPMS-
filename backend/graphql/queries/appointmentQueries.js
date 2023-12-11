@@ -13,22 +13,21 @@ const appointmentQueries = {
         // Logic to retrieve appointment by ID from your data source goes here.
         },
     },
+
     getAppointments: {
         type: new GraphQLList(AppointmentType),
         resolve() {
         let appointments = Appointment.find();
-        console.log("GetAppointments", appointments);
         return appointments;
         // Logic to retrieve all appointments from your data source goes here.
         },
     },
+
     getAppointmentsByPhysician: {
         type: new GraphQLList(AppointmentType),
         args: { physicianId: { type: GraphQLID } },
         resolve(parent, args) {
-            
             const physician = User.findById(args.physicianId);
-            console.log("Physician", physician);
             try {
                 let appointments = Appointment.find({physicianId: args.physicianId});
                 return appointments;
@@ -37,8 +36,7 @@ const appointmentQueries = {
                 throw new Error("Invalid physician ID");      
             }
         },
-    },
-    
+    },    
 };
 
 export default appointmentQueries;

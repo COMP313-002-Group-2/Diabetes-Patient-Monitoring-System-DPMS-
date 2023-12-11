@@ -17,7 +17,6 @@ const reminderQueries = {
         type: new GraphQLList(ReminderType),
         resolve() {
         let reminders = Reminder.find();
-        console.log("GetReminders", reminders);
         return reminders;
         // Logic to retrieve all reminders from your data source goes here.
         },
@@ -26,9 +25,7 @@ const reminderQueries = {
         type: new GraphQLList(ReminderType),
         args: { patientId: { type: GraphQLID } },
         resolve(parent, args) {
-            
-            const patient = User.findById(args.patientId);
-            console.log("Patient", patient);
+            const patient = User.findById(args.patientId);            
             try {
                 let reminders = Reminder.find({patientId: args.patientId});
                 return reminders;

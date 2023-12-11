@@ -30,6 +30,8 @@ function AppointmentScreen() {
     setSelectedPhysicianLastName(selectedPhysician.lastName);
     setAppointmentModalShow(true);
     console.log(`Physician clicked. Physician Id:${physicianId} for ${selectedPhysician.firstName} ${selectedPhysician.lastName}`);
+    
+
 
   }
     

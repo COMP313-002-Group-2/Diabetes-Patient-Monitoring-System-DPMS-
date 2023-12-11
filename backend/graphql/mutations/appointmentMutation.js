@@ -2,10 +2,32 @@ import {
     GraphQLString,
     GraphQLNonNull,
     GraphQLID,
+    GraphQLObjectType
 } from 'graphql';
 
 import { AppointmentType } from '../types/appointmentType.js';
 import Appointment from '../../models/appointment.js';
+import User from '../../models/user.js';
+import nodemailer from 'nodemailer'
+
+//creating transporter object for email transfer
+let transporter = nodemailer.createTransport({
+    service: "hotmail",
+    auth: {
+      user: "crosscare2023@outlook.com", // generated ethereal user
+      pass: "Vimal1996", // generated ethereal password
+    },
+  });
+
+  //creating email model for dispatching email
+const emailModel = new GraphQLObjectType({
+    name: "email",
+    fields: () => ({
+      ambId: { type: GraphQLString },
+      rxEmail: { type: GraphQLString }
+    })
+  })
+
 
 const appointmentMutations = {
     addAppointment: {
@@ -17,20 +39,42 @@ const appointmentMutations = {
             request: { type: new GraphQLNonNull(GraphQLString) },
             date: { type: new GraphQLNonNull(GraphQLString) },
             time: { type: new GraphQLNonNull(GraphQLString) },
+            meetingId:{type:new GraphQLNonNull(GraphQLString)}
             
         },
-        resolve(parent, args) {
-                            let newAppointment = new Appointment({
+        async resolve(parent, args) {
+                let newAppointment = new Appointment({
                     physicianId: args.physicianId,
                     appointmentName: args.appointmentName,
                     patientName: args.patientName,
                     request: args.request,
                     date: args.date,
                     time: args.time,
+                    meetingId:args.meetingId
                 });
-                                    return newAppointment.save();
+                    const newAppointmentResult =await  newAppointment.save();
+                    const userdata  =await User.findById(newAppointmentResult.physicianId);
+                    const doctorsEmail = userdata.email;
+                    const zoomLink = `zoommtg://zoom.us/join?confno=${args.meetingId}`; 
+
+                    transporter.sendMail({
+                        from:'crosscare2023@outlook.com',
+                        to:doctorsEmail,
+                        subject:`Zoom link for meeting with ${args.patientName}`,
+                        text:`A zoom link has been sent with meeting Id. ${zoomLink} . Meeting Id is ${args.meetingId}`
+                    },(error,info)=>{
+                        if(error){
+                            console.log(error);
+                        }else{
+                            console.log('Email sent: ' + info.response);
+                        }
+                    })
+
+                    return newAppointment;
+
                 }
-                },
+        },
+
     updateAppointment: {
         type: AppointmentType,
         args: {
@@ -59,6 +103,8 @@ const appointmentMutations = {
             );
         },
     },
+
+
     deleteAppointment: {
         type: AppointmentType,
         args: {

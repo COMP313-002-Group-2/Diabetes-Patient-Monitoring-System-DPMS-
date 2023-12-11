@@ -13,6 +13,7 @@ const userQueries = {
       return User.findById(args.id);
     },
   },
+  
   getUsers: {
     type: new GraphQLList(UserType),
     resolve(parent, args) {
@@ -20,6 +21,7 @@ const userQueries = {
       return User.find({});
     },
   },
+
   getPatients: {
     type: new GraphQLList(UserType),
     resolve() {
@@ -29,6 +31,7 @@ const userQueries = {
       // Logic to retrieve all patients from your data source goes here.
     },
   },
+
   getPatientId: {
     type: UserType, // Change to UserType if it's supposed to return a single user
     args: { email: { type: new GraphQLNonNull(GraphQLString) } },
@@ -48,11 +51,11 @@ const userQueries = {
     type: new GraphQLList(UserType),
     resolve() {
       let physicians = User.find({ userType: 'Physician' });
-      console.log('GetPhysicians', physicians);
       return physicians;
       // Logic to retrieve all physicians from your data source goes here.
     },
   },
+
   getStaff: {
     type: new GraphQLList(UserType),
     resolve() {
