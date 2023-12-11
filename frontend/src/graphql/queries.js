@@ -156,3 +156,78 @@ query GetUserById($id: ID!) {
   }
 }
 `;
+
+///////////////////////////////////
+
+export const BLOODCHEM_QUERY = gql`
+  query GetBloodChemByPatientId($patientId: ID!) {
+    getBloodChemByPatientId(patientId: $patientId) {
+      _id
+      patientId
+      documentId
+      labDate
+      glucose
+      altSGPT
+      astSGOT
+      uricAcid
+      bun
+      cholesterol
+      triglycerides
+      hdlCholesterol
+      aLDL
+      vLDL
+      creatinine
+      eGFR
+    }
+  }
+`;
+ 
+export const BLOODCHEM_QUERY_BY_ID = gql`
+  query getBloodChemById($_id: ID!) {
+    getBloodChemById(_id: $_id) {
+      documentId
+      labDate
+      glucose
+      altSGPT
+      astSGOT
+      uricAcid
+      bun
+      cholesterol
+      triglycerides
+      hdlCholesterol
+      aLDL
+      vLDL
+      creatinine
+      eGFR
+    }
+  }
+`;
+
+
+export const GET_PATIENT_ID_BY_EMAIL = gql`
+
+  query getPatientId($email: String!) {
+
+    getPatientId(email: $email) {
+
+      _id
+
+    }
+
+  }
+
+`;
+
+export const PHYSICIANS_QUERY = gql`
+  {
+    getPhysicians {
+      _id
+      firstName
+      lastName
+      email
+      userType
+      isActive
+    }
+  }
+`;
+

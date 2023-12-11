@@ -45,6 +45,8 @@ export default function AppointmentModal({ physicianId, firstName, lastName, onH
                     lastName={lastName}
                     refetchAppointments={refetch}
                 />
+
+                
             {data && data.getAppointmentsByPhysician && (
                 <Table striped bordered hover variant="dark" className="text-center">
                     <thead>
