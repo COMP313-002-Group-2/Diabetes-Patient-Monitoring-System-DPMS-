@@ -38,6 +38,8 @@ export const CREATE_USER_BY_ADMIN = gql`
   }
 `;
 
+
+
 export const UPDATE_USER_MUTATION = gql`
   mutation UpdateUser($id: ID!, $input: UserInputType!) {
     updateUser(id: $id, input: $input) {
@@ -48,11 +50,14 @@ export const UPDATE_USER_MUTATION = gql`
   }
 `;
 
+
 export const DELETE_USER_MUTATION = gql`
   mutation DeleteUser($id: ID!) {
     deleteUser(id: $id)
   }
 `;
+
+
 
 export const REQUEST_PASSWORD_RESET_MUTATION = gql`
   mutation RequestPasswordReset($email: String!) {
@@ -74,7 +79,7 @@ export const RESET_PASSWORD_MUTATION = gql`
 
 export const GET_REMINDERS = gql`
   query GetReminders {
-    getReminders {
+    getReminders{
       _id
       patientId
       reminderName
@@ -343,7 +348,8 @@ export const ADD_APPOINTMENT = gql`
     $request: String!
     $patientName: String!
     $date: String!
-    $time: String!
+    $time: String!,
+    $meetingId:String!
   ) {
     addAppointment(
       physicianId: $physicianId
@@ -352,6 +358,7 @@ export const ADD_APPOINTMENT = gql`
       request: $request
       date: $date
       time: $time
+      meetingId:$meetingId
     ) {
       _id
       physicianId
@@ -400,3 +407,16 @@ export const UPDATE_APPOINTMENT = gql`
     }
   }
 `;
+export const ADD_PATIENT_INFO = gql`
+  mutation Add_Patient_Info($_id:String!,$address1: String!, $address2: String!, $city: String!, $postalCode: String!, $phoneNumber:String!) {
+    AddPatientInfo(userId:$_id, address1: $address1, address2: $address2, city:$city, postalCode:$postalCode, phoneNumber:$phoneNumber) {
+      address1,
+      address2,
+      city,
+      postalCode,
+      phoneNumber
+    }
+  }
+`;
+
+

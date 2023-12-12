@@ -42,7 +42,7 @@ const Login = () => {
   const handleLogin = async () => {
     try {
       const response = await login({ variables: { email, password } });
-
+      
       if (response && response.errors) {
         // Handle errors from the response
         const errorMessage = response.errors[0].message;

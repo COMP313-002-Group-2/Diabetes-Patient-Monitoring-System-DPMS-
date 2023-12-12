@@ -30,6 +30,9 @@ const appointmentSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    meetingId:{
+      type:String
+    }
 
   }
  

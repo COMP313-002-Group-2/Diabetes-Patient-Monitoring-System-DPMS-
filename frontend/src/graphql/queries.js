@@ -172,7 +172,22 @@ query GetUserById($id: ID!) {
     isActive
   }
 }
-`;
+`; 
+
+export const PATIENT_DETAILS_BY_ID_QUERY =gql`
+  query GetPatientDetailsById($id: String!) {
+    GetPatientDetailsById(id: $id) {
+      userId,
+      address1,
+      address2,
+      city,
+      phoneNumber,
+      postalCode,
+      
+  }
+}
+`; 
+
 
 export const GET_PATIENT_ID_BY_EMAIL = gql`
   query getPatientId($email: String!) {
@@ -244,7 +259,7 @@ export const HEMATOLOGY_QUERY_BY_PATIENT_ID = gql`
       rdw
     }
   }
-`;
+  `;
 
 export const HEMATOLOGY_QUERY_BY_ID = gql`
   query GetHematologyById($_id: ID!) {
@@ -335,7 +350,7 @@ export const URINALYSIS_QUERY_BY_ID = gql`
   }
 `;
 
-export const PHYSICIANS_QUERY = gql`
+export const PHYSICIANS_QUERY = gql `
   {
     getPhysicians {
       _id
@@ -347,3 +362,4 @@ export const PHYSICIANS_QUERY = gql`
     }
   }
 `;
+
