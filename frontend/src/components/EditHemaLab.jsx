@@ -4,15 +4,15 @@ import { Card, Form, Button, Row, Col, InputGroup } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft, faUpload } from '@fortawesome/free-solid-svg-icons';
 import { useMutation, useQuery } from '@apollo/client';
-import { UPDATE_BLOODCHEM } from '../graphql/mutation';
-import { BLOODCHEM_QUERY, BLOODCHEM_QUERY_BY_ID } from '../graphql/queries';
+import { UPDATE_HEMATOLOGY } from '../graphql/mutation';
+import { HEMATOLOGY_QUERY, HEMATOLOGY_QUERY_BY_ID } from '../graphql/queries';
 import { useParams, useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import { v4 as uuidv4 } from 'uuid';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-const EditBloodChem = () => {
+const EditHemaLab = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const patientId = Cookies.get('userId');
@@ -20,26 +20,23 @@ const EditBloodChem = () => {
   const [oldDocumentId, setOldDocumentId] = useState('');
   const [formValues, setFormValues] = useState({
     labDate: '',
-    glucose: '',
-    altSGPT: '',
-    astSGOT: '',
-    uricAcid: '',
-    bun: '',
-    cholesterol: '',
-    triglycerides: '',
-    hdlCholesterol: '',
-    aLDL: '',
-    vLDL: '',
-    creatinine: '',
-    eGFR: '',
+    hemoglobin: '',
+    hematocrit: '',
+    rbc: '',
+    wbc: '',
+    plateletCount: '',
+    mcv: '',
+    mch: '',
+    mchc: '',
+    rdw: '',
   });
   const [errors, setErrors] = useState({});
-  const [updateBloodchem, { error }] = useMutation(UPDATE_BLOODCHEM);
+  const [updateHematology, { error }] = useMutation(UPDATE_HEMATOLOGY);
   const {
     data,
     loading: queryLoading,
     error: queryError,
-  } = useQuery(BLOODCHEM_QUERY_BY_ID, {
+  } = useQuery(HEMATOLOGY_QUERY_BY_ID, {
     variables: { _id: id },
     skip: !id,
   });
@@ -50,9 +47,9 @@ const EditBloodChem = () => {
   const awsBucketName = process.env.REACT_APP_AWS_BUCKET_NAME;
 
   useEffect(() => {
-    if (data && data.getBloodChemById) {
+    if (data && data.getHematologyById) {
       const { __typename, documentId, labDate, ...formData } =
-        data.getBloodChemById;
+        data.getHematologyById;
       const formattedLabDate = new Date(parseInt(labDate))
         .toISOString()
         .split('T')[0];
@@ -88,50 +85,40 @@ const EditBloodChem = () => {
     if (!isNotEmpty(formValues.labDate)) {
       newErrors.labDate = 'Lab date is required';
     }
-    if (!isNumeric(formValues.glucose)) {
-      newErrors.glucose = 'Glucose is required and must be a number';
+    if (!isNumeric(formValues.hemoglobin)) {
+      newErrors.hemoglobin = 'Hemoglobin must be a number';
     }
-    if (!isNumeric(formValues.altSGPT)) {
-      newErrors.altSGPT = 'ALT/SGPT is required and must be a number';
+    if (!isNumeric(formValues.hematocrit)) {
+      newErrors.hematocrit = 'Hematocrit must be a number';
     }
-    if (!isNumeric(formValues.astSGOT)) {
-      newErrors.astSGOT = 'ALT/SGOT is required and must be a number';
+    if (!isNumeric(formValues.rbc)) {
+      newErrors.rbc = 'RBC must be a number';
     }
-    if (!isNumeric(formValues.uricAcid)) {
-      newErrors.uricAcid = 'Uric Acid is required and must be a number';
+    if (!isNumeric(formValues.wbc)) {
+      newErrors.wbc = 'WBC must be a number';
     }
-    if (!isNumeric(formValues.bun)) {
-      newErrors.bun = 'Bun is required and must be a number';
+    if (!isNumeric(formValues.plateletCount)) {
+      newErrors.plateletCount = 'Platelet Count must be a number';
     }
-    if (!isNumeric(formValues.cholesterol)) {
-      newErrors.cholesterol = 'cholesterol is required and must be a number';
+    if (!isNumeric(formValues.mcv)) {
+      newErrors.mcv = 'MCV must be a number';
     }
-    if (!isNumeric(formValues.triglycerides)) {
-      newErrors.triglycerides =
-        'triglycerides is required and must be a number';
+    if (!isNumeric(formValues.mch)) {
+      newErrors.mch = 'MCH must be a number';
     }
-    if (!isNumeric(formValues.hdlCholesterol)) {
-      newErrors.hdlCholesterol =
-        'hdlCholesterol is required and must be a number';
+    if (!isNumeric(formValues.mchc)) {
+      newErrors.mchc = 'MCHC must be a number';
     }
-    if (!isNumeric(formValues.aLDL)) {
-      newErrors.aLDL = 'aLDL is required and must be a number';
-    }
-    if (!isNumeric(formValues.vLDL)) {
-      newErrors.vLDL = 'vLDL is required and must be a number';
-    }
-    if (!isNumeric(formValues.creatinine)) {
-      newErrors.creatinine = 'creatinine is required and must be a number';
-    }
-    if (!isNumeric(formValues.eGFR)) {
-      newErrors.eGFR = 'eGFR is required and must be a number';
+    if (!isNumeric(formValues.rdw)) {
+      newErrors.rdw = 'RDW must be a number';
     }
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
+
   //================================//
   const handleBackClick = () => {
-    navigate('/patient/lablandingpage');
+    navigate('/hematology');
   };
 
   const deleteOldFileFromS3 = async (newDocumentId) => {
@@ -206,30 +193,27 @@ const EditBloodChem = () => {
 
     const parsedValues = {
       ...formValues,
-      glucose: parseFloat(formValues.glucose),
-      altSGPT: parseFloat(formValues.altSGPT),
-      astSGOT: parseFloat(formValues.astSGOT),
-      uricAcid: parseFloat(formValues.uricAcid),
-      bun: parseFloat(formValues.bun),
-      cholesterol: parseFloat(formValues.cholesterol),
-      triglycerides: parseFloat(formValues.triglycerides),
-      hdlCholesterol: parseFloat(formValues.hdlCholesterol),
-      aLDL: parseFloat(formValues.aLDL),
-      vLDL: parseFloat(formValues.vLDL),
-      creatinine: parseFloat(formValues.creatinine),
-      eGFR: parseFloat(formValues.eGFR),
+      hemoglobin: parseFloat(formValues.hemoglobin || 0),
+      hematocrit: parseFloat(formValues.hematocrit || 0),
+      rbc: parseFloat(formValues.rbc || 0),
+      wbc: parseFloat(formValues.wbc || 0),
+      plateletCount: parseFloat(formValues.plateletCount || 0),
+      mcv: parseFloat(formValues.mcv || 0),
+      mch: parseFloat(formValues.mch || 0),
+      mchc: parseFloat(formValues.mchc || 0),
+      rdw: parseFloat(formValues.rdw || 0),
     };
 
     try {
-      const response = await updateBloodchem({
+      const response = await updateHematology({
         variables: {
           _id: id,
           input: { ...parsedValues, patientId, documentId: newDocumentId },
         },
-        refetchQueries: [{ query: BLOODCHEM_QUERY, variables: { patientId } }],
+        refetchQueries: [{ query: HEMATOLOGY_QUERY, variables: { patientId } }],
       });
       if (response.data) {
-        navigate('/bloodchemistry');
+        navigate('/hematology');
       }
     } catch (err) {
       console.error(err);
@@ -263,7 +247,7 @@ const EditBloodChem = () => {
           <Card>
             <Card.Body>
               <Card.Title className='text-center'>
-                Edit Blood Chemistry Data
+                Edit Hematology Lab Result Data
               </Card.Title>
               <Form onSubmit={handleSubmit}>
                 {Object.entries(formValues)
@@ -337,4 +321,4 @@ const EditBloodChem = () => {
   );
 };
 
-export default EditBloodChem;
+export default EditHemaLab;

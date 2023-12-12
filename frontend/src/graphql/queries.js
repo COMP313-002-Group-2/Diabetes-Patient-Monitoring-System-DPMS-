@@ -48,6 +48,49 @@ export const GET_ONE_PATIENT = gql `
   }
 `;
 
+<<<<<<< Updated upstream
+=======
+export const HEMATOLOGY_QUERY = gql`
+  query GetHematologyByPatientId($patientId: ID!) {
+    getHematologyByPatientId(patientId: $patientId) {
+      _id
+      patientId
+      documentId
+      labDate
+      hemoglobin
+      hematocrit
+      rbc
+      wbc
+      plateletCount
+      mcv
+      mch
+      mchc
+      rdw
+    }
+  }
+`;
+
+export const BLOODCHEM_QUERY_BY_ID = gql`
+  query getBloodChemById($_id: ID!) {
+    getBloodChemById(_id: $_id) {
+      documentId
+      labDate
+      glucose
+      altSGPT
+      astSGOT
+      uricAcid
+      bun
+      cholesterol
+      triglycerides
+      hdlCholesterol
+      aLDL
+      vLDL
+      creatinine
+      eGFR
+    }
+  }
+`;
+>>>>>>> Stashed changes
 
 
 export const GET_ONE_REMINDER = gql`
@@ -203,6 +246,7 @@ export const BLOODCHEM_QUERY_BY_ID = gql`
   }
 `;
 
+<<<<<<< Updated upstream
 
 export const GET_PATIENT_ID_BY_EMAIL = gql`
 
@@ -227,7 +271,116 @@ export const PHYSICIANS_QUERY = gql`
       email
       userType
       isActive
+=======
+export const HEMATOLOGY_QUERY_BY_PATIENT_ID = gql`
+  query GetHematologyByPatientId($patientId: ID!) {
+    getHematologyByPatientId(patientId: $patientId) {
+      _id
+      patientId
+      documentId
+      labDate
+      hemoglobin
+      hematocrit
+      rbc
+      wbc
+      plateletCount
+      mcv
+      mch
+      mchc
+      rdw
     }
   }
 `;
 
+export const HEMATOLOGY_QUERY_BY_ID = gql`
+  query GetHematologyById($_id: ID!) {
+    getHematologyById(_id: $_id) {
+      _id
+      patientId
+      documentId
+      labDate
+      hemoglobin
+      hematocrit
+      rbc
+      wbc
+      plateletCount
+      mcv
+      mch
+      mchc
+      rdw
+    }
+  }
+`;
+
+export const HBA1C_QUERY_BY_PATIENT_ID = gql`
+  query GetHbA1cByPatientId($patientId: ID!) {
+    getHbA1cByPatientId(patientId: $patientId) {
+      _id
+      patientId
+      documentId
+      labDate
+      result
+    }
+  }
+`;
+
+export const HBA1C_QUERY_BY_ID = gql`
+  query GetHbA1cById($_id: ID!) {
+    getHbA1cById(_id: $_id) {
+      documentId
+      labDate
+      result
+    }
+  }
+`;
+
+export const URINALYSIS_QUERY_BY_PATIENT_ID = gql`
+  query GetUrinalysisByPatientId($patientId: ID!) {
+    getUrinalysisByPatientId(patientId: $patientId) {
+      _id
+      documentId
+      labDate
+      color
+      transparency
+      ph
+      specificGravity
+      glucose
+      protein
+      ketones
+      nitrites
+      leucocytesEsterases
+      blood
+      bilirubin
+      urobilinogen
+      rbc
+      wbc
+>>>>>>> Stashed changes
+    }
+  }
+`;
+
+<<<<<<< Updated upstream
+=======
+export const URINALYSIS_QUERY_BY_ID = gql`
+  query GetUrinalysisById($_id: ID!) {
+    getUrinalysisById(_id: $_id) {
+      labDate
+      color
+      transparency
+      ph
+      specificGravity
+      glucose
+      protein
+      ketones
+      nitrites
+      leucocytesEsterases
+      blood
+      bilirubin
+      urobilinogen
+      rbc
+      wbc
+      documentId
+    }
+  }
+`;
+>>>>>>> Stashed changes

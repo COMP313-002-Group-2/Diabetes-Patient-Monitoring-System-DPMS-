@@ -6,36 +6,32 @@ import { faUpload } from '@fortawesome/free-solid-svg-icons';
 import { v4 as uuidv4 } from 'uuid';
 import Cookies from 'js-cookie';
 import { useMutation } from '@apollo/client';
-import { ADD_BLOODCHEM } from '../graphql/mutation';
-import { BLOODCHEM_QUERY } from '../graphql/queries';
+import { ADD_HEMATOLOGY } from '../graphql/mutation'; // Ensure this is the correct mutation for adding hematology
+import { HEMATOLOGY_QUERY } from '../graphql/queries'; // Ensure this is the correct query
 import { useNavigate } from 'react-router-dom';
 
-const AddBloodChem = () => {
+const AddHemaLab = () => {
+  const [addHematology, { loading, error }] = useMutation(ADD_HEMATOLOGY);
   const awsAccessKeyId = process.env.REACT_APP_AWS_ACCESS_KEY_ID;
   const awsSecretAccessKey = process.env.REACT_APP_AWS_SECRET_ACCESS_KEY;
   const awsRegion = process.env.REACT_APP_AWS_REGION;
   const awsBucketName = process.env.REACT_APP_AWS_BUCKET_NAME;
   const [formValues, setFormValues] = useState({
     labDate: '',
-    glucose: '',
-    altSGPT: '',
-    astSGOT: '',
-    uricAcid: '',
-    bun: '',
-    cholesterol: '',
-    triglycerides: '',
-    hdlCholesterol: '',
-    aLDL: '',
-    vLDL: '',
-    creatinine: '',
-    eGFR: '',
+    hemoglobin: '',
+    hematocrit: '',
+    rbc: '',
+    wbc: '',
+    plateletCount: '',
+    mcv: '',
+    mch: '',
+    mchc: '',
+    rdw: '',
   });
-  const [addBloodchem, { loading, error }] = useMutation(ADD_BLOODCHEM);
   const [selectedFile, setSelectedFile] = useState(null);
   const navigate = useNavigate();
   const patientId = Cookies.get('userId');
   const [errors, setErrors] = useState({});
-
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error :( Please try again</p>;
 
@@ -44,14 +40,24 @@ const AddBloodChem = () => {
     setFormValues({ ...formValues, [name]: value });
   };
   const handleCancelClick = () => {
-    navigate('/bloodchemistry');
+    navigate('/hematology');
   };
   const handleFileInput = (e) => {
     setSelectedFile(e.target.files[0]);
   };
 
-  const isNotEmpty = (value) => value.trim() !== '';
-  const isNumeric = (value) => !isNaN(value) && isNotEmpty(value);
+  //======= Form Validation =======//
+
+  const isNumeric = (value) => {
+    // Directly check if value is a number without converting to a string
+    return !isNaN(value) && value !== null && value !== undefined;
+  };
+
+  const isNotEmpty = (value) => {
+    // Ensure that value is a string before calling .trim()
+    return value !== null && value !== undefined && String(value).trim() !== '';
+  };
+  // const isNumeric = (value) => !isNaN(value) && isNotEmpty(value); //required
 
   const validateForm = () => {
     const newErrors = {};
@@ -60,44 +66,35 @@ const AddBloodChem = () => {
     if (!isNotEmpty(formValues.labDate)) {
       newErrors.labDate = 'Lab date is required';
     }
-    if (!isNumeric(formValues.glucose)) {
-      newErrors.glucose = 'Glucose is required and must be a number';
+    //fields are optional
+    if (!isNumeric(formValues.hemoglobin)) {
+      newErrors.hemoglobin = 'Hemoglobin must be a number';
     }
-    if (!isNumeric(formValues.altSGPT)) {
-      newErrors.altSGPT = 'ALT/SGPT is required and must be a number';
+    if (!isNumeric(formValues.hematocrit)) {
+      newErrors.hematocrit = 'Hematocrit must be a number';
     }
-    if (!isNumeric(formValues.astSGOT)) {
-      newErrors.astSGOT = 'ALT/SGOT is required and must be a number';
+    if (!isNumeric(formValues.rbc)) {
+      newErrors.rbc = 'RBC must be a number';
     }
-    if (!isNumeric(formValues.uricAcid)) {
-      newErrors.uricAcid = 'Uric Acid is required and must be a number';
+    if (!isNumeric(formValues.wbc)) {
+      newErrors.wbc = 'WBC must be a number';
     }
-    if (!isNumeric(formValues.bun)) {
-      newErrors.bun = 'Bun is required and must be a number';
+    if (!isNumeric(formValues.plateletCount)) {
+      newErrors.plateletCount = 'Platelet Count must be a number';
     }
-    if (!isNumeric(formValues.cholesterol)) {
-      newErrors.cholesterol = 'cholesterol is required and must be a number';
+    if (!isNumeric(formValues.mcv)) {
+      newErrors.mcv = 'MCV must be a number';
     }
-    if (!isNumeric(formValues.triglycerides)) {
-      newErrors.triglycerides =
-        'triglycerides is required and must be a number';
+    if (!isNumeric(formValues.mch)) {
+      newErrors.mch = 'MCH must be a number';
     }
-    if (!isNumeric(formValues.hdlCholesterol)) {
-      newErrors.hdlCholesterol =
-        'hdlCholesterol is required and must be a number';
+    if (!isNumeric(formValues.mchc)) {
+      newErrors.mchc = 'MCHC must be a number';
     }
-    if (!isNumeric(formValues.aLDL)) {
-      newErrors.aLDL = 'aLDL is required and must be a number';
+    if (!isNumeric(formValues.rdw)) {
+      newErrors.rdw = 'RDW must be a number';
     }
-    if (!isNumeric(formValues.vLDL)) {
-      newErrors.vLDL = 'vLDL is required and must be a number';
-    }
-    if (!isNumeric(formValues.creatinine)) {
-      newErrors.creatinine = 'creatinine is required and must be a number';
-    }
-    if (!isNumeric(formValues.eGFR)) {
-      newErrors.eGFR = 'eGFR is required and must be a number';
-    }
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -151,31 +148,28 @@ const AddBloodChem = () => {
     // Convert numeric string values to numbers
     const parsedValues = {
       ...formValues,
-      glucose: parseFloat(formValues.glucose),
-      altSGPT: parseFloat(formValues.altSGPT),
-      astSGOT: parseFloat(formValues.astSGOT),
-      uricAcid: parseFloat(formValues.uricAcid),
-      bun: parseFloat(formValues.bun),
-      cholesterol: parseFloat(formValues.cholesterol),
-      triglycerides: parseFloat(formValues.triglycerides),
-      hdlCholesterol: parseFloat(formValues.hdlCholesterol),
-      aLDL: parseFloat(formValues.aLDL),
-      vLDL: parseFloat(formValues.vLDL),
-      creatinine: parseFloat(formValues.creatinine),
-      eGFR: parseFloat(formValues.eGFR),
+      hemoglobin: parseFloat(formValues.hemoglobin || 0),
+      hematocrit: parseFloat(formValues.hematocrit || 0),
+      rbc: parseFloat(formValues.rbc || 0),
+      wbc: parseFloat(formValues.wbc || 0),
+      plateletCount: parseFloat(formValues.plateletCount || 0),
+      mcv: parseFloat(formValues.mcv || 0),
+      mch: parseFloat(formValues.mch || 0),
+      mchc: parseFloat(formValues.mchc || 0),
+      rdw: parseFloat(formValues.rdw || 0),
       documentId: fileKey,
     };
 
     // If valid, send data to backend
     try {
-      const response = await addBloodchem({
+      const response = await addHematology({
         variables: {
           input: { ...parsedValues, patientId },
         },
-        refetchQueries: [{ query: BLOODCHEM_QUERY, variables: { patientId } }],
+        refetchQueries: [{ query: HEMATOLOGY_QUERY, variables: { patientId } }],
       });
       if (response.data) {
-        navigate('/bloodchemistry');
+        navigate('/hematology');
       }
     } catch (err) {
       console.error(err);
@@ -240,7 +234,7 @@ const AddBloodChem = () => {
                 </Form.Group>
                 <Row>
                   <Col
-                    sm={{ span: 3, offset: 3 }}
+                    sm={{ span: 3, offset: 4 }}
                     className='d-flex justify-content-between'
                   >
                     <Button variant='primary' type='submit'>
@@ -260,4 +254,4 @@ const AddBloodChem = () => {
   );
 };
 
-export default AddBloodChem;
+export default AddHemaLab;
