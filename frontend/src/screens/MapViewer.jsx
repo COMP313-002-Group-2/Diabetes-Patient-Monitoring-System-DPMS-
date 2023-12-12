@@ -44,12 +44,17 @@ const MapViewer = ({ ambulanceData }) => {
           center={center}
         >
           {ambulanceData?.map((ambulance, index) => (
-            <Marker
-              key={index}
-              position={{ lat: ambulance.latitude, lng: ambulance.longitude }}
-              icon={ambulanceIcon}
-              label={ambulance._id}
-            />
+             <Marker
+             key={index}
+             position={{ lat: ambulance.latitude, lng: ambulance.longitude }}
+             icon={ambulanceIcon}
+             label={{
+               text: ambulance._id,
+               color: 'white',
+               fontSize: '12px',
+               fontWeight: 'bold',
+             }}
+           />
           ))}
         </GoogleMap>
       )}

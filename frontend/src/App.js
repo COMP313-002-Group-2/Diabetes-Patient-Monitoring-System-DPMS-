@@ -46,7 +46,7 @@ import HbA1cScreen from './screens/HbA1cScreen';
 import HematologyScreen from './screens/HematologyScreen';
 import AddBloodChem from './components/AddBloodChem';
 import AlertsRemindersScreen from './screens/AlertsRemindersScreen';
-
+import DispatchAmbulance from './screens/DispatchAmbulance'
 const port = process.env.REACT_APP_PORT || 5000;
 
 const cache = new InMemoryCache({
@@ -265,6 +265,8 @@ function App() {
                 element ={<EmergencyScreen/>}/>
                 <Route path="/emergencyrequestlist"
                 element={<EmergencyRequestsList/>}/>
+                <Route path="/dispatchAmbulances"
+                element={<DispatchAmbulance/>}/>
                 <Route path='*' element={<NotFound />} />
               </Routes>
             </Container>

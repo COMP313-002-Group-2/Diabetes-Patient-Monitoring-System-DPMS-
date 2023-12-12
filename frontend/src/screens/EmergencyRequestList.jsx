@@ -15,8 +15,8 @@ const GET_EMERGENCY_REQUESTS = gql`
 `;
 
 const UPDATE_REQUEST_STATUS = gql`
-  mutation UpdateRequestStatus($id: ID!) {
-    updateRequestStatus(id: $id, status: "Accepted") {
+mutation updateRequestStatus($_id: String!, $status: String!) {
+    updateRequestStatus(id: $_id, status: $status) {
       _id
       status
     }
@@ -27,8 +27,8 @@ const EmergencyRequestsList = () => {
   const { loading, error, data, refetch } = useQuery(GET_EMERGENCY_REQUESTS);
   const [updateRequestStatus] = useMutation(UPDATE_REQUEST_STATUS);
 
-  const handleAcceptRequest = (requestId) => {
-    updateRequestStatus({ variables: { id: requestId } })
+  const handleAcceptRequest = (_id) => {
+    updateRequestStatus({ variables: { _id, status: 'Accepted' } })
       .then(() => {
         // Refetch the updated list of emergency requests
         // This will update the UI with the latest data

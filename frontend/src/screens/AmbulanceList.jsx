@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import MapViewer from './MapViewer';
+import { Button } from '@material-ui/core';
+import { useNavigate } from 'react-router-dom';
 
 const hardcodedAmbulances = [
   {
@@ -42,8 +44,15 @@ const hardcodedAmbulances = [
 ];
 
 const AmbulanceList = () => {
+  const navigate = useNavigate();
+
   const apiKey = 'AIzaSyCHW3uS5RuUar_K6FZLWMZTPGDETQ_U39c'; // Replace with your actual Google Geocoding API Key
   const [ambulances, setAmbulances] = useState([]);
+
+  const handleDispatchAmbulance = () => {
+    navigate('/dispatchAmbulances');
+  };
+
 
   useEffect(() => {
     const fetchCoordinates = async () => {
@@ -84,6 +93,9 @@ const AmbulanceList = () => {
   return (
     <div>
       {/* Your existing code here */}
+      <div className="container mt-5">
+      <Button  variant="primary" onClick={() => handleDispatchAmbulance()}>Dispatch Ambulances</Button>
+      </div>
       <MapViewer ambulanceData={ambulances} />
     </div>
   );

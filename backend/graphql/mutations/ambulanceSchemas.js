@@ -3,16 +3,23 @@ import {GraphQLList,GraphQLNonNull,GraphQLInt,GraphQLID}  from 'graphql';
 import AmbulanceSchema from '../../models/ambulance.js';
 import { ambulanceType } from '../types/ambulanceType.js';
 
-//const nodemailer = require('nodemailer')
+import nodemailer from 'nodemailer';
 
 //creating transporter object for email transfer
-/*let transporter = nodemailer.createTransport({
+let transporter = nodemailer.createTransport({
   service: "hotmail",
   auth: {
     user: "crosscare2023@outlook.com", // generated ethereal user
     pass: "Vimal1996", // generated ethereal password
   },
-});*/
+});
+const emailModel = new GraphQLObjectType({
+  name: "email",
+  fields: () => ({
+    ambId: { type: GraphQLString },
+    rxEmail: { type: GraphQLString }
+  })
+})
 
 // Create a GraphQL mutation type for CRUD operations
 const ambulancemutation = {
@@ -67,7 +74,7 @@ const ambulancemutation = {
         }
       },
 
-     /* emailOnDispatch: {
+     emailOnDispatch: {
         type: emailModel,
         args: {
           ambId: { type: new GraphQLNonNull(GraphQLString) },
@@ -87,7 +94,7 @@ const ambulancemutation = {
             }
           });
         }
-      },*/
+      },
     
 
   
