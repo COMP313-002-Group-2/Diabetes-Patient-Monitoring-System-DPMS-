@@ -6,6 +6,7 @@ import Table from 'react-bootstrap/Table';
 import { PHYSICIANS_QUERY } from '../graphql/queries';
 import AppointmentModal from '../components/AppointmentModal';
 
+
 function AppointmentScreen() {
 
   //Hooks

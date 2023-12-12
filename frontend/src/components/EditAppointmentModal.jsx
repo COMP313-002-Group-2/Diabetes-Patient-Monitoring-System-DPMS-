@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useMutation } from '@apollo/client';
 import { UPDATE_APPOINTMENT } from '../graphql/mutation';
 import Modal from 'react-bootstrap/Modal';
@@ -12,7 +12,6 @@ export default function EditAppointmentModal({ appointmentId, physicianId, patie
     const [appointmentName, setAppointmentName] = useState(initAppointmentName);
     const [request, setRequest] = useState(initRequest);
     const [date, setDate] = useState(initDate);
-
     const [time, setTime] = useState(initTime);
 
     const [updateAppointment, { loading: updating, error: updateError }] = useMutation(UPDATE_APPOINTMENT, {
@@ -23,6 +22,21 @@ export default function EditAppointmentModal({ appointmentId, physicianId, patie
         refetchQueries: [{ query: GET_APPOINTMENTS }],
         // Error handling could be implemented here as well
     });
+
+    useEffect(() => {
+        // Update the state when props change
+        setAppointmentName(initAppointmentName || '');
+        setRequest(initRequest);
+        setDate(initDate);
+        setTime(initTime);
+
+        console.log('Received props:', {
+            initAppointmentName,
+            initRequest,
+            initDate,
+            initTime,
+        });
+      }, [initAppointmentName, initRequest, initDate, initTime]);
 
     const submitHandler = (e) => {
         e.preventDefault();

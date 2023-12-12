@@ -37,7 +37,7 @@ const appointmentMutations = {
             _id: { type: new GraphQLNonNull(GraphQLID) },
             physicianId: { type: new GraphQLNonNull(GraphQLString) },
             appointmentName: { type: GraphQLString },
-            //patientName: { type: GraphQLString },
+            patientName: { type: GraphQLString },
             request: { type: GraphQLString },
             date: { type: GraphQLString },
             time: { type: GraphQLString },
@@ -49,7 +49,7 @@ const appointmentMutations = {
                     $set: {
                         physicianId: args.physicianId,
                         appointmentName: args.appointmentName,
-                        //patientName: args.patientName,
+                        patientName: args.patientName,
                         request: args.request,
                         date: args.date,
                         time: args.time,

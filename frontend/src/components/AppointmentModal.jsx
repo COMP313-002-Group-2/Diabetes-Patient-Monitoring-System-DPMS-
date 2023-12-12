@@ -6,7 +6,7 @@ import AddAppointmentModal from './AddAppointmentModal';
 import EditAppointmentModal from './EditAppointmentModal';
 import { DELETE_APPOINTMENT } from '../graphql/mutation';
 
-export default function AppointmentModal({ physicianId, firstName, lastName, onHide }) {
+export default function AppointmentModal({ physicianId, firstName, lastName, patientName, onHide }) {
     const { loading, error, data, refetch } = useQuery(getAppointmentsByPhysician, {
         variables: { physicianId },
         skip: !physicianId, // Skip the query if physicianId is not available
