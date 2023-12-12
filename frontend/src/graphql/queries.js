@@ -25,9 +25,9 @@ export const PATIENTS_QUERY = gql`
   }
 `;
 
-export const GET_ONE_PATIENT = gql `
+export const GET_ONE_PATIENT = gql`
   query GetOnePatient($id: ID!) {
-    getOnePatient(id: $id){
+    getOnePatient(id: $id) {
       _id
       patientId
       documentId
@@ -48,8 +48,6 @@ export const GET_ONE_PATIENT = gql `
   }
 `;
 
-<<<<<<< Updated upstream
-=======
 export const HEMATOLOGY_QUERY = gql`
   query GetHematologyByPatientId($patientId: ID!) {
     getHematologyByPatientId(patientId: $patientId) {
@@ -69,29 +67,6 @@ export const HEMATOLOGY_QUERY = gql`
     }
   }
 `;
-
-export const BLOODCHEM_QUERY_BY_ID = gql`
-  query getBloodChemById($_id: ID!) {
-    getBloodChemById(_id: $_id) {
-      documentId
-      labDate
-      glucose
-      altSGPT
-      astSGOT
-      uricAcid
-      bun
-      cholesterol
-      triglycerides
-      hdlCholesterol
-      aLDL
-      vLDL
-      creatinine
-      eGFR
-    }
-  }
-`;
->>>>>>> Stashed changes
-
 
 export const GET_ONE_REMINDER = gql`
   query GetOneReminder($id: ID!) {
@@ -146,7 +121,7 @@ export const getRemindersByStatus = gql`
 
 export const GET_ONE_APPOINTMENT = gql`
   query GetOneAppointment($id: ID!) {
-    getOneAppointment(id: $id){
+    getOneAppointment(id: $id) {
       _id
       physicianId
       appointmentName
@@ -158,7 +133,7 @@ export const GET_ONE_APPOINTMENT = gql`
   }
 `;
 
-export const getAppointmentsByPhysician = gql `
+export const getAppointmentsByPhysician = gql`
   query GetAppointmentsByPhysician($physicianId: ID!) {
     getAppointmentsByPhysician(physicianId: $physicianId) {
       _id
@@ -171,7 +146,6 @@ export const getAppointmentsByPhysician = gql `
     }
   }
 `;
-
 
 export const USER_QUERY = `
   {
@@ -200,7 +174,13 @@ query GetUserById($id: ID!) {
 }
 `;
 
-///////////////////////////////////
+export const GET_PATIENT_ID_BY_EMAIL = gql`
+  query getPatientId($email: String!) {
+    getPatientId(email: $email) {
+      _id
+    }
+  }
+`;
 
 export const BLOODCHEM_QUERY = gql`
   query GetBloodChemByPatientId($patientId: ID!) {
@@ -224,7 +204,7 @@ export const BLOODCHEM_QUERY = gql`
     }
   }
 `;
- 
+
 export const BLOODCHEM_QUERY_BY_ID = gql`
   query getBloodChemById($_id: ID!) {
     getBloodChemById(_id: $_id) {
@@ -246,32 +226,6 @@ export const BLOODCHEM_QUERY_BY_ID = gql`
   }
 `;
 
-<<<<<<< Updated upstream
-
-export const GET_PATIENT_ID_BY_EMAIL = gql`
-
-  query getPatientId($email: String!) {
-
-    getPatientId(email: $email) {
-
-      _id
-
-    }
-
-  }
-
-`;
-
-export const PHYSICIANS_QUERY = gql`
-  {
-    getPhysicians {
-      _id
-      firstName
-      lastName
-      email
-      userType
-      isActive
-=======
 export const HEMATOLOGY_QUERY_BY_PATIENT_ID = gql`
   query GetHematologyByPatientId($patientId: ID!) {
     getHematologyByPatientId(patientId: $patientId) {
@@ -354,13 +308,10 @@ export const URINALYSIS_QUERY_BY_PATIENT_ID = gql`
       urobilinogen
       rbc
       wbc
->>>>>>> Stashed changes
     }
   }
 `;
 
-<<<<<<< Updated upstream
-=======
 export const URINALYSIS_QUERY_BY_ID = gql`
   query GetUrinalysisById($_id: ID!) {
     getUrinalysisById(_id: $_id) {
@@ -383,4 +334,16 @@ export const URINALYSIS_QUERY_BY_ID = gql`
     }
   }
 `;
->>>>>>> Stashed changes
+
+export const PHYSICIANS_QUERY = gql`
+  {
+    getPhysicians {
+      _id
+      firstName
+      lastName
+      email
+      userType
+      isActive
+    }
+  }
+`;
