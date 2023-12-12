@@ -18,10 +18,25 @@ import ForgotPasswordScreen from './screens/ForgotPasswordScreen';
 import ResetPasswordScreen from './screens/ResetPasswordScreen';
 import LabDataLandingScreen from './screens/LabDataLandingScreen';
 import BloodChemScreen from './screens/BloodChemScreen';
+import AddBloodChem from './components/AddBloodChem';
 import EditBloodChem from './components/EditBloodChem';
 import AppointmentScreen from './screens/AppointmentScreen';
 import AppointmentListScreen from './screens/AppointmentListScreen';
 
+import AddHemaLab from './components/AddHemaLab';
+import HematologyScreen from './screens/HematologyScreen';
+import EditHemaLab from './components/EditHemaLab';
+import AddHbA1c from './components/AddHbA1c';
+import EditHbA1c from './components/EditHbA1c';
+import EditUser from './components/EditUser';
+import AddUser from './components/AddUser';
+import AddReminderModal from './components/AddReminderModal';
+import EditReminderModal from './components/EditReminderModal';
+import BookingAppoinment from './components/BookingAppointment';
+import HbA1cScreen from './screens/HbA1cScreen';
+import UrinalysisScreen from './screens/UrinalysisScreen';
+import AddUrinalysis from './components/AddUrinalysis';
+import EditUrinalysis from './components/EditUrinalysis';
 
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import {
@@ -32,15 +47,6 @@ import {
   from,
 } from '@apollo/client';
 import { onError } from 'apollo-link-error';
-import EditUser from './components/EditUser';
-import AddUser from './components/AddUser';
-
-import AddReminderModal from './components/AddReminderModal';
-import EditReminderModal from './components/EditReminderModal';
-import UrinalysisScreen from './screens/UrinalysisScreen';
-import HbA1cScreen from './screens/HbA1cScreen';
-import HematologyScreen from './screens/HematologyScreen';
-import AddBloodChem from './components/AddBloodChem';
 import AlertsRemindersScreen from './screens/AlertsRemindersScreen';
 import AddAmbulance from './screens/AddAmbulance';
 
@@ -173,7 +179,7 @@ function App() {
                   path='/editreminder/:id'
                   element={<EditReminderModal />}
                 />
-                
+
                 <Route
                   path='/booking'
                   element={
@@ -193,7 +199,6 @@ function App() {
                     />
                   }
                 />
-                
 
                 <Route
                   path='/patient/lablandingpage'
@@ -258,6 +263,55 @@ function App() {
                     />
                   }
                 />
+                <Route
+                  path='/addhematology'
+                  element={
+                    <ProtectedRoute
+                      element={<AddHemaLab />}
+                      allowed='Patient'
+                    />
+                  }
+                />
+                <Route
+                  path='/edithematology/:id'
+                  element={
+                    <ProtectedRoute
+                      element={<EditHemaLab />}
+                      allowed='Patient'
+                    />
+                  }
+                />
+                <Route
+                  path='/addhba1c'
+                  element={
+                    <ProtectedRoute element={<AddHbA1c />} allowed='Patient' />
+                  }
+                />
+                <Route
+                  path='/edithba1c/:id'
+                  element={
+                    <ProtectedRoute element={<EditHbA1c />} allowed='Patient' />
+                  }
+                />
+                <Route
+                  path='/addurinalysis'
+                  element={
+                    <ProtectedRoute
+                      element={<AddUrinalysis />}
+                      allowed='Patient'
+                    />
+                  }
+                />
+                <Route
+                  path='/editurinalysis/:id'
+                  element={
+                    <ProtectedRoute
+                      element={<EditUrinalysis />}
+                      allowed='Patient'
+                    />
+                  }
+                />
+                {/*... other routes ... */}
 
                 <Route
                   path='/alertsreminders'
@@ -270,7 +324,7 @@ function App() {
                 />
 
                 {/*... other routes ... */}
-                <Route path = "addambulance" element={<AddAmbulance />} />
+                <Route path='addambulance' element={<AddAmbulance />} />
                 <Route path='*' element={<NotFound />} />
               </Routes>
             </Container>

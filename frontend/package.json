@@ -15,6 +15,7 @@
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "apollo-link-error": "^1.1.13",
+    "aws-sdk": "^2.1515.0",
     "axios": "^1.5.1",
     "bootstrap": "^5.3.2",
     "date-fns": "^2.30.0",

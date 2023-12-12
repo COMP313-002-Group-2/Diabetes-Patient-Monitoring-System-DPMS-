@@ -4,15 +4,18 @@ import { Card, Form, Button, Row, Col, InputGroup } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft, faUpload } from '@fortawesome/free-solid-svg-icons';
 import { useMutation, useQuery } from '@apollo/client';
-import { UPDATE_BLOODCHEM } from '../graphql/mutation';
-import { BLOODCHEM_QUERY, BLOODCHEM_QUERY_BY_ID } from '../graphql/queries';
+import { UPDATE_HBA1C } from '../graphql/mutation';
+import {
+  HBA1C_QUERY_BY_PATIENT_ID,
+  HBA1C_QUERY_BY_ID,
+} from '../graphql/queries';
 import { useParams, useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import { v4 as uuidv4 } from 'uuid';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-const EditBloodChem = () => {
+const EditHbA1c = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const patientId = Cookies.get('userId');
@@ -20,26 +23,15 @@ const EditBloodChem = () => {
   const [oldDocumentId, setOldDocumentId] = useState('');
   const [formValues, setFormValues] = useState({
     labDate: '',
-    glucose: '',
-    altSGPT: '',
-    astSGOT: '',
-    uricAcid: '',
-    bun: '',
-    cholesterol: '',
-    triglycerides: '',
-    hdlCholesterol: '',
-    aLDL: '',
-    vLDL: '',
-    creatinine: '',
-    eGFR: '',
+    result: '',
   });
   const [errors, setErrors] = useState({});
-  const [updateBloodchem, { error }] = useMutation(UPDATE_BLOODCHEM);
+  const [updateHbA1c, { error }] = useMutation(UPDATE_HBA1C);
   const {
     data,
     loading: queryLoading,
     error: queryError,
-  } = useQuery(BLOODCHEM_QUERY_BY_ID, {
+  } = useQuery(HBA1C_QUERY_BY_ID, {
     variables: { _id: id },
     skip: !id,
   });
@@ -50,9 +42,9 @@ const EditBloodChem = () => {
   const awsBucketName = process.env.REACT_APP_AWS_BUCKET_NAME;
 
   useEffect(() => {
-    if (data && data.getBloodChemById) {
+    if (data && data.getHbA1cById) {
       const { __typename, documentId, labDate, ...formData } =
-        data.getBloodChemById;
+        data.getHbA1cById;
       const formattedLabDate = new Date(parseInt(labDate))
         .toISOString()
         .split('T')[0];
@@ -88,50 +80,17 @@ const EditBloodChem = () => {
     if (!isNotEmpty(formValues.labDate)) {
       newErrors.labDate = 'Lab date is required';
     }
-    if (!isNumeric(formValues.glucose)) {
-      newErrors.glucose = 'Glucose is required and must be a number';
+    if (!isNumeric(formValues.result)) {
+      newErrors.result = 'Result must be a number';
     }
-    if (!isNumeric(formValues.altSGPT)) {
-      newErrors.altSGPT = 'ALT/SGPT is required and must be a number';
-    }
-    if (!isNumeric(formValues.astSGOT)) {
-      newErrors.astSGOT = 'ALT/SGOT is required and must be a number';
-    }
-    if (!isNumeric(formValues.uricAcid)) {
-      newErrors.uricAcid = 'Uric Acid is required and must be a number';
-    }
-    if (!isNumeric(formValues.bun)) {
-      newErrors.bun = 'Bun is required and must be a number';
-    }
-    if (!isNumeric(formValues.cholesterol)) {
-      newErrors.cholesterol = 'cholesterol is required and must be a number';
-    }
-    if (!isNumeric(formValues.triglycerides)) {
-      newErrors.triglycerides =
-        'triglycerides is required and must be a number';
-    }
-    if (!isNumeric(formValues.hdlCholesterol)) {
-      newErrors.hdlCholesterol =
-        'hdlCholesterol is required and must be a number';
-    }
-    if (!isNumeric(formValues.aLDL)) {
-      newErrors.aLDL = 'aLDL is required and must be a number';
-    }
-    if (!isNumeric(formValues.vLDL)) {
-      newErrors.vLDL = 'vLDL is required and must be a number';
-    }
-    if (!isNumeric(formValues.creatinine)) {
-      newErrors.creatinine = 'creatinine is required and must be a number';
-    }
-    if (!isNumeric(formValues.eGFR)) {
-      newErrors.eGFR = 'eGFR is required and must be a number';
-    }
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
+
   //================================//
   const handleBackClick = () => {
-    navigate('/patient/lablandingpage');
+    navigate('/hba1c');
   };
 
   const deleteOldFileFromS3 = async (newDocumentId) => {
@@ -206,30 +165,21 @@ const EditBloodChem = () => {
 
     const parsedValues = {
       ...formValues,
-      glucose: parseFloat(formValues.glucose),
-      altSGPT: parseFloat(formValues.altSGPT),
-      astSGOT: parseFloat(formValues.astSGOT),
-      uricAcid: parseFloat(formValues.uricAcid),
-      bun: parseFloat(formValues.bun),
-      cholesterol: parseFloat(formValues.cholesterol),
-      triglycerides: parseFloat(formValues.triglycerides),
-      hdlCholesterol: parseFloat(formValues.hdlCholesterol),
-      aLDL: parseFloat(formValues.aLDL),
-      vLDL: parseFloat(formValues.vLDL),
-      creatinine: parseFloat(formValues.creatinine),
-      eGFR: parseFloat(formValues.eGFR),
+      result: parseFloat(formValues.result || 0),
     };
 
     try {
-      const response = await updateBloodchem({
+      const response = await updateHbA1c({
         variables: {
           _id: id,
           input: { ...parsedValues, patientId, documentId: newDocumentId },
         },
-        refetchQueries: [{ query: BLOODCHEM_QUERY, variables: { patientId } }],
+        refetchQueries: [
+          { query: HBA1C_QUERY_BY_PATIENT_ID, variables: { patientId } },
+        ],
       });
       if (response.data) {
-        navigate('/bloodchemistry');
+        navigate('/hba1c');
       }
     } catch (err) {
       console.error(err);
@@ -263,7 +213,7 @@ const EditBloodChem = () => {
           <Card>
             <Card.Body>
               <Card.Title className='text-center'>
-                Edit Blood Chemistry Data
+                Edit HbA1c Lab Result Data
               </Card.Title>
               <Form onSubmit={handleSubmit}>
                 {Object.entries(formValues)
@@ -316,7 +266,7 @@ const EditBloodChem = () => {
                 </Form.Group>
                 <Row>
                   <Col
-                    sm={{ span: 3, offset: 4 }}
+                    sm={{ span: 3, offset: 5 }}
                     className='d-flex justify-content-between'
                   >
                     <Button variant='primary' type='submit'>
@@ -337,4 +287,4 @@ const EditBloodChem = () => {
   );
 };
 
-export default EditBloodChem;
+export default EditHbA1c;
