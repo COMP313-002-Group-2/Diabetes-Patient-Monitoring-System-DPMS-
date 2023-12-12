@@ -1,32 +1,36 @@
 import React, { useState, useEffect } from 'react';
-import { Form, Button } from 'react-bootstrap';
+import { Form, Button, Alert } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faAmbulance, faMapMarkedAlt } from '@fortawesome/free-solid-svg-icons';
+import { faAmbulance, faMapMarkedAlt, faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 import { useMutation, gql } from '@apollo/client';
+import { useNavigate } from 'react-router-dom';
 
 const ADD_EMERGENCY_REQUEST = gql`
   mutation AddEmergencyRequest(
-    $patientId: String!,
     $location: String!,
     $description: String!,
-    $email: String!
+    $email: String!,
+    $status: String!,
+    $address: String!
   ) {
     addEmergencyRequest(
-      patientId: $patientId,
       location: $location,
       description: $description,
-      email: $email
+      email: $email,
+      status: $status,
+      address: $address
     ) {
       _id
-      // Include any other fields you want to receive in response after adding the emergency request
     }
   }
 `;
 
 const EmergencyScreen = () => {
+  let navigate = useNavigate()
   const [description, setDescription] = useState('');
   const [location, setLocation] = useState('');
   const [address, setAddress] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
   const [addEmergencyRequest] = useMutation(ADD_EMERGENCY_REQUEST);
 
   useEffect(() => {
@@ -39,6 +43,9 @@ const EmergencyScreen = () => {
         (position) => {
           const { latitude, longitude } = position.coords;
           setLocation(`${latitude},${longitude}`);
+          getGoogleMapsAddress(location);
+          console.log('Address:', address);
+
         },
         (error) => {
           console.error('Error getting location:', error);
@@ -50,7 +57,7 @@ const EmergencyScreen = () => {
   };
 
   const getGoogleMapsAddress = async (latLng) => {
-    const API_KEY = 'AIzaSyCHW3uS5RuUar_K6FZLWMZTPGDETQ_U39c'; 
+    const API_KEY = 'AIzaSyCHW3uS5RuUar_K6FZLWMZTPGDETQ_U39c'; // Replace with your API key
     try {
       const response = await fetch(
         `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latLng}&key=${API_KEY}`
@@ -58,9 +65,9 @@ const EmergencyScreen = () => {
       const data = await response.json();
       if (data.status === 'OK') {
         setAddress(data.results[0].formatted_address);
-      } else {
-        setAddress('Address not found');
-      }
+        const addressField = data.results[0].formatted_address;
+        setAddress(addressField);
+      } 
     } catch (error) {
       console.error('Error fetching address:', error);
       setAddress('Error fetching address');
@@ -72,17 +79,23 @@ const EmergencyScreen = () => {
     console.log('Location:', location);
 
     if (location) {
-      await getGoogleMapsAddress(location);
-      console.log('Address:', address);
-
+      
       addEmergencyRequest({
         variables: {
           location,
           description,
-          email: localStorage.getItem("email") 
+          email: localStorage.getItem("email"),
+          status:'Pending',
+          address 
         }
       });
+
+      setSuccessMessage('Your emergency request has been submitted successfully!');
+      setTimeout(() => {
+        navigate('/');
+      }, 10000);
     }
+    
   };
 
   return (
@@ -117,6 +130,16 @@ const EmergencyScreen = () => {
         <FontAwesomeIcon icon={faAmbulance} className="mr-2" />
         Submit
       </Button>
+      {successMessage && (
+        <div className='container my-5'>
+          <div className="d-flex flex-column justify-content-center align-items-center">
+            <FontAwesomeIcon icon={faCheckCircle} className="text-success" size='5em' />
+            <Alert variant='success' className="mt-3">
+              {successMessage}
+            </Alert>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

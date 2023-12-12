@@ -29,7 +29,12 @@ function StaffScreen() {
       description: 'Display existing ambulances',
       link: '/ambulancelist',
     },
-    
+    {
+      icon:   faFirstAid,
+      title: 'List of Emergencies',
+      description: 'Displaying Critical Emergencies',
+      link: '/emergencyrequestlist',
+    },
   ];
 
   const renderCard = (card, index) => {

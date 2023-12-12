@@ -23,6 +23,7 @@ import AmbulanceList from './screens/AmbulanceList';
 import AddAmbulance from './screens/AddAmbulance';
 import CreateAmbulanceRequest from './screens/CreateAmbulanceRequest';
 import EmergencyScreen from './screens/EmergencyScreen';
+import EmergencyRequestsList from './screens/EmergencyRequestList';
 
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import {
@@ -262,6 +263,8 @@ function App() {
                 element ={<CreateAmbulanceRequest/>}/>
                 <Route path="/emergencypatient" 
                 element ={<EmergencyScreen/>}/>
+                <Route path="/emergencyrequestlist"
+                element={<EmergencyRequestsList/>}/>
                 <Route path='*' element={<NotFound />} />
               </Routes>
             </Container>
