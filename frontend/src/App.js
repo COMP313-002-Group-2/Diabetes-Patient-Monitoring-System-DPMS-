@@ -32,7 +32,6 @@ import EditUser from './components/EditUser';
 import AddUser from './components/AddUser';
 import AddReminderModal from './components/AddReminderModal';
 import EditReminderModal from './components/EditReminderModal';
-import BookingAppoinment from './components/BookingAppointment';
 import HbA1cScreen from './screens/HbA1cScreen';
 import UrinalysisScreen from './screens/UrinalysisScreen';
 import AddUrinalysis from './components/AddUrinalysis';
