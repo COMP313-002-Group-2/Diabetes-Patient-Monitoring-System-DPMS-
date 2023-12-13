@@ -23,7 +23,12 @@ const Articles = () => {
                     ? `${article.content.substring(0, 100)}...`
                     : article.content}
                 </Card.Text>
-                <a href={article.source} className='btn btn-primary mt-auto'>
+                <a
+                  href={article.source}
+                  target='_blank'
+                  rel='noopener noreferrer'
+                  className='btn btn-primary mt-auto'
+                >
                   Read More
                 </a>
               </Card.Body>

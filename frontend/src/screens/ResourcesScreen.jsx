@@ -59,50 +59,50 @@ const styles = {
   container: {
     textAlign: 'center',
     padding: '50px',
-    backgroundColor: '#f7f7f7', // This is the background color of the container
+    backgroundColor: '#f7f7f7',
   },
   header: {
     fontSize: '2rem',
-    color: '#333', // Adjust the color to match your design
+    color: '#333',
   },
   subheader: {
     fontSize: '1rem',
     marginBottom: '30px',
-    color: '#555', // Adjust the color to match your design
+    color: '#555',
   },
   cardContainer: {
     display: 'flex',
     flexWrap: 'wrap',
     justifyContent: 'center',
-    gap: '20px', // Adjust the space between cards
+    gap: '20px',
   },
   cardLink: {
     textDecoration: 'none',
-    color: 'inherit', // This ensures that the link does not have the default link color
+    color: 'inherit',
   },
   card: {
-    width: '300px', // Adjust card width as needed
+    width: '300px',
     padding: '20px',
     borderRadius: '8px',
-    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', // Adjust the shadow to match your design
-    backgroundColor: '#fff', // Card background color
+    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+    backgroundColor: '#fff',
     cursor: 'pointer',
-    transition: 'transform 0.3s ease', // Smooth transition for hover effect
+    transition: 'transform 0.3s ease',
     ':hover': {
-      transform: 'scale(1.05)', // Slightly scale up the card on hover
+      transform: 'scale(1.05)',
     },
   },
   cardImage: {
     width: '100%',
-    height: '200px', // Adjust image height as needed
-    objectFit: 'cover', // This will make sure the image covers the card
+    height: '200px',
+    objectFit: 'cover',
     marginBottom: '15px',
-    borderRadius: '4px', // Adjust the border-radius to match your design
+    borderRadius: '4px',
   },
   cardTitle: {
     fontSize: '1.25rem',
     fontWeight: 'bold',
-    color: '#333', // Adjust the title color to match your design
+    color: '#333',
   },
 };
 
