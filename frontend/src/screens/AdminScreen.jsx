@@ -6,6 +6,7 @@ function AdminScreen() {
      <a href='/admin/users'><button className='btn btn-primary'>User List</button></a>
       {" "}
      <a href='/admin/add'><button className='btn btn-primary'>Add a User</button></a>
+     <a href='/ambulancelist'><button className='btn btn-primary'>Ambulance List Availability</button></a>
     </div>
   )
 }

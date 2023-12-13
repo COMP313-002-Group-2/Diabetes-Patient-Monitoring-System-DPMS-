@@ -20,6 +20,11 @@ import LabDataLandingScreen from './screens/LabDataLandingScreen';
 import BloodChemScreen from './screens/BloodChemScreen';
 import AddBloodChem from './components/AddBloodChem';
 import EditBloodChem from './components/EditBloodChem';
+import AmbulanceList from './screens/AmbulanceList';
+import AddAmbulance from './screens/AddAmbulance';
+import CreateAmbulanceRequest from './screens/CreateAmbulanceRequest';
+import EmergencyScreen from './screens/EmergencyScreen';
+import EmergencyRequestsList from './screens/EmergencyRequestList';
 import AppointmentScreen from './screens/AppointmentScreen';
 import AppointmentListScreen from './screens/AppointmentListScreen';
 
@@ -51,8 +56,9 @@ import {
   from,
 } from '@apollo/client';
 import { onError } from 'apollo-link-error';
+//import EditPatientInfo from './screens/EditPatientInfo';
 import AlertsRemindersScreen from './screens/AlertsRemindersScreen';
-import AddAmbulance from './screens/AddAmbulance';
+import DispatchAmbulance from './screens/DispatchAmbulance'
 import EditPatientInfo from './screens/EditPatientInfo';
 //import PatientDetails from './components/PatientDetails';
 
@@ -355,6 +361,18 @@ function App() {
                 />*/}
 
                 {/*... other routes ... */}
+                <Route path="/ambulancelist" 
+                element ={<AmbulanceList/>}/>
+                 <Route path="/addambulance" 
+                element ={<AddAmbulance/>}/>
+                 <Route path="/addambulancerequest" 
+                element ={<CreateAmbulanceRequest/>}/>
+                <Route path="/emergencypatient" 
+                element ={<EmergencyScreen/>}/>
+                <Route path="/emergencyrequestlist"
+                element={<EmergencyRequestsList/>}/>
+                <Route path="/dispatchAmbulances"
+                element={<DispatchAmbulance/>}/>
                 <Route path='addambulance' element={<AddAmbulance />} />
                 {/*<Route path='patientdetails' element={<PatientDetails />} />*/}
                 <Route path='*' element={<NotFound />} />

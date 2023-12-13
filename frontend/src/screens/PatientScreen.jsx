@@ -19,7 +19,7 @@ const PatientScreen = () => {
       icon: faAmbulance,
       title: 'Ambulance Services',
       description: 'Schedule Ambulance Service',
-      link: '/ambulance',
+      link: '/emergencypatient',
     },
     {
       icon: faAmbulance,

@@ -4,6 +4,11 @@ import userQueries from './queries/userQueries.js';
 import userMutations from './mutations/userMutations.js';
 import reminderQueries from './queries/reminderQueries.js';
 import reminderMutations from './mutations/reminderMutations.js';
+import ambulancemutation  from './mutations/ambulanceSchemas.js';
+import ambulanceRequestMutation from './mutations/ambulanceRequestSchemas.js';
+import ambulanceRequestQueries from './queries/ambulanceRequestQueries.js';
+import emergencyRequestMutations from './mutations/emergencyrequestMutation.js';
+import emergencyRequestQueries from './queries/emergencyrequestQueries.js';
 import appointmentQueries from './queries/appointmentQueries.js';
 import appointmentMutations from './mutations/appointmentMutation.js';
 import labQueries from './queries/labQueries.js';
@@ -17,6 +22,8 @@ const RootQuery = new GraphQLObjectType({
     ...ArticleQueries,
     ...userQueries,
     ...reminderQueries,
+    ...ambulanceRequestQueries,
+    ...emergencyRequestQueries,
     ...appointmentQueries,
     ...labQueries,
     ...PatientQueries,
@@ -28,6 +35,9 @@ const Mutation = new GraphQLObjectType({
   fields: {
     ...userMutations,
     ...reminderMutations,
+    ...ambulancemutation,
+    ...ambulanceRequestMutation,
+    ...emergencyRequestMutations,
     ...appointmentMutations,
     ...labMutations,
 
