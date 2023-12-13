@@ -3,23 +3,6 @@ import { ArticleType } from '../types/articleType.js';
 import Article from '../../models/article.js';
 
 const ArticleQueries = {
-<<<<<<< HEAD
-    articles: {
-      type: new GraphQLList(ArticleType),
-      
-      resolve(parent, args) {
-        return Article.find({});
-      },
-    },
-
-    article: {
-      type: ArticleType,
-      args: { id: { type: GraphQLString } },
-      resolve(parent, args) {
-        return Article.findById(args.id);
-      },
-    }
-=======
   articles: {
     type: new GraphQLList(ArticleType),
     resolve() {
@@ -35,7 +18,6 @@ const ArticleQueries = {
       return Article.findById(args._id);
     },
   },
->>>>>>> 1bb7d3d (complete remaining homepage links)
 };
 
 export default ArticleQueries;
