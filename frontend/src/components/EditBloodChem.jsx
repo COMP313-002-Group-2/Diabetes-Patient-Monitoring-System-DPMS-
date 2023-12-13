@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import AWS from 'aws-sdk';
 import { Card, Form, Button, Row, Col, InputGroup } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft, faUpload } from '@fortawesome/free-solid-svg-icons';
@@ -7,12 +8,16 @@ import { UPDATE_BLOODCHEM } from '../graphql/mutation';
 import { BLOODCHEM_QUERY, BLOODCHEM_QUERY_BY_ID } from '../graphql/queries';
 import { useParams, useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
+import { v4 as uuidv4 } from 'uuid';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const EditBloodChem = () => {
-  const { id } = useParams(); // Get the id from the URL
+  const { id } = useParams();
   const navigate = useNavigate();
   const patientId = Cookies.get('userId');
-  const [documentId, setdocumentId] = useState('');
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [oldDocumentId, setOldDocumentId] = useState('');
   const [formValues, setFormValues] = useState({
     labDate: '',
     glucose: '',
@@ -29,9 +34,7 @@ const EditBloodChem = () => {
     eGFR: '',
   });
   const [errors, setErrors] = useState({});
-  const [updateBloodchem, { loading, error }] = useMutation(UPDATE_BLOODCHEM);
-
-  // Fetch existing record data
+  const [updateBloodchem, { error }] = useMutation(UPDATE_BLOODCHEM);
   const {
     data,
     loading: queryLoading,
@@ -41,35 +44,42 @@ const EditBloodChem = () => {
     skip: !id,
   });
 
+  const awsAccessKeyId = process.env.REACT_APP_AWS_ACCESS_KEY_ID;
+  const awsSecretAccessKey = process.env.REACT_APP_AWS_SECRET_ACCESS_KEY;
+  const awsRegion = process.env.REACT_APP_AWS_REGION;
+  const awsBucketName = process.env.REACT_APP_AWS_BUCKET_NAME;
+
   useEffect(() => {
     if (data && data.getBloodChemById) {
-      // Destructure __typename and rest of the data to exclude it from form state
       const { __typename, documentId, labDate, ...formData } =
         data.getBloodChemById;
       const formattedLabDate = new Date(parseInt(labDate))
         .toISOString()
         .split('T')[0];
-      setdocumentId(documentId);
+      setOldDocumentId(documentId);
       setFormValues({ labDate: formattedLabDate, ...formData });
     }
   }, [data]);
-
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error :( Please try again</p>;
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     setFormValues({ ...formValues, [name]: value });
   };
 
-  const isNotEmpty = (value) => {
-    // Ensure that value is a string before calling .trim()
-    return value !== null && value !== undefined && String(value).trim() !== '';
+  const handleFileInput = (e) => {
+    setSelectedFile(e.target.files[0]);
   };
+
+  //======= Form Validation =======//
 
   const isNumeric = (value) => {
     // Directly check if value is a number without converting to a string
     return !isNaN(value) && value !== null && value !== undefined;
+  };
+
+  const isNotEmpty = (value) => {
+    // Ensure that value is a string before calling .trim()
+    return value !== null && value !== undefined && String(value).trim() !== '';
   };
 
   const validateForm = () => {
@@ -119,9 +129,67 @@ const EditBloodChem = () => {
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
-
+  //================================//
   const handleBackClick = () => {
     navigate('/patient/lablandingpage');
+  };
+
+  const deleteOldFileFromS3 = async (newDocumentId) => {
+    if (!oldDocumentId || oldDocumentId === newDocumentId) return;
+
+    const s3 = new AWS.S3({
+      accessKeyId: awsAccessKeyId,
+      secretAccessKey: awsSecretAccessKey,
+      region: awsRegion,
+    });
+
+    const deleteParams = {
+      Bucket: awsBucketName,
+      Key: oldDocumentId,
+    };
+
+    try {
+      await s3.deleteObject(deleteParams).promise();
+      console.log('Old file deleted successfully');
+    } catch (err) {
+      console.error('There was an error deleting the old file: ', err.message);
+    }
+  };
+
+  const uploadFileToS3 = async (file) => {
+    AWS.config.update({
+      accessKeyId: awsAccessKeyId,
+      secretAccessKey: awsSecretAccessKey,
+      region: awsRegion,
+    });
+
+    const s3 = new AWS.S3();
+    const fileKey = `${uuidv4()}-${file.name}`;
+
+    const uploadParams = {
+      Bucket: awsBucketName,
+      Key: fileKey,
+      Body: file,
+    };
+
+    try {
+      const data = await s3.upload(uploadParams).promise();
+      console.log('File uploaded successfully at', data.Location);
+      console.log('File uploaded successfully at key:', fileKey);
+      return fileKey;
+    } catch (err) {
+      console.error('There was an error uploading your file: ', err.message);
+      toast.error('There was an error uploading your file.', {
+        position: 'top-right',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+      throw err;
+    }
   };
 
   const handleSubmit = async (event) => {
@@ -129,7 +197,13 @@ const EditBloodChem = () => {
     if (!validateForm()) {
       return;
     }
-    // Convert numeric string values to numbers
+
+    let newDocumentId = oldDocumentId;
+    if (selectedFile) {
+      newDocumentId = await uploadFileToS3(selectedFile);
+      await deleteOldFileFromS3(newDocumentId);
+    }
+
     const parsedValues = {
       ...formValues,
       glucose: parseFloat(formValues.glucose),
@@ -150,7 +224,7 @@ const EditBloodChem = () => {
       const response = await updateBloodchem({
         variables: {
           _id: id,
-          input: { ...parsedValues, patientId, documentId },
+          input: { ...parsedValues, patientId, documentId: newDocumentId },
         },
         refetchQueries: [{ query: BLOODCHEM_QUERY, variables: { patientId } }],
       });
@@ -159,7 +233,15 @@ const EditBloodChem = () => {
       }
     } catch (err) {
       console.error(err);
-      // handle errors
+      toast.error('Error occurred updating the record.', {
+        position: 'top-right',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
     }
   };
 
@@ -181,7 +263,7 @@ const EditBloodChem = () => {
           <Card>
             <Card.Body>
               <Card.Title className='text-center'>
-                Add Blood Chemistry Lab Data
+                Edit Blood Chemistry Data
               </Card.Title>
               <Form onSubmit={handleSubmit}>
                 {Object.entries(formValues)
@@ -218,19 +300,30 @@ const EditBloodChem = () => {
                       <InputGroup.Text>
                         <FontAwesomeIcon icon={faUpload} />
                       </InputGroup.Text>
-                      <Form.Control type='file' className='half-width-input' />
+                      <Form.Control
+                        type='file'
+                        className='half-width-input'
+                        onChange={handleFileInput}
+                      />
                     </InputGroup>
                     {errors.document && (
                       <div className='invalid-feedback d-block'>
                         {errors.document}
                       </div>
                     )}
+                    {oldDocumentId && <p className='mt-2'>{oldDocumentId}</p>}
                   </Col>
                 </Form.Group>
                 <Row>
-                  <Col sm={{ span: 9, offset: 3 }}>
+                  <Col
+                    sm={{ span: 3, offset: 4 }}
+                    className='d-flex justify-content-between'
+                  >
                     <Button variant='primary' type='submit'>
                       Save
+                    </Button>
+                    <Button variant='secondary' onClick={handleBackClick}>
+                      Cancel
                     </Button>
                   </Col>
                 </Row>
@@ -239,6 +332,7 @@ const EditBloodChem = () => {
           </Card>
         </Col>
       </Row>
+      <ToastContainer />
     </section>
   );
 };

@@ -11,6 +11,12 @@ import ambulanceRequestMutation from './mutations/ambulanceRequestSchemas.js';
 import ambulanceRequestQueries from './queries/ambulanceRequestQueries.js';
 import emergencyRequestMutations from './mutations/emergencyrequestMutation.js';
 import emergencyRequestQueries from './queries/emergencyrequestQueries.js';
+import appointmentQueries from './queries/appointmentQueries.js';
+import appointmentMutations from './mutations/appointmentMutation.js';
+import labQueries from './queries/labQueries.js';
+import labMutations from './mutations/labMutations.js';
+import patientMutation from './mutations/patientMutation.js';
+import PatientQueries from './queries/patientQueries.js';
 
 const RootQuery = new GraphQLObjectType({
   name: 'RootQueryType',
@@ -20,7 +26,10 @@ const RootQuery = new GraphQLObjectType({
     ...reminderQueries,
     ...bloodchemQueries,
     ...ambulanceRequestQueries,
-    ...emergencyRequestQueries
+    ...emergencyRequestQueries,
+    ...appointmentQueries,
+    ...labQueries,
+    ...PatientQueries,
   },
 });
 
@@ -32,7 +41,12 @@ const Mutation = new GraphQLObjectType({
     ...ambulancemutation,
     ...ambulanceRequestMutation,
     ...bloodchemMutations,
-    ...emergencyRequestMutations
+    ...emergencyRequestMutations,
+    ...appointmentMutations,
+    ...labMutations,
+
+    // ...put otherMutations here
+    ...patientMutation,
   },
 });
 

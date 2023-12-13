@@ -67,3 +67,41 @@ code {
 .half-width-input {
   max-width: 70%;
 }
+
+.urinalysis-table {
+  width: 100%;
+  table-layout: auto;
+}
+
+.urinalysis-table th,
+.urinalysis-table td {
+  text-align: left; /* Align text to the left */
+  white-space: nowrap; /* Prevent text from wrapping */
+}
+
+.container {
+  overflow-x: auto; /* Enable horizontal scrolling if table overflows */
+}
+
+@media (min-width: 1200px) {
+  .wide-container {
+    max-width: 95%;
+  }
+}
+
+.full-width-table {
+  width: 100%;
+  min-width: 100%;
+  table-layout: fixed;
+}
+
+/* Optional: Add this if you want horizontal scrolling on the table */
+.scrollable-table-container {
+  overflow-x: auto;
+}
+
+/* Ensure the table header and cells stretch appropriately */
+.full-width-table th,
+.full-width-table td {
+  white-space: nowrap;
+}

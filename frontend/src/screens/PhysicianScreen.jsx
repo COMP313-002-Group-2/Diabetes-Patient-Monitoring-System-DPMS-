@@ -5,6 +5,7 @@ import Table from 'react-bootstrap/Table';
 // import AddReminderModal from '../components/AddReminderModal';
 import { PATIENTS_QUERY } from '../graphql/queries';
 import ReminderModal from '../components/ReminderModal';
+import { useNavigate } from 'react-router-dom';
 
 function PhysicianScreen() {
 
@@ -17,6 +18,7 @@ function PhysicianScreen() {
 
   const [selectedPatientFirstName, setSelectedPatientFirstName] = useState('');
   const [selectedPatientLastName, setSelectedPatientLastName] = useState('');
+  const navigate = useNavigate();
 
   //Use Effects
   useEffect(()=>{
@@ -46,6 +48,9 @@ function PhysicianScreen() {
       <div><h2>Physician Screen</h2></div>
       {/* <AddReminderModal {...reminderModalProps} /> */}
       <hr />
+
+      <button type="button" className="btn btn-primary" onClick={() => navigate("/appointment")}>Appointment List</button>
+      <br/><br/>
 
     <Table striped bordered hover variant="dark" className='text-center'>
         <thead>

@@ -27,7 +27,6 @@ const bloodchemQueries = {
         //console.log('Query results:', results);
         return results;
       } catch (error) {
-        console.error('Error in resolver:', error);
         throw new Error('Error fetching bloodchem data by patient ID');
       }
     },

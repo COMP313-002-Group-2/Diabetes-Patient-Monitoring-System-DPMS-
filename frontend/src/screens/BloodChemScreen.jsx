@@ -1,4 +1,5 @@
 import React from 'react';
+import AWS from 'aws-sdk';
 import { useQuery, useMutation } from '@apollo/client';
 import { Table, Button, Container } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -10,11 +11,12 @@ import {
   faFileAlt,
   faArrowLeft,
   faPlus,
-  faFileUpload,
 } from '@fortawesome/free-solid-svg-icons';
 import { BLOODCHEM_QUERY } from '../graphql/queries';
 import { DELETE_BLOODCHEM } from '../graphql/mutation';
 import { format } from 'date-fns';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const BloodChemScreen = () => {
   const navigate = useNavigate();
@@ -22,6 +24,17 @@ const BloodChemScreen = () => {
   const [deleteBloodchem] = useMutation(DELETE_BLOODCHEM, {
     refetchQueries: [{ query: BLOODCHEM_QUERY, variables: { patientId } }],
   });
+
+  const awsAccessKeyId = process.env.REACT_APP_AWS_ACCESS_KEY_ID;
+  const awsSecretAccessKey = process.env.REACT_APP_AWS_SECRET_ACCESS_KEY;
+  const awsRegion = process.env.REACT_APP_AWS_REGION;
+  const awsBucketName = process.env.REACT_APP_AWS_BUCKET_NAME;
+
+  const getS3FileUrl = (documentId) => {
+    const s3BucketUrl = process.env.REACT_APP_AWS_BUCKET_URL;
+    return `${s3BucketUrl}${documentId}`;
+  };
+
   // Use the patientId to fetch the blood chemistry data
   const {
     loading: bloodchemLoading,
@@ -38,12 +51,12 @@ const BloodChemScreen = () => {
   }
 
   // Show a loading message until the query is completed
-  if ( bloodchemLoading) return <div>Loading...</div>;
+  if (bloodchemLoading) return <div>Loading...</div>;
 
   // Extract bloodchem data from the query result
   const bloodchemdata = bloodchemData?.getBloodChemByPatientId || [];
-  const PatientId =
-    bloodchemdata.length > 0 ? bloodchemdata[0].patientId : null;
+  // const PatientId =
+  //   bloodchemdata.length > 0 ? bloodchemdata[0].patientId : null;
 
   //Format the date
   const formatDate = (timestamp) => {
@@ -57,22 +70,67 @@ const BloodChemScreen = () => {
     navigate('/patient/lablandingpage');
   };
 
- 
-
   const handleDelete = async (_id) => {
     if (window.confirm('Are you sure you wish to delete this item?')) {
       try {
+        // Find the record to get the documentId
+        const recordToDelete = bloodchemdata.find(
+          (record) => record._id === _id
+        );
+        if (recordToDelete) {
+          const documentId = recordToDelete.documentId;
+
+          // AWS S3 configuration
+          AWS.config.update({
+            accessKeyId: awsAccessKeyId,
+            secretAccessKey: awsSecretAccessKey,
+            region: awsRegion,
+          });
+
+          const s3 = new AWS.S3();
+
+          // Parameters for S3 deleteObject
+          var deleteParams = {
+            Bucket: awsBucketName,
+            Key: documentId,
+          };
+
+          // Delete the file from S3
+          s3.deleteObject(deleteParams, function (err, data) {
+            if (err) console.log(err, err.stack); // an error occurred
+            else console.log('File deleted from S3:', data); // successful response
+          });
+        }
+
+        // delete the record from your database
         await deleteBloodchem({ variables: { _id } });
-        // You can also show some notification on successful deletion
+        // Show success notification
+        toast.success('Record successfully deleted!', {
+          position: 'top-right',
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
       } catch (error) {
         console.error('Error deleting bloodchem data', error);
-        // Handle error scenarios here (e.g., show error notification)
+        toast.error('Error occurred while deleting the record.', {
+          position: 'top-right',
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
       }
     }
   };
 
   const renderActionButtons = (id) => (
-    <div className='d-flex justify-content-center'>
+    <>
       <Button
         variant='warning'
         size='sm'
@@ -89,7 +147,7 @@ const BloodChemScreen = () => {
       >
         <FontAwesomeIcon icon={faTrashAlt} /> Delete
       </Button>
-    </div>
+    </>
   );
 
   return (
@@ -110,14 +168,6 @@ const BloodChemScreen = () => {
           onClick={() => navigate(`/addbloodchem`)}
         >
           <FontAwesomeIcon icon={faPlus} /> Add Record
-        </Button>
-        <Button
-          variant='info'
-          size='sm'
-          className='action-button'
-          onClick={() => navigate(`/uploadbloodchem/${PatientId}`)}
-        >
-          <FontAwesomeIcon icon={faFileUpload} /> Upload
         </Button>
       </div>
       <h2 className='text-center my-4'>Blood Chemistry Lab Result Overview</h2>
@@ -169,17 +219,21 @@ const BloodChemScreen = () => {
                   <Button
                     variant='primary'
                     size='sm'
-                    onClick={() =>
-                      navigate(`/editbloodchem/${record.documentId}`)
-                    }
+                    onClick={() => {
+                      const fileUrl = getS3FileUrl(record.documentId);
+                      window.open(fileUrl, '_blank');
+                    }}
                   >
                     <FontAwesomeIcon icon={faFileAlt} /> View
                   </Button>
                 </td>
-                <td> {renderActionButtons(record._id)} </td>
+                <td className='text-center'>
+                  {renderActionButtons(record._id)}
+                </td>
               </tr>
             );
           })}
+          <ToastContainer />
         </tbody>
       </Table>
     </Container>

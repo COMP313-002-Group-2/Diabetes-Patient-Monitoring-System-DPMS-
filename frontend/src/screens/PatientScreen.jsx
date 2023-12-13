@@ -11,15 +11,21 @@ import {
   faUserCog,
 } from '@fortawesome/free-solid-svg-icons';
 
+
 const PatientScreen = () => {
   const navigate = useNavigate();
-
   const cardInfo = [
     {
       icon: faAmbulance,
       title: 'Ambulance Services',
       description: 'Schedule Ambulance Service',
       link: '/emergencypatient',
+    },
+    {
+      icon: faAmbulance,
+      title: 'Patient Details',
+      description: 'View Patient Details',
+      link: '/patientdetails',
     },
     {
       icon: faVial,

@@ -7,8 +7,8 @@
   "scripts": {
     "start": "node backend/server.js",
     "server": "nodemon backend/server.js",
-    "client": "npm start --prefix frontend",
-    "dev": "concurrently \"npm run server\" \"npm run client\""
+    "client": "node loadEnv.cjs && npm start --prefix frontend",
+    "dev": "concurrently \"npm run server\" \"node loadEnv.cjs && npm start --prefix frontend\""
   },
   "repository": {
     "type": "git",
@@ -25,6 +25,8 @@
   "homepage": "https://github.com/roelma2000/DiabetesTracker#readme",
   "dependencies": {
     "@apollo/client": "^3.8.7",
+    "@material-ui/core": "^4.12.4",
+    "@material-ui/icons": "^4.11.3",
     "colors": "^1.4.0",
     "cors": "^2.8.5",
     "express": "^4.18.2",
