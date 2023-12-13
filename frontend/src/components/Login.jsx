@@ -56,6 +56,7 @@ const Login = () => {
         localStorage.setItem('firstName', firstName);
         localStorage.setItem('lastName', lastName);
         localStorage.setItem('email', email);
+        localStorage.setItem('userId',Cookies.get('userId'));
 
         switch (userType) {
           case 'Patient':

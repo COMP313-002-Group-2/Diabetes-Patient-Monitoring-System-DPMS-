@@ -1,24 +1,20 @@
 import React, { useEffect, useState } from 'react'
 import { Button, Form, Col, Card } from 'react-bootstrap';
-import { USER_BY_ID_QUERY } from '../graphql/queries'
 import { PATIENT_DETAILS_BY_ID_QUERY } from '../graphql/queries';
 import { useQuery, useMutation } from '@apollo/client';
 import { ADD_PATIENT_INFO } from '../graphql/mutation';
 import { useNavigate } from 'react-router-dom';
+import Cookies from 'js-cookie';
 
 
 
 const EditPatientInfo = () => {
     const Navigate = useNavigate()
     const [patientInfo, setPatientInfo] = useState({ firstName: "", lastName: "", email: "", address1: "", address2: "", city: "", postalcode: "", phoneNumber: "" })
-    const userId = localStorage.getItem('userId')
+    const userId = Cookies.get('userId');
 
-    const { loading2, error2, data2, refetch } = useQuery(USER_BY_ID_QUERY, {
-        variables: { id: localStorage.getItem('userId') }
-    });
-
-    const { loading, error, data} = useQuery(PATIENT_DETAILS_BY_ID_QUERY, {
-        variables: { id: localStorage.getItem('userId') }
+    const { loading, error, data,refetch} = useQuery(PATIENT_DETAILS_BY_ID_QUERY, {
+        variables: { id: userId }
     });
 
     const [addPatient, loading1, error1, data1] = useMutation(ADD_PATIENT_INFO);
@@ -31,7 +27,6 @@ const EditPatientInfo = () => {
     }, [userId,refetch])
 
     if (loading) return <p>Loading...</p>;
-    if(loading2) return <p>loading2 ...</p>
     if (error) return <p>Error: {error.message}</p>
 
     const user = data.getUserById || {}
@@ -40,7 +35,7 @@ const EditPatientInfo = () => {
         e.preventDefault();
         addPatient({
             variables: {
-                _id: localStorage.getItem('userId'),
+                _id: userId,
                 address1: patientInfo.address1,
                 address2: patientInfo.address2,
                 city: patientInfo.city,
@@ -49,7 +44,7 @@ const EditPatientInfo = () => {
             }
         })
 
-        Navigate("/patient")
+        Navigate("/patientdetails")
     }
 
 

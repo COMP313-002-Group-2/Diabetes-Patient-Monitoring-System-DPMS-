@@ -3,9 +3,11 @@ import { Card } from 'react-bootstrap';
 import { Button } from 'react-bootstrap';
 import { useQuery } from '@apollo/client';
 import { USER_BY_ID_QUERY } from '../graphql/queries'
+import Cookies from 'js-cookie';
+
 
 const PatientDetails = () => {
-    const userId = localStorage.getItem('userId')
+    const userId = Cookies.get('userId');
 
     const { loading, error, data, refetch } = useQuery(USER_BY_ID_QUERY, {
         variables: { id: localStorage.getItem('userId') }
