@@ -12,6 +12,18 @@ export const ARTICLES_QUERY = gql`
   }
 `;
 
+export const GET_ARTICLE_QUERY = gql`
+  query GetArticle($_id: ID!) {
+    article(_id: $_id) {
+      _id
+      title
+      content
+      image
+      source
+    }
+  }
+`;
+
 export const PATIENTS_QUERY = gql`
   {
     getPatients {
