@@ -36,6 +36,11 @@ import HbA1cScreen from './screens/HbA1cScreen';
 import UrinalysisScreen from './screens/UrinalysisScreen';
 import AddUrinalysis from './components/AddUrinalysis';
 import EditUrinalysis from './components/EditUrinalysis';
+import ArticleScreen from './screens/ArticlesScreen';
+import AboutArticles from './screens/AboutArticlesScreen';
+import Resources from './screens/ResourcesScreen';
+import AboutUs from './screens/AboutUsScreen';
+import ContactUs from './screens/ContactUs';
 
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import {
@@ -109,6 +114,11 @@ function App() {
             <Container>
               <Routes>
                 <Route path='/' element={<HomeScreen />} />
+                <Route path='/articles/:id' element={<ArticleScreen />} />
+                <Route path='/about-diabetes' element={<AboutArticles />} />
+                <Route path='/resources' element={<Resources />} />
+                <Route path='/about-us' element={<AboutUs />} />
+                <Route path='/contactus' element={<ContactUs />} />
                 <Route
                   path='/login'
                   element={<PublicRoute element={<LoginScreen />} />}
