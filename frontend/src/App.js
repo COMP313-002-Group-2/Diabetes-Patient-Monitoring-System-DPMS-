@@ -54,7 +54,7 @@ import { onError } from 'apollo-link-error';
 import AlertsRemindersScreen from './screens/AlertsRemindersScreen';
 import AddAmbulance from './screens/AddAmbulance';
 import EditPatientInfo from './screens/EditPatientInfo';
-import PatientDetails from './components/PatientDetails';
+//import PatientDetails from './components/PatientDetails';
 
 const port = process.env.REACT_APP_PORT || 5000;
 
@@ -344,10 +344,19 @@ function App() {
                     />
                   }
                 />
+              {/* <Route
+                  path='/patientdetails'
+                  element={
+                    <ProtectedRoute
+                      element={<PatientDetails />}
+                      allowed='Patient'
+                    />
+                  }
+                />*/}
 
                 {/*... other routes ... */}
                 <Route path='addambulance' element={<AddAmbulance />} />
-                <Route path = "patientdetails" element={<PatientDetails />} />
+                {/*<Route path='patientdetails' element={<PatientDetails />} />*/}
                 <Route path='*' element={<NotFound />} />
               </Routes>
             </Container>

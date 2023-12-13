@@ -10,7 +10,7 @@ import {
   faPills,
   faUserCog,
 } from '@fortawesome/free-solid-svg-icons';
-import PatientDetails from '../components/PatientDetails';
+
 
 const PatientScreen = () => {
   const navigate = useNavigate();
