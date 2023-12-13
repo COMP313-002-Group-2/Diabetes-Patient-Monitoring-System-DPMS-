@@ -8,6 +8,7 @@ const RemindersForPatient = ({ patientId }) => {
     variables: { patientId: patientId },
   });
 
+
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error :(</p>;
 
@@ -25,6 +26,7 @@ const RemindersForPatient = ({ patientId }) => {
         </div>
       ))}
     </div>
+    
   );
 };
 

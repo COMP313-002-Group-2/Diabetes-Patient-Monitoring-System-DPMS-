@@ -26,6 +26,7 @@ export default function AddAppointmentModal({ physicianId, firstName, lastName, 
         if (firstName) {
             setCurrentPhysicianFirstName(firstName); // Set the physicianId when the component receives it
             
+            
         }
         if (lastName) {
             setCurrentPhysicianLastName(lastName); // Set the physicianId when the component receives it
@@ -56,7 +57,7 @@ export default function AddAppointmentModal({ physicianId, firstName, lastName, 
         console.log(physicianId, appointmentName, patientName, request, date, time, '271 476 0892');
 
         setAppointmentName('');
-        setPatientName('');
+        //setPatientName('');
         setRequest('');
         setDate('');
         setTime('');

@@ -188,6 +188,139 @@ export const UPDATE_BLOODCHEM = gql`
       vLDL
       creatinine
       eGFR
+      documentId
+    }
+  }
+`;
+
+export const ADD_HEMATOLOGY = gql`
+  mutation AddHematology($input: HematologyInput!) {
+    addHematology(input: $input) {
+      _id
+      patientId
+      documentId
+      labDate
+      hemoglobin
+      hematocrit
+      rbc
+      wbc
+      plateletCount
+      mcv
+      mch
+      mchc
+      rdw
+    }
+  }
+`;
+
+export const DELETE_HEMATOLOGY = gql`
+  mutation DeleteHematology($_id: ID!) {
+    deleteHematology(_id: $_id)
+  }
+`;
+
+export const UPDATE_HEMATOLOGY = gql`
+  mutation UpdateHematology($_id: ID!, $input: HematologyInput!) {
+    updateHematology(_id: $_id, input: $input) {
+      _id
+      patientId
+      documentId
+      labDate
+      hemoglobin
+      hematocrit
+      rbc
+      wbc
+      plateletCount
+      mcv
+      mch
+      mchc
+      rdw
+    }
+  }
+`;
+
+export const ADD_HBA1C = gql`
+  mutation AddHbA1c($input: HbA1cInput!) {
+    addHbA1c(input: $input) {
+      _id
+      patientId
+      documentId
+      labDate
+      result
+    }
+  }
+`;
+
+export const DELETE_HBA1C = gql`
+  mutation DeleteHbA1c($_id: ID!) {
+    deleteHbA1c(_id: $_id)
+  }
+`;
+
+export const UPDATE_HBA1C = gql`
+  mutation UpdateHbA1c($_id: ID!, $input: HbA1cInput!) {
+    updateHbA1c(_id: $_id, input: $input) {
+      _id
+      patientId
+      documentId
+      labDate
+      result
+    }
+  }
+`;
+
+export const ADD_URINALYSIS = gql`
+  mutation AddUrinalysis($input: UrinalysisInput!) {
+    addUrinalysis(input: $input) {
+      _id
+      patientId
+      documentId
+      labDate
+      color
+      transparency
+      ph
+      specificGravity
+      glucose
+      protein
+      ketones
+      nitrites
+      leucocytesEsterases
+      blood
+      bilirubin
+      urobilinogen
+      rbc
+      wbc
+    }
+  }
+`;
+
+export const DELETE_URINALYSIS = gql`
+  mutation DeleteUrinalysis($_id: ID!) {
+    deleteUrinalysis(_id: $_id)
+  }
+`;
+
+export const UPDATE_URINALYSIS = gql`
+  mutation UpdateUrinalysis($_id: ID!, $input: UrinalysisInput!) {
+    updateUrinalysis(_id: $_id, input: $input) {
+      _id
+      patientId
+      documentId
+      labDate
+      color
+      transparency
+      ph
+      specificGravity
+      glucose
+      protein
+      ketones
+      nitrites
+      leucocytesEsterases
+      blood
+      bilirubin
+      urobilinogen
+      rbc
+      wbc
     }
   }
 `;

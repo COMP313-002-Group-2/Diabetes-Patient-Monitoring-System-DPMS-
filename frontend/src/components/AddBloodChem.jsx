@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import AWS from 'aws-sdk';
 import { Card, Form, Button, Row, Col, InputGroup } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUpload } from '@fortawesome/free-solid-svg-icons';
@@ -10,6 +11,10 @@ import { BLOODCHEM_QUERY } from '../graphql/queries';
 import { useNavigate } from 'react-router-dom';
 
 const AddBloodChem = () => {
+  const awsAccessKeyId = process.env.REACT_APP_AWS_ACCESS_KEY_ID;
+  const awsSecretAccessKey = process.env.REACT_APP_AWS_SECRET_ACCESS_KEY;
+  const awsRegion = process.env.REACT_APP_AWS_REGION;
+  const awsBucketName = process.env.REACT_APP_AWS_BUCKET_NAME;
   const [formValues, setFormValues] = useState({
     labDate: '',
     glucose: '',
@@ -26,9 +31,9 @@ const AddBloodChem = () => {
     eGFR: '',
   });
   const [addBloodchem, { loading, error }] = useMutation(ADD_BLOODCHEM);
+  const [selectedFile, setSelectedFile] = useState(null);
   const navigate = useNavigate();
   const patientId = Cookies.get('userId');
-  const documentId = uuidv4().replace(/-/g, ''); // Set documentId to a random UUID without hyphens
   const [errors, setErrors] = useState({});
 
   if (loading) return <p>Loading...</p>;
@@ -38,13 +43,20 @@ const AddBloodChem = () => {
     const { name, value } = event.target;
     setFormValues({ ...formValues, [name]: value });
   };
+  const handleCancelClick = () => {
+    navigate('/bloodchemistry');
+  };
+  const handleFileInput = (e) => {
+    setSelectedFile(e.target.files[0]);
+  };
 
   const isNotEmpty = (value) => value.trim() !== '';
   const isNumeric = (value) => !isNaN(value) && isNotEmpty(value);
 
   const validateForm = () => {
     const newErrors = {};
-    // Validate each field
+
+    //================ Field validations ================
     if (!isNotEmpty(formValues.labDate)) {
       newErrors.labDate = 'Lab date is required';
     }
@@ -90,12 +102,52 @@ const AddBloodChem = () => {
     return Object.keys(newErrors).length === 0;
   };
 
+  //================ Upload to S3 Start ================
+  const uploadFileToS3 = async (file) => {
+    AWS.config.update({
+      accessKeyId: awsAccessKeyId,
+      secretAccessKey: awsSecretAccessKey,
+      region: awsRegion,
+    });
+
+    const s3 = new AWS.S3();
+
+    const fileKey = `${uuidv4()}-${file.name}`;
+    const uploadParams = {
+      Bucket: awsBucketName,
+      Key: fileKey,
+      Body: file,
+    };
+
+    try {
+      const data = await s3.upload(uploadParams).promise();
+      console.log('File uploaded successfully at', data.Location);
+      console.log('File uploaded successfully at key:', fileKey);
+      return fileKey; //  Returns the key of the uploaded file
+    } catch (err) {
+      console.error('There was an error uploading your file: ', err.message);
+      throw err;
+    }
+  };
+  //================ Upload to S3 End ================
   const handleSubmit = async (event) => {
     event.preventDefault();
     // Perform validation and show errors if any
     if (!validateForm()) {
       return;
     }
+
+    let fileKey = null;
+    if (selectedFile) {
+      try {
+        fileKey = await uploadFileToS3(selectedFile);
+        console.log('S3 File Key:', fileKey);
+      } catch (err) {
+        console.error('Error uploading file to S3:', err);
+        return; // Stop the form submission if file upload fails
+      }
+    }
+
     // Convert numeric string values to numbers
     const parsedValues = {
       ...formValues,
@@ -111,13 +163,14 @@ const AddBloodChem = () => {
       vLDL: parseFloat(formValues.vLDL),
       creatinine: parseFloat(formValues.creatinine),
       eGFR: parseFloat(formValues.eGFR),
+      documentId: fileKey,
     };
 
     // If valid, send data to backend
     try {
       const response = await addBloodchem({
         variables: {
-          input: { ...parsedValues, patientId, documentId },
+          input: { ...parsedValues, patientId },
         },
         refetchQueries: [{ query: BLOODCHEM_QUERY, variables: { patientId } }],
       });
@@ -172,7 +225,11 @@ const AddBloodChem = () => {
                       <InputGroup.Text>
                         <FontAwesomeIcon icon={faUpload} />
                       </InputGroup.Text>
-                      <Form.Control type='file' className='half-width-input' />
+                      <Form.Control
+                        type='file'
+                        className='half-width-input'
+                        onChange={handleFileInput}
+                      />
                     </InputGroup>
                     {errors.document && (
                       <div className='invalid-feedback d-block'>
@@ -182,9 +239,15 @@ const AddBloodChem = () => {
                   </Col>
                 </Form.Group>
                 <Row>
-                  <Col sm={{ span: 9, offset: 3 }}>
+                  <Col
+                    sm={{ span: 3, offset: 3 }}
+                    className='d-flex justify-content-between'
+                  >
                     <Button variant='primary' type='submit'>
                       Save
+                    </Button>
+                    <Button variant='secondary' onClick={handleCancelClick}>
+                      Cancel
                     </Button>
                   </Col>
                 </Row>

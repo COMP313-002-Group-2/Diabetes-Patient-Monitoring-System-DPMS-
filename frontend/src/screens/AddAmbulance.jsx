@@ -30,10 +30,10 @@ const AddAmbulance = () => {
   const [addAmbulance, { data, loading, error }] = useMutation(ADD_AMBULANCE);
 
   const locationList = [
-    { name: "Lawrence and Markham, Scarborough", eta: 20 },
-    { name: "Finch East, Markham", eta: 45 },
-    { name: "Progress Avenue, Scarborough", eta: 1 },
-    { name: "Elsmere and Markham, Scarborough", eta: 10 },
+    { name: "8500 Sheppard Ave E, Toronto, CA", eta: 20 },
+    { name: "4331 Lawrence Ave E, Toronto, CA", eta: 45 },
+    { name: "305 Milner Ave Suit 310, Toronto, CA", eta: 1 },
+    { name: "887 Pharmacy Ave, Toronto, CA", eta: 10 },
   ];
 
   const crewMembersList = [
@@ -71,7 +71,7 @@ const AddAmbulance = () => {
     location.value = '';
     status.value = '';
     eta.value = '';
-    navigate('/ambulancelist2');
+    navigate('/ambulancelist');
   };
 
   const handleCrewMembersChange = (e) => {

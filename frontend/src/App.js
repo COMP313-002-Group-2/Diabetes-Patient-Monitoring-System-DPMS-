@@ -18,8 +18,34 @@ import ForgotPasswordScreen from './screens/ForgotPasswordScreen';
 import ResetPasswordScreen from './screens/ResetPasswordScreen';
 import LabDataLandingScreen from './screens/LabDataLandingScreen';
 import BloodChemScreen from './screens/BloodChemScreen';
+import AddBloodChem from './components/AddBloodChem';
 import EditBloodChem from './components/EditBloodChem';
+import AmbulanceList from './screens/AmbulanceList';
+import AddAmbulance from './screens/AddAmbulance';
+import CreateAmbulanceRequest from './screens/CreateAmbulanceRequest';
+import EmergencyScreen from './screens/EmergencyScreen';
+import EmergencyRequestsList from './screens/EmergencyRequestList';
 import AppointmentScreen from './screens/AppointmentScreen';
+import AppointmentListScreen from './screens/AppointmentListScreen';
+
+import AddHemaLab from './components/AddHemaLab';
+import HematologyScreen from './screens/HematologyScreen';
+import EditHemaLab from './components/EditHemaLab';
+import AddHbA1c from './components/AddHbA1c';
+import EditHbA1c from './components/EditHbA1c';
+import EditUser from './components/EditUser';
+import AddUser from './components/AddUser';
+import AddReminderModal from './components/AddReminderModal';
+import EditReminderModal from './components/EditReminderModal';
+import HbA1cScreen from './screens/HbA1cScreen';
+import UrinalysisScreen from './screens/UrinalysisScreen';
+import AddUrinalysis from './components/AddUrinalysis';
+import EditUrinalysis from './components/EditUrinalysis';
+import ArticleScreen from './screens/ArticlesScreen';
+import AboutArticles from './screens/AboutArticlesScreen';
+import Resources from './screens/ResourcesScreen';
+import AboutUs from './screens/AboutUsScreen';
+import ContactUs from './screens/ContactUs';
 
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import {
@@ -30,18 +56,9 @@ import {
   from,
 } from '@apollo/client';
 import { onError } from 'apollo-link-error';
-import EditUser from './components/EditUser';
-import AddUser from './components/AddUser';
-
-import AddReminderModal from './components/AddReminderModal';
-import EditReminderModal from './components/EditReminderModal';
-//import BookingAppoinment from './components/BookingAppointment';
-import UrinalysisScreen from './screens/UrinalysisScreen';
-import HbA1cScreen from './screens/HbA1cScreen';
-import HematologyScreen from './screens/HematologyScreen';
-import AddBloodChem from './components/AddBloodChem';
+//import EditPatientInfo from './screens/EditPatientInfo';
 import AlertsRemindersScreen from './screens/AlertsRemindersScreen';
-import AddAmbulance from './screens/AddAmbulance';
+import DispatchAmbulance from './screens/DispatchAmbulance'
 import EditPatientInfo from './screens/EditPatientInfo';
 import PatientDetails from './components/PatientDetails';
 
@@ -103,6 +120,11 @@ function App() {
             <Container>
               <Routes>
                 <Route path='/' element={<HomeScreen />} />
+                <Route path='/articles/:id' element={<ArticleScreen />} />
+                <Route path='/about-diabetes' element={<AboutArticles />} />
+                <Route path='/resources' element={<Resources />} />
+                <Route path='/about-us' element={<AboutUs />} />
+                <Route path='/contactus' element={<ContactUs />} />
                 <Route
                   path='/login'
                   element={<PublicRoute element={<LoginScreen />} />}
@@ -185,7 +207,7 @@ function App() {
                   path='/editreminder/:id'
                   element={<EditReminderModal />}
                 />
-                
+
                 <Route
                   path='/booking'
                   element={
@@ -195,10 +217,16 @@ function App() {
                     />
                   }
                 />
-                
-                
 
-                
+                <Route
+                  path='/appointment'
+                  element={
+                    <ProtectedRoute
+                      element={<AppointmentListScreen />}
+                      allowed='Physician'
+                    />
+                  }
+                />
 
                 <Route
                   path='/patient/lablandingpage'
@@ -263,6 +291,55 @@ function App() {
                     />
                   }
                 />
+                <Route
+                  path='/addhematology'
+                  element={
+                    <ProtectedRoute
+                      element={<AddHemaLab />}
+                      allowed='Patient'
+                    />
+                  }
+                />
+                <Route
+                  path='/edithematology/:id'
+                  element={
+                    <ProtectedRoute
+                      element={<EditHemaLab />}
+                      allowed='Patient'
+                    />
+                  }
+                />
+                <Route
+                  path='/addhba1c'
+                  element={
+                    <ProtectedRoute element={<AddHbA1c />} allowed='Patient' />
+                  }
+                />
+                <Route
+                  path='/edithba1c/:id'
+                  element={
+                    <ProtectedRoute element={<EditHbA1c />} allowed='Patient' />
+                  }
+                />
+                <Route
+                  path='/addurinalysis'
+                  element={
+                    <ProtectedRoute
+                      element={<AddUrinalysis />}
+                      allowed='Patient'
+                    />
+                  }
+                />
+                <Route
+                  path='/editurinalysis/:id'
+                  element={
+                    <ProtectedRoute
+                      element={<EditUrinalysis />}
+                      allowed='Patient'
+                    />
+                  }
+                />
+                {/*... other routes ... */}
 
                 <Route
                   path='/alertsreminders'
@@ -273,10 +350,24 @@ function App() {
                     />
                   }
                 />
+              {<Route path="/patientdetails" 
+                element ={<PatientDetails/>}/>}
 
                 {/*... other routes ... */}
-                <Route path = "addambulance" element={<AddAmbulance />} />
-                <Route path = "patientdetails" element={<PatientDetails />} />
+                <Route path="/ambulancelist" 
+                element ={<AmbulanceList/>}/>
+                 <Route path="/addambulance" 
+                element ={<AddAmbulance/>}/>
+                 <Route path="/addambulancerequest" 
+                element ={<CreateAmbulanceRequest/>}/>
+                <Route path="/emergencypatient" 
+                element ={<EmergencyScreen/>}/>
+                <Route path="/emergencyrequestlist"
+                element={<EmergencyRequestsList/>}/>
+                <Route path="/dispatchAmbulances"
+                element={<DispatchAmbulance/>}/>
+                <Route path='addambulance' element={<AddAmbulance />} />
+                {/*<Route path='patientdetails' element={<PatientDetails />} />*/}
                 <Route path='*' element={<NotFound />} />
               </Routes>
             </Container>

@@ -10,9 +10,12 @@ export default function AlertsRemindersScreen() {
     
   const navigate = useNavigate();
   const [showReminders, setShowReminders] = useState(false);
+  //const [showAppointments, setShowAppointments] = useState(false);
   const patientId = Cookies.get('userId');
 
   const toggleReminders = () => setShowReminders(prevState => !prevState);
+  //const toggleAppointments = () => setShowAppointments(prevState => !prevState);
+
 
   const handleBackClick = () => {
     navigate('/patient');
@@ -34,6 +37,7 @@ export default function AlertsRemindersScreen() {
         <button type="button" className="btn btn-primary" onClick={toggleReminders}>
           {showReminders ? "Hide Reminders" : "Show Reminders"}
         </button>
+        
 
         {/* Conditionally render the RemindersForPatient component */}
         {showReminders && (
