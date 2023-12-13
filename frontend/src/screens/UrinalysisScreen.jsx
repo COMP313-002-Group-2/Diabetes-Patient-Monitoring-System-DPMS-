@@ -11,7 +11,6 @@ import {
   faFileAlt,
   faArrowLeft,
   faPlus,
-  faFileUpload,
 } from '@fortawesome/free-solid-svg-icons';
 import { URINALYSIS_QUERY_BY_PATIENT_ID } from '../graphql/queries';
 import { DELETE_URINALYSIS } from '../graphql/mutation';
@@ -114,7 +113,6 @@ const UrinalysisScreen = () => {
     }
   };
 
-
   const renderDocumentColumn = (record) => (
     <td className='text-center'>
       <Button
@@ -170,7 +168,6 @@ const UrinalysisScreen = () => {
         >
           <FontAwesomeIcon icon={faPlus} /> Add Record
         </Button>
-       
       </div>
       <h2 className='text-center my-4'>Urinalysis Lab Result Overview</h2>
       <Table
